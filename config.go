@@ -16,6 +16,13 @@
  **/
 package main
 
+import (
+	"fmt"
+	"os"
+	"strings"
+	"time"
+)
+
 // Config stores app configuration
 type Config struct {
 	Zones []Zone
@@ -23,8 +30,41 @@ type Config struct {
 
 // LoadConfig from os.UserConfigDir
 func LoadConfig() (*Config, error) {
-	cfg := Config{
+	conf := Config{
 		Zones: DefaultZones,
 	}
-	return &cfg, nil
+
+	zoneEnv := os.Getenv("TZ_LIST")
+	if zoneEnv == "" {
+		return &conf, nil
+	}
+	zoneNames := strings.Split(zoneEnv, ",")
+	if len(zoneNames) == 0 {
+		return &conf, nil
+	}
+	zones := make([]Zone, len(zoneNames)+1)
+
+	now := time.Now()
+	localZoneName, offset := now.Zone()
+
+	zones[0] = Zone{
+		Name:   fmt.Sprintf("(%s) Local", localZoneName),
+		DbName: localZoneName,
+		Offset: offset / 3600,
+	}
+	for i, name := range zoneNames {
+		loc, err := time.LoadLocation(name)
+		if err != nil {
+			return nil, fmt.Errorf("looking up zone %s: %w", name, err)
+		}
+		then := now.In(loc)
+		shortName, offset := then.Zone()
+		zones[i+1] = Zone{
+			DbName: loc.String(),
+			Name:   fmt.Sprintf("(%s) %s", shortName, loc),
+			Offset: offset / 3600,
+		}
+	}
+	conf.Zones = zones
+	return &conf, nil
 }

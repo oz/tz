@@ -21,24 +21,14 @@ import "time"
 var name, offset = time.Now().Zone()
 var DefaultZones = []Zone{
 	{
-		name:   "Local",
-		dbName: name,
-		offset: offset / 3600,
+		Name:   "Local",
+		DbName: name,
+		Offset: offset / 3600,
 	},
 	{
-		name:   "Paris",
-		dbName: "Europe/Paris",
-		offset: 1,
-	},
-	{
-		name:   "New-York",
-		dbName: "America/New_York",
-		offset: -5,
-	},
-	{
-		name:   "UTC",
-		dbName: "UTC",
-		offset: 0,
+		Name:   "UTC",
+		DbName: "UTC",
+		Offset: 0,
 	},
 }
 
@@ -60,13 +50,13 @@ var EmojiClocks = map[int]string{
 
 // Zone stores the name of a time zone and its integer offset from UTC.
 type Zone struct {
-	dbName string // tz db name
-	name   string // custom name
-	offset int    // Integer offset from UTC
+	DbName string // Name in tzdata
+	Name   string // Short name
+	Offset int    // Integer offset from UTC, in hours.
 }
 
 func (z Zone) String() string {
-	return z.name
+	return z.Name
 }
 
 // ClockEmoji returns the corresponding emoji clock for a given hour
@@ -83,8 +73,8 @@ func (z Zone) ShortDT() string {
 func (z Zone) currentTime() time.Time {
 	now := time.Now()
 	zName, _ := now.Zone()
-	if z.dbName != zName {
-		loc, err := time.LoadLocation(z.dbName)
+	if z.DbName != zName {
+		loc, err := time.LoadLocation(z.DbName)
 		if err != nil {
 			return now
 		}

@@ -72,7 +72,7 @@ func (m model) View() string {
 		hours := strings.Builder{}
 		startAt := 0
 		if zi > 0 {
-			startAt = (z.offset - m.zones[0].offset) % 24
+			startAt = (z.Offset - m.zones[0].Offset) % 24
 		}
 
 		// A list of hours
@@ -125,7 +125,7 @@ func main() {
 	now := time.Now()
 	config, err := LoadConfig()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading config: %s", err)
+		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
 		os.Exit(2)
 	}
 	var initialModel = model{
