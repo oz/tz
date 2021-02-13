@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -29,8 +28,9 @@ import (
 var term = termenv.ColorProfile()
 
 type model struct {
-	zones []*Zone
-	hour  int
+	zones     []*Zone
+	hour      int
+	showDates bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -59,66 +59,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.hour++
 			}
+
+		case "d":
+			m.showDates = !m.showDates
 		}
 	}
 	return m, nil
-}
-
-func (m model) View() string {
-	s := "What time is it?\n\n"
-
-	// Show hours for each zone
-	for zi, z := range m.zones {
-		hours := strings.Builder{}
-		startAt := 0
-		if zi > 0 {
-			startAt = (z.Offset - m.zones[0].Offset) % 24
-		}
-
-		// A list of hours
-		for i := startAt; i < startAt+24; i++ {
-			hour := ((i % 24) + 24) % 24
-			out := termenv.String(fmt.Sprintf("%2d", hour))
-
-			out = out.Foreground(term.Color(hourColorCode(hour)))
-			// Cursor
-			if m.hour == i-startAt {
-				out = out.Background(term.Color("41")).Foreground(term.Color("#000000"))
-			}
-			hours.WriteString(out.String())
-			hours.WriteString("  ")
-		}
-
-		zoneHeader := termenv.String(fmt.Sprintf("%s %s: %s", z.ClockEmoji(), z, z.ShortDT()))
-		zoneHeader = zoneHeader.Background(term.Color("234")).Foreground(term.Color("255"))
-
-		s += fmt.Sprintf("%s\n%s\n\n", zoneHeader, hours.String())
-	}
-
-	s += "\nPress q to quit.\n"
-	return s
-}
-
-// Return a color matching the time of the day at a given hour.
-func hourColorCode(hour int) (color string) {
-	switch hour {
-	// Morning
-	case 7, 8:
-		color = "12"
-
-	// Day
-	case 9, 10, 11, 12, 13, 14, 15, 16, 17:
-		color = "11"
-
-	// Evening
-	case 18, 19:
-		color = "3"
-
-	// Night
-	default:
-		color = "17"
-	}
-	return color
 }
 
 func main() {
@@ -129,8 +75,9 @@ func main() {
 		os.Exit(2)
 	}
 	var initialModel = model{
-		zones: config.Zones,
-		hour:  now.Hour(),
+		zones:     config.Zones,
+		hour:      now.Hour(),
+		showDates: false,
 	}
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {
