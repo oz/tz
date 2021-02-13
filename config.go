@@ -25,46 +25,68 @@ import (
 
 // Config stores app configuration
 type Config struct {
-	Zones []Zone
+	Zones []*Zone
 }
 
-// LoadConfig from os.UserConfigDir
+// LoadConfig from environment
 func LoadConfig() (*Config, error) {
 	conf := Config{
 		Zones: DefaultZones,
 	}
 
-	zoneEnv := os.Getenv("TZ_LIST")
-	if zoneEnv == "" {
+	tzList := os.Getenv("TZ_LIST")
+	if tzList == "" {
 		return &conf, nil
 	}
-	zoneNames := strings.Split(zoneEnv, ",")
-	if len(zoneNames) == 0 {
+	tzConfigs := strings.Split(tzList, ",")
+	if len(tzConfigs) == 0 {
 		return &conf, nil
 	}
-	zones := make([]Zone, len(zoneNames)+1)
+	zones := make([]*Zone, len(tzConfigs)+1)
 
+	// Setup with Local time zone
 	now := time.Now()
 	localZoneName, offset := now.Zone()
-
-	zones[0] = Zone{
+	zones[0] = &Zone{
 		Name:   fmt.Sprintf("(%s) Local", localZoneName),
 		DbName: localZoneName,
 		Offset: offset / 3600,
 	}
-	for i, name := range zoneNames {
-		loc, err := time.LoadLocation(name)
+
+	// Add zones from TZ_LIST
+	for i, zoneConf := range tzConfigs {
+		zone, err := SetupZone(now, zoneConf)
 		if err != nil {
-			return nil, fmt.Errorf("looking up zone %s: %w", name, err)
+			return nil, err
 		}
-		then := now.In(loc)
-		shortName, offset := then.Zone()
-		zones[i+1] = Zone{
-			DbName: loc.String(),
-			Name:   fmt.Sprintf("(%s) %s", shortName, loc),
-			Offset: offset / 3600,
-		}
+		zones[i+1] = zone
 	}
 	conf.Zones = zones
+
 	return &conf, nil
+}
+
+// SetupZone from current time and a zoneConf string
+func SetupZone(now time.Time, zoneConf string) (*Zone, error) {
+	names := strings.Split(zoneConf, ";")
+	dbName := names[0]
+	var name string
+	if len(names) == 2 {
+		name = names[1]
+	}
+
+	loc, err := time.LoadLocation(dbName)
+	if err != nil {
+		return nil, fmt.Errorf("looking up zone %s: %w", dbName, err)
+	}
+	if name == "" {
+		name = loc.String()
+	}
+	then := now.In(loc)
+	shortName, offset := then.Zone()
+	return &Zone{
+		DbName: loc.String(),
+		Name:   fmt.Sprintf("(%s) %s", shortName, name),
+		Offset: offset / 3600,
+	}, nil
 }

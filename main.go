@@ -29,7 +29,7 @@ import (
 var term = termenv.ColorProfile()
 
 type model struct {
-	zones []Zone
+	zones []*Zone
 	hour  int
 }
 

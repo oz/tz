@@ -19,7 +19,7 @@ package main
 import "time"
 
 var name, offset = time.Now().Zone()
-var DefaultZones = []Zone{
+var DefaultZones = []*Zone{
 	{
 		Name:   "Local",
 		DbName: name,
