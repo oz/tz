@@ -109,15 +109,15 @@ func hourColorCode(hour int) (color string) {
 
 	// Day
 	case 9, 10, 11, 12, 13, 14, 15, 16, 17:
-		color = "11"
+		color = "227"
 
 	// Evening
 	case 18, 19:
-		color = "3"
+		color = "202"
 
 	// Night
 	default:
-		color = "17"
+		color = "27"
 	}
 	return color
 }
