@@ -28,7 +28,7 @@ import (
 const UIWidth = 94
 
 func (m model) View() string {
-	s := "What time is it?\n\n"
+	s := normalTextStyle("\n  What time is it?\n\n").String()
 
 	// Show hours for each zone
 	for zi, zone := range m.zones {
@@ -48,7 +48,12 @@ func (m model) View() string {
 			out = out.Foreground(term.Color(hourColorCode(hour)))
 			// Cursor
 			if m.hour == i-startHour {
-				out = out.Background(term.Color("41")).Foreground(term.Color("#000000"))
+				out = out.Background(term.Color("#00B67F"))
+				if hasDarkBackground {
+					out = out.Foreground(term.Color("#262626")).Bold()
+				} else {
+					out = out.Foreground(term.Color("#f1f1f1"))
+				}
 			}
 			hours.WriteString(out.String())
 			hours.WriteString("  ")
@@ -66,10 +71,9 @@ func (m model) View() string {
 			}
 		}
 
-		zoneHeader := termenv.String(fmt.Sprintf("%s %s: %s", zone.ClockEmoji(), zone, zone.ShortDT()))
-		zoneHeader = zoneHeader.Background(term.Color("234")).Foreground(term.Color("255"))
+		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(zone.ShortDT()))
 
-		s += fmt.Sprintf("%s\n%s\n%s\n\n", zoneHeader, hours.String(), dates.String())
+		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
 
 	s += status()
@@ -77,7 +81,7 @@ func (m model) View() string {
 }
 
 func status() string {
-	text := "q: quit, d: toggle date"
+	text := "  q: quit, d: toggle date"
 	for {
 		text += " "
 		if len(text) > UIWidth {
@@ -85,7 +89,13 @@ func status() string {
 			break
 		}
 	}
-	status := termenv.String(text).Background(term.Color("234")).Foreground(term.Color("255"))
+
+	color := "#A1A093"
+	if hasDarkBackground {
+		color = "#605C5A"
+	}
+
+	status := termenv.String(text).Foreground(term.Color(color))
 
 	return status.String()
 }
@@ -95,9 +105,14 @@ func formatDayChange(m *model, z *Zone) string {
 	if zTime.Hour() > time.Now().Hour() {
 		zTime = zTime.AddDate(0, 0, 1)
 	}
-	str := termenv.String(fmt.Sprintf("📆%s", zTime.Format("Mon 02")))
-	str = str.Foreground(term.Color("245"))
-	return str.String()
+
+	color := "#777266"
+	if hasDarkBackground {
+		color = "#7B7573"
+	}
+
+	str := termenv.String(fmt.Sprintf("📆 %s", zTime.Format("Mon 02")))
+	return str.Foreground(term.Color(color)).String()
 }
 
 // Return a color matching the time of the day at a given hour.
@@ -105,19 +120,51 @@ func hourColorCode(hour int) (color string) {
 	switch hour {
 	// Morning
 	case 7, 8:
-		color = "12"
+		if hasDarkBackground {
+			color = "#98E1D8"
+		} else {
+			color = "#35B6A6"
+		}
 
 	// Day
 	case 9, 10, 11, 12, 13, 14, 15, 16, 17:
-		color = "227"
+		if hasDarkBackground {
+			color = "#E8C64D"
+		} else {
+			color = "#FA8F2D"
+		}
 
 	// Evening
 	case 18, 19:
-		color = "202"
+		if hasDarkBackground {
+			color = "#C95F48"
+		} else {
+			color = "#F9532F"
+		}
 
 	// Night
 	default:
-		color = "27"
+		if hasDarkBackground {
+			color = "#5957C9"
+		} else {
+			color = "#664FC3"
+		}
 	}
 	return color
+}
+
+func dateTimeStyle(str string) termenv.Style {
+	color := "#777266"
+	if hasDarkBackground {
+		color = "#757575"
+	}
+	return termenv.String(str).Foreground(term.Color(color))
+}
+
+func normalTextStyle(str string) termenv.Style {
+	var color = "#32312B"
+	if hasDarkBackground {
+		color = "#ECEAD9"
+	}
+	return termenv.String(str).Foreground(term.Color(color))
 }
