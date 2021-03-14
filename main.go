@@ -25,7 +25,10 @@ import (
 	"github.com/muesli/termenv"
 )
 
-var term = termenv.ColorProfile()
+var (
+	term              = termenv.ColorProfile()
+	hasDarkBackground = termenv.HasDarkBackground()
+)
 
 type model struct {
 	zones     []*Zone
