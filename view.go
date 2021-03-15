@@ -89,7 +89,7 @@ func status() string {
 		}
 	}
 
-	color := "#A1A093"
+	color := "#939183"
 	if hasDarkBackground {
 		color = "#605C5A"
 	}
@@ -138,7 +138,7 @@ func hourColorCode(hour int) (color string) {
 		if hasDarkBackground {
 			color = "#C95F48"
 		} else {
-			color = "#F9532F"
+			color = "#FC6442"
 		}
 
 	// Night
