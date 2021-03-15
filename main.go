@@ -30,15 +30,25 @@ var (
 	hasDarkBackground = termenv.HasDarkBackground()
 )
 
+type tickMsg time.Time
+
+// Send a tickMsg every minute, on the minute.
+func tick() tea.Cmd {
+	return tea.Every(time.Minute, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
+}
+
 type model struct {
 	zones     []*Zone
+	now       time.Time
 	hour      int
 	showDates bool
 }
 
 func (m model) Init() tea.Cmd {
-	// Just return `nil`, which means "no I/O right now, please."
-	return nil
+	// Fire initial tick command to begin receiving ticks on the minute.
+	return tick()
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -66,6 +76,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "d":
 			m.showDates = !m.showDates
 		}
+
+	case tickMsg:
+		m.now = time.Time(msg)
+		return m, tick()
 	}
 	return m, nil
 }
@@ -79,6 +93,7 @@ func main() {
 	}
 	var initialModel = model{
 		zones:     config.Zones,
+		now:       now,
 		hour:      now.Hour(),
 		showDates: false,
 	}

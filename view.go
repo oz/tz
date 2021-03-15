@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/muesli/termenv"
 )
@@ -102,7 +101,7 @@ func status() string {
 
 func formatDayChange(m *model, z *Zone) string {
 	zTime := z.currentTime()
-	if zTime.Hour() > time.Now().Hour() {
+	if zTime.Hour() > m.now.Hour() {
 		zTime = zTime.AddDate(0, 0, 1)
 	}
 
