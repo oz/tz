@@ -10,15 +10,18 @@ harmed if you build from source.
 
 # Usage
 
-Start tz to show the local time, as well as the UTC time zone. It's
-nicer to set the `TZ_LIST` environment variable with a comma-separated
-list of [tz data][tzdata] zone names:
-
-[tzdata]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+Simply run `tz` with no arguments to show the local time, as well as the
+UTC time zone. It gets more interesting once you set the `TZ_LIST`
+environment variable with a comma-separated list of [tz data][tzdata]
+zone names.
 
 <p align="center">
-<img align="center" src="./docs/demo.gif" />
+<img align="center" src="./docs/tz.png" />
 </p>
+
+The program will adjust to light and dark terminals themes.
+
+[tzdata]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 # Configuration
 
@@ -32,10 +35,18 @@ tz name followed by `;` and your alias:
 
 # Building
 
-Clone this repository and run:
+You need a recent-ish release of go with modules support:
 
 ```
-go build .
+git clone https://github.com/oz/tz
+cd tz
+go build
+```
+
+# Testing
+
+```
+go test -cover
 ```
 
 # License
