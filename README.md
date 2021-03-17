@@ -3,10 +3,6 @@
 tz helps you schedule things across time zones. It is an interactive TUI
 program that displays time across a few time zones of your choosing.
 
-# Installing
-
-The quickest thing is probably to grab a release, but no one will be
-harmed if you build from source.
 
 # Usage
 
@@ -23,6 +19,24 @@ The program will adjust to light and dark terminals themes.
 
 [tzdata]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+
+# Installing
+
+The simplest thing is probably to grab a release, but no one will be
+harmed if you build from source, as only linux/amd64 builds are provided
+for now.
+
+## Packages
+
+If you're an Archlinux user, packages are also available:
+
+  - [tz][tz-arch] follows releases and,
+  - [tz-git][tz-arch-git] builds the `main` git branch.
+
+[tz-arch]: https://aur.archlinux.org/packages/tz
+[tz-arch-git]: https://aur.archlinux.org/packages/tz-git
+
+
 # Configuration
 
 ## Zone Alias
@@ -32,6 +46,7 @@ database names, but you can alias these names using a special value: the
 tz name followed by `;` and your alias:
 
 `TZ_LIST="Europe/Paris;EMEA office,US/Central;US office"`
+
 
 # Building
 
@@ -43,11 +58,13 @@ cd tz
 go build
 ```
 
+
 # Testing
 
 ```
 go test -cover
 ```
+
 
 # License
 
