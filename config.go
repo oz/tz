@@ -44,11 +44,19 @@ func LoadConfig() (*Config, error) {
 	}
 	zones := make([]*Zone, len(tzConfigs)+1)
 
+	// "Local" can be overwritten by TZ_LOCAL_NAME
+	var localIdentifier string
+	if localName := os.Getenv("TZ_LOCAL_NAME"); localName == "" {
+		localIdentifier = "Local"
+	} else {
+		localIdentifier = localName
+	}
+
 	// Setup with Local time zone
 	now := time.Now()
 	localZoneName, offset := now.Zone()
 	zones[0] = &Zone{
-		Name:   fmt.Sprintf("(%s) Local", localZoneName),
+		Name:   fmt.Sprintf("(%s) %s", localZoneName, localIdentifier),
 		DbName: localZoneName,
 		Offset: offset / 3600,
 	}

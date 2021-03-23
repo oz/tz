@@ -47,6 +47,13 @@ tz name followed by `;` and your alias:
 
 `TZ_LIST="Europe/Paris;EMEA office,US/Central;US office"`
 
+## Name of local zone
+
+tz, by default, displays your local timezone as "Local". If you rather like
+to display a different name there instead, you can use the `TZ_LOCAL_NAME`
+environment variable to override it.
+
+`TZ_LOCAL_NAME="Cologe office`
 
 # Building
 
