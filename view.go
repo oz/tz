@@ -70,7 +70,7 @@ func (m model) View() string {
 			}
 		}
 
-		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(zone.ShortDT()))
+		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(zone.ShortDT(m.timeFmt)))
 
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}

@@ -55,6 +55,14 @@ environment variable to override it.
 
 `TZ_LOCAL_NAME="Cologe office`
 
+## Display time format
+
+In the header line, tz will display the current time. By default the time format
+for the time is in 12H format. If you prefer to display the time in 24H format, 
+you can do so by setting `TZ_24H`
+
+`TZ_24H=1`
+
 # Building
 
 You need a recent-ish release of go with modules support:

@@ -44,6 +44,7 @@ type model struct {
 	now       time.Time
 	hour      int
 	showDates bool
+	timeFmt   int
 }
 
 func (m model) Init() tea.Cmd {
@@ -96,6 +97,7 @@ func main() {
 		now:       now,
 		hour:      now.Hour(),
 		showDates: false,
+		timeFmt:   config.TimeFmt,
 	}
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {

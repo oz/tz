@@ -66,8 +66,12 @@ func (z Zone) ClockEmoji() (clock string) {
 }
 
 // ShortDT returns the current time in short format.
-func (z Zone) ShortDT() string {
-	return z.currentTime().Format("3:04PM, Mon 02")
+func (z Zone) ShortDT(f int) string {
+	if f == 24 {
+		return z.currentTime().Format("15:04, Mon 02")
+	} else {
+		return z.currentTime().Format("3:04PM, Mon 02")
+	}
 }
 
 func (z Zone) currentTime() time.Time {

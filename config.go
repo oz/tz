@@ -25,13 +25,20 @@ import (
 
 // Config stores app configuration
 type Config struct {
-	Zones []*Zone
+	Zones   []*Zone
+	TimeFmt int
 }
 
 // LoadConfig from environment
 func LoadConfig() (*Config, error) {
 	conf := Config{
-		Zones: DefaultZones,
+		Zones:   DefaultZones,
+		TimeFmt: 12,
+	}
+
+	// Allow 24h time format
+	if tzTimeFmt := os.Getenv("TZ_24H"); tzTimeFmt != "" {
+		conf.TimeFmt = 24
 	}
 
 	tzList := os.Getenv("TZ_LIST")
