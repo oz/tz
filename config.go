@@ -41,16 +41,6 @@ func LoadConfig() (*Config, error) {
 		conf.TimeFmt = 24
 	}
 
-	tzList := os.Getenv("TZ_LIST")
-	if tzList == "" {
-		return &conf, nil
-	}
-	tzConfigs := strings.Split(tzList, ",")
-	if len(tzConfigs) == 0 {
-		return &conf, nil
-	}
-	zones := make([]*Zone, len(tzConfigs)+1)
-
 	// "Local" can be overwritten by TZ_LOCAL_NAME
 	var localIdentifier string
 	if localName := os.Getenv("TZ_LOCAL_NAME"); localName == "" {
@@ -58,6 +48,17 @@ func LoadConfig() (*Config, error) {
 	} else {
 		localIdentifier = localName
 	}
+
+	tzList := os.Getenv("TZ_LIST")
+	if tzList == "" {
+		conf.Zones[0].Name = localIdentifier
+		return &conf, nil
+	}
+	tzConfigs := strings.Split(tzList, ",")
+	if len(tzConfigs) == 0 {
+		return &conf, nil
+	}
+	zones := make([]*Zone, len(tzConfigs)+1)
 
 	// Setup with Local time zone
 	now := time.Now()
