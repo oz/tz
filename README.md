@@ -9,7 +9,10 @@ program that displays time across a few time zones of your choosing.
 Simply run `tz` with no arguments to show the local time, as well as the
 UTC time zone. It gets more interesting once you set the `TZ_LIST`
 environment variable with a comma-separated list of [tz data][tzdata]
-zone names.
+zone names (see Configuration below).
+
+Run it with the `-q` argument if you want it to exit
+immediatiely. When run without `-q` you can toggle the date indicator.
 
 <p align="center">
 <img align="center" src="./docs/tz.png" />
@@ -39,6 +42,14 @@ If you're an Archlinux user, packages are also available:
 
 # Configuration
 
+TZ uses standard time zones as described
+[here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+You can specify what time zones you want displayed by setting the
+`TZ_LIST` environment variable. Your local time will always be
+displayed. So, if you wanted to display local time + time in
+California, and Paris you would set your `TZ_LIST` to
+`US/Pacific,Europe/Paris`
+
 ## Zone Alias
 
 tz is configured only through `TZ_LIST`, and that limits us to the tz
@@ -46,7 +57,6 @@ database names, but you can alias these names using a special value: the
 tz name followed by `;` and your alias:
 
 `TZ_LIST="Europe/Paris;EMEA office,US/Central;US office"`
-
 
 # Building
 
