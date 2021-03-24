@@ -69,7 +69,7 @@ func LoadConfig() (*Config, error) {
 // SetupZone from current time and a zoneConf string
 func SetupZone(now time.Time, zoneConf string) (*Zone, error) {
 	names := strings.Split(zoneConf, ";")
-	dbName := names[0]
+	dbName := strings.Trim(names[0], " ")
 	var name string
 	if len(names) == 2 {
 		name = names[1]
