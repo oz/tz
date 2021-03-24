@@ -17,6 +17,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -40,13 +41,19 @@ func tick() tea.Cmd {
 }
 
 type model struct {
-	zones     []*Zone
-	now       time.Time
-	hour      int
-	showDates bool
+	zones       []*Zone
+	now         time.Time
+	hour        int
+	showDates   bool
+	interactive bool
 }
 
 func (m model) Init() tea.Cmd {
+	// If -q flag is passed, send quit message after first render.
+	if !m.interactive {
+		return tea.Quit
+	}
+
 	// Fire initial tick command to begin receiving ticks on the minute.
 	return tick()
 }
@@ -97,10 +104,14 @@ func main() {
 		hour:      now.Hour(),
 		showDates: false,
 	}
+
+	exitQuick := flag.Bool("q", false, "exit immediately")
+	flag.Parse()
+	initialModel.interactive = !*exitQuick
+
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
-
 }

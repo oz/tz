@@ -75,7 +75,9 @@ func (m model) View() string {
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
 
-	s += status()
+	if m.interactive {
+		s += status()
+	}
 	return s
 }
 
