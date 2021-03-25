@@ -91,8 +91,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+var clock func() time.Time = time.Now
+
 func main() {
-	now := time.Now()
+	exitQuick := flag.Bool("q", false, "exit immediately")
+	when := flag.Int64("when", 0, "time in seconds since unix epoch")
+	flag.Parse()
+
+	if *when != 0 {
+		t := time.Unix(*when, 0)
+		clock = func() time.Time {
+			return t
+		}
+	}
+
+	now := clock()
 	config, err := LoadConfig()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
@@ -105,8 +118,6 @@ func main() {
 		showDates: false,
 	}
 
-	exitQuick := flag.Bool("q", false, "exit immediately")
-	flag.Parse()
 	initialModel.interactive = !*exitQuick
 
 	p := tea.NewProgram(initialModel)
