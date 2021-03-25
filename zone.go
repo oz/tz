@@ -147,7 +147,6 @@ type LightCycle struct {
 	morning, day, evening, night map[int]struct{}
 }
 
-// var morningDefault, dayDefault, evening, night map[int]struct{}
 func defaultHourHashes() LightCycle {
 	c := LightCycle{
 		morning: make(map[int]struct{}),
