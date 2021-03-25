@@ -16,7 +16,13 @@
  **/
 package main
 
-import "time"
+import (
+	"strconv"
+	"time"
+
+	"github.com/WIZARDISHUNGRY/tzcoords"
+	"github.com/kelvins/sunrisesunset"
+)
 
 var name, offset = time.Now().Zone()
 var DefaultZones = []*Zone{
@@ -81,4 +87,93 @@ func (z Zone) currentTime() time.Time {
 		return now.In(loc)
 	}
 	return now
+}
+
+// SunriseSunset returns the sunrise and sunset for a zone
+func (z Zone) SunriseSunset() (time.Time, time.Time, error) {
+	lat, lon, err := tzcoords.ByString(z.DbName)
+	now := z.currentTime()
+	if err != nil {
+		return now, now, err
+	}
+	utc, err := strconv.Atoi(now.Format("-0700"))
+	if err != nil {
+		return now, now, err
+	}
+	utcFloat := float64(utc) / 100.0
+	p := sunrisesunset.Parameters{
+		Latitude:  lat,
+		Longitude: lon,
+		UtcOffset: utcFloat,
+		Date:      now,
+	}
+	return p.GetSunriseSunset()
+}
+
+// LightCycle returns a color schedule
+func (z Zone) LightCycle() LightCycle {
+	rise, set, err := z.SunriseSunset()
+	if err != nil {
+		return defaultHourHashes()
+	}
+	c := LightCycle{
+		morning: make(map[int]struct{}),
+		day:     make(map[int]struct{}),
+		evening: make(map[int]struct{}),
+		night:   make(map[int]struct{}),
+	}
+	var next map[int]struct{}
+	for hour := 0; hour < 24; hour++ {
+		if hour < rise.Hour() {
+			next = c.night
+		} else if hour == rise.Hour() {
+			next = c.morning
+		} else if hour > rise.Hour() {
+			if hour < set.Hour() {
+				next = c.day
+			} else if hour == set.Hour() {
+				next = c.evening
+			} else {
+				next = c.night
+			}
+		}
+		next[hour] = struct{}{}
+	}
+	return c
+}
+
+// LightCycle defines the different periods of the day
+type LightCycle struct {
+	morning, day, evening, night map[int]struct{}
+}
+
+// var morningDefault, dayDefault, evening, night map[int]struct{}
+func defaultHourHashes() LightCycle {
+	c := LightCycle{
+		morning: make(map[int]struct{}),
+		day:     make(map[int]struct{}),
+		evening: make(map[int]struct{}),
+		night:   make(map[int]struct{}),
+	}
+	for hour := 0; hour < 24; hour++ {
+		switch hour {
+		// Morning
+		case 7, 8:
+			c.morning[hour] = struct{}{}
+
+		// Day
+		case 9, 10, 11, 12, 13, 14, 15, 16, 17:
+			c.day[hour] = struct{}{}
+
+		// Evening
+		case 18, 19:
+			c.evening[hour] = struct{}{}
+
+		// Night
+		default:
+			c.night[hour] = struct{}{}
+
+		}
+	}
+	return c
 }

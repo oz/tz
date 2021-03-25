@@ -40,11 +40,12 @@ func (m model) View() string {
 		}
 
 		dateChanged := false
+		c := zone.LightCycle()
 		for i := startHour; i < startHour+24; i++ {
 			hour := ((i % 24) + 24) % 24 // mod 24
 			out := termenv.String(fmt.Sprintf("%2d", hour))
 
-			out = out.Foreground(term.Color(hourColorCode(hour)))
+			out = out.Foreground(term.Color(hourColorCode(hour, c)))
 			// Cursor
 			if m.hour == i-startHour {
 				out = out.Background(term.Color("#00B67F"))
@@ -117,40 +118,33 @@ func formatDayChange(m *model, z *Zone) string {
 }
 
 // Return a color matching the time of the day at a given hour.
-func hourColorCode(hour int) (color string) {
-	switch hour {
-	// Morning
-	case 7, 8:
+func hourColorCode(hour int, c LightCycle) (color string) {
+	if _, ok := c.morning[hour]; ok {
 		if hasDarkBackground {
 			color = "#98E1D8"
 		} else {
 			color = "#35B6A6"
 		}
-
-	// Day
-	case 9, 10, 11, 12, 13, 14, 15, 16, 17:
+	} else if _, ok := c.day[hour]; ok {
 		if hasDarkBackground {
 			color = "#E8C64D"
 		} else {
 			color = "#FA8F2D"
 		}
-
-	// Evening
-	case 18, 19:
+	} else if _, ok := c.evening[hour]; ok {
 		if hasDarkBackground {
 			color = "#C95F48"
 		} else {
 			color = "#FC6442"
 		}
-
-	// Night
-	default:
+	} else if _, ok := c.night[hour]; ok {
 		if hasDarkBackground {
 			color = "#5957C9"
 		} else {
 			color = "#664FC3"
 		}
 	}
+
 	return color
 }
 
