@@ -39,7 +39,7 @@ func TestSetupZone(t *testing.T) {
 		{
 			// Names should be trimmed in the config, so this should be ok.
 			zoneName: " Australia/Sydney",
-			ok: 	  true,
+			ok:       true,
 		},
 	}
 	for _, test := range tests {
@@ -60,7 +60,7 @@ func TestSetupZoneWithCustomNames(t *testing.T) {
 	}{
 		{
 			zoneName:  "Europe/Paris;bonjour",
-			shortName: "(CET) bonjour",
+			shortName: "(CEST) bonjour",
 			ok:        true,
 		},
 		{
