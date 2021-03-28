@@ -22,6 +22,19 @@ The program will adjust to light and dark terminals themes.
 
 [tzdata]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
+### Override local display name
+tz, by default, displays your local timezone as "Local". If you rather like
+to display a different name there instead, you can use the `-l` flag to 
+to override it.
+
+`$ tz -l <local name>`
+
+### Time display format
+In the header line, tz will display the current time. By default the time format
+for the time is in 12H format. If you prefer to display the time in 24H format,
+you can do so by setting the `-24` flag
+
+`$ tz -24`
 
 # Installing
 
