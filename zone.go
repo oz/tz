@@ -74,7 +74,7 @@ func (z Zone) ShortDT(f bool) string {
 }
 
 func (z Zone) currentTime() time.Time {
-	now := time.Now()
+	now := clock()
 	zName, _ := now.Zone()
 	if z.DbName != zName {
 		loc, err := time.LoadLocation(z.DbName)

@@ -91,13 +91,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+var clock func() time.Time = time.Now
+
 func main() {
-	now := time.Now()
 	config, err := LoadConfig()
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
 		os.Exit(2)
 	}
+
+	if config.When != 0 {
+		t := time.Unix(config.When, 0)
+		clock = func() time.Time {
+			return t
+		}
+	}
+	now := clock()
+
 	var initialModel = model{
 		zones:     config.Zones,
 		now:       now,
