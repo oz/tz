@@ -9,10 +9,7 @@ program that displays time across a few time zones of your choosing.
 Simply run `tz` with no arguments to show the local time, as well as the
 UTC time zone. It gets more interesting once you set the `TZ_LIST`
 environment variable with a comma-separated list of [tz data][tzdata]
-zone names (see Configuration below).
-
-Run it with the `-q` argument if you want it to exit
-immediatiely. When run without `-q` you can toggle the date indicator.
+zone names (see Configuration below). See `tz -h` for other flags.
 
 <p align="center">
 <img align="center" src="./docs/tz.png" />
@@ -30,6 +27,12 @@ harmed if you build from source, as only linux/amd64 builds are provided
 for now.
 
 ## Packages
+
+### Brew
+
+Brew has a tz package: `brew install tz`
+
+### Archlinux
 
 If you're an Archlinux user, packages are also available:
 
