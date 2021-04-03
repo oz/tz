@@ -17,6 +17,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -60,12 +61,12 @@ func TestSetupZoneWithCustomNames(t *testing.T) {
 	}{
 		{
 			zoneName:  "Europe/Paris;bonjour",
-			shortName: "(CEST) bonjour",
+			shortName: "bonjour",
 			ok:        true,
 		},
 		{
 			zoneName:  "America/Mexico_City;hola",
-			shortName: "(CST) hola",
+			shortName: "hola",
 			ok:        true,
 		},
 		{
@@ -79,9 +80,8 @@ func TestSetupZoneWithCustomNames(t *testing.T) {
 		if test.ok != (err == nil) {
 			t.Errorf("Expected %v, but got: %v", test.ok, err)
 		}
-		if z != nil && test.shortName != z.Name {
-			t.Errorf("Expected %v, but got: %v", test.shortName, z.Name)
+		if z != nil && !strings.Contains(z.Name, test.shortName) {
+			t.Errorf("Expected %v to contain: %v", z.Name, test.shortName)
 		}
-
 	}
 }
