@@ -7,9 +7,19 @@ program that displays time across a few time zones of your choosing.
 # Usage
 
 Simply run `tz` with no arguments to show the local time, as well as the
-UTC time zone. It gets more interesting once you set the `TZ_LIST`
-environment variable with a comma-separated list of [tz data][tzdata]
-zone names (see Configuration below). See `tz -h` for other flags.
+UTC time zone. It gets more interesting when you pass a list of time
+zones to the program, as they are displayed below the current time zone.
+
+For now, you need to select the time zones from the [tz_data][tzdata]
+list, but I plan to make this friendlier for humans too.
+
+If you would rather not type the list everytime, you could set an alias
+for your shell, or use the `TZ_LIST` environment variable with a
+semi-colon separated list of [tz data][tzdata] zone names (see
+*Configuration* below). Command-line arguments trump the environment
+variable.
+
+Check `tz -h` out for other flags.
 
 <p align="center">
 <img align="center" src="./docs/tz.png" />
@@ -22,9 +32,9 @@ The program will adjust to light and dark terminals themes.
 
 # Installing
 
-The simplest thing is probably to grab a release, but no one will be
-harmed if you build from source, as only linux/amd64 builds are provided
-for now.
+If a build is provided for you architecture, you can directly grab a
+release, but no one will be harmed if you build from source, as only
+linux/amd64 builds are provided for now.
 
 ## Packages
 
@@ -51,7 +61,7 @@ You can specify what time zones you want displayed by setting the
 `TZ_LIST` environment variable. Your local time will always be
 displayed. So, if you wanted to display local time + time in
 California, and Paris you would set your `TZ_LIST` to
-`US/Pacific,Europe/Paris`
+`US/Pacific;Europe/Paris`
 
 ## Zone Alias
 
@@ -59,7 +69,7 @@ tz is configured only through `TZ_LIST`, and that limits us to the tz
 database names, but you can alias these names using a special value: the
 tz name followed by `;` and your alias:
 
-`TZ_LIST="Europe/Paris;EMEA office,US/Central;US office"`
+`TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"`
 
 # Building
 
