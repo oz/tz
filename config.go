@@ -17,6 +17,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -25,17 +26,43 @@ import (
 
 // Config stores app configuration
 type Config struct {
-	Zones []*Zone
+	Zones     []*Zone
+	Time24    bool
+	ExitQuick bool
+	When      int64
 }
+
+// Usage text
+const usage = `Usage:
+    tz [-l <local name>] [-24] [-q]
+
+Options:
+    -l, -local NAME        Replace "Local" timezone name with "NAME"
+    -w, -when UNIXSTAMP    Display timezones at given Unix timestamp
+    -24                    Display times in 24h time format
+    -q                     Show timezones and exit immediately
+    -h                     Show this help text`
 
 // LoadConfig from environment
 func LoadConfig() (*Config, error) {
+	flag.Usage = func() { _, _ = fmt.Fprintf(os.Stderr, "%s\n", usage) }
 	conf := Config{
-		Zones: DefaultZones,
+		Zones:  DefaultZones,
+		Time24: false,
 	}
+
+	// Parse flags
+	localIdentifier := flag.String("l", "Local", `Override "Local" with "NAME"`)
+	flag.StringVar(localIdentifier, "local", "Local", `Override "Local" with "NAME"`)
+	flag.BoolVar(&conf.Time24, "24", false, `Display times in 24h format`)
+	flag.BoolVar(&conf.ExitQuick, "q", false, "exit immediately")
+	flag.Int64Var(&conf.When, "when", 0, "time in seconds since unix epoch")
+	flag.Int64Var(&conf.When, "w", 0, "time in seconds since unix epoch")
+	flag.Parse()
 
 	tzList := os.Getenv("TZ_LIST")
 	if tzList == "" {
+		conf.Zones[0].Name = *localIdentifier
 		return &conf, nil
 	}
 	tzConfigs := strings.Split(tzList, ",")
@@ -48,7 +75,7 @@ func LoadConfig() (*Config, error) {
 	now := clock()
 	localZoneName, offset := now.Zone()
 	zones[0] = &Zone{
-		Name:   fmt.Sprintf("(%s) Local", localZoneName),
+		Name:   fmt.Sprintf("(%s) %s", localZoneName, *localIdentifier),
 		DbName: localZoneName,
 		Offset: offset / 3600,
 	}

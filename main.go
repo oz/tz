@@ -17,7 +17,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -46,6 +45,7 @@ type model struct {
 	hour        int
 	showDates   bool
 	interactive bool
+	time24      bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -94,31 +94,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 var clock func() time.Time = time.Now
 
 func main() {
-	exitQuick := flag.Bool("q", false, "exit immediately")
-	when := flag.Int64("when", 0, "time in seconds since unix epoch")
-	flag.Parse()
+	config, err := LoadConfig()
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
+		os.Exit(2)
+	}
 
-	if *when != 0 {
-		t := time.Unix(*when, 0)
+	if config.When != 0 {
+		t := time.Unix(config.When, 0)
 		clock = func() time.Time {
 			return t
 		}
 	}
-
 	now := clock()
-	config, err := LoadConfig()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
-		os.Exit(2)
-	}
+
 	var initialModel = model{
 		zones:     config.Zones,
 		now:       now,
 		hour:      now.Hour(),
 		showDates: false,
+		time24:    config.Time24,
 	}
-
-	initialModel.interactive = !*exitQuick
+	initialModel.interactive = !config.ExitQuick
 
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {
