@@ -26,6 +26,9 @@ import (
 	"github.com/muesli/termenv"
 )
 
+// CurrentVersion represents the current build version.
+const CurrentVersion = "0.6-dev"
+
 var (
 	term              = termenv.ColorProfile()
 	hasDarkBackground = termenv.HasDarkBackground()
@@ -95,8 +98,14 @@ var clock func() time.Time = time.Now
 
 func main() {
 	exitQuick := flag.Bool("q", false, "exit immediately")
+	showVersion := flag.Bool("v", false, "show version")
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
 	flag.Parse()
+
+	if *showVersion == true {
+		fmt.Printf("tz %s", CurrentVersion)
+		os.Exit(0)
+	}
 
 	if *when != 0 {
 		t := time.Unix(*when, 0)
