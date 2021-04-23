@@ -29,18 +29,20 @@ type Config struct {
 }
 
 // LoadConfig from environment
-func LoadConfig() (*Config, error) {
+func LoadConfig(tzConfigs []string) (*Config, error) {
 	conf := Config{
 		Zones: DefaultZones,
 	}
 
-	tzList := os.Getenv("TZ_LIST")
-	if tzList == "" {
-		return &conf, nil
-	}
-	tzConfigs := strings.Split(tzList, ",")
 	if len(tzConfigs) == 0 {
-		return &conf, nil
+		tzList := os.Getenv("TZ_LIST")
+		if tzList == "" {
+			return &conf, nil
+		}
+		tzConfigs = strings.Split(tzList, ";")
+		if len(tzConfigs) == 0 {
+			return &conf, nil
+		}
 	}
 	zones := make([]*Zone, len(tzConfigs)+1)
 
@@ -68,7 +70,7 @@ func LoadConfig() (*Config, error) {
 
 // SetupZone from current time and a zoneConf string
 func SetupZone(now time.Time, zoneConf string) (*Zone, error) {
-	names := strings.Split(zoneConf, ";")
+	names := strings.Split(zoneConf, ",")
 	dbName := strings.Trim(names[0], " ")
 	var name string
 	if len(names) == 2 {

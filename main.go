@@ -115,7 +115,7 @@ func main() {
 	}
 
 	now := clock()
-	config, err := LoadConfig()
+	config, err := LoadConfig(flag.Args())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
 		os.Exit(2)

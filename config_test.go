@@ -60,12 +60,12 @@ func TestSetupZoneWithCustomNames(t *testing.T) {
 		ok        bool
 	}{
 		{
-			zoneName:  "Europe/Paris;bonjour",
+			zoneName:  "Europe/Paris,bonjour",
 			shortName: "bonjour",
 			ok:        true,
 		},
 		{
-			zoneName:  "America/Mexico_City;hola",
+			zoneName:  "America/Mexico_City,hola",
 			shortName: "hola",
 			ok:        true,
 		},
