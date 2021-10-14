@@ -1,24 +1,22 @@
-name: Go
-
 on:
   release:
-    types: [ created ]
+    types: [created]
 
 jobs:
   releases-matrix:
-    name: Release Go Binary (BSDs)
+    name: Build Go Binaries for BSDs
     runs-on: ubuntu-latest
     strategy:
       matrix:
         goos: [freebsd, netbsd, openbsd]
         goarch: ["386", amd64, arm, arm64]
     steps:
-      - uses: actions/checkout@v2
-      - uses: wangyoucao577/go-release-action@v1.16
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: ${{ matrix.goos }}
-          goarch: ${{ matrix.goarch }}
-          binary_name: "tz"
-          sha256sum: true
-          md5sum: false
+    - uses: actions/checkout@v2
+    - uses: wangyoucao577/go-release-action@v1.16
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        binary_name: "tz"
+        sha256sum: true
+        md5sum: false
