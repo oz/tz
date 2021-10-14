@@ -27,7 +27,7 @@ import (
 )
 
 // CurrentVersion represents the current build version.
-const CurrentVersion = "0.6-dev"
+const CurrentVersion = "0.6"
 
 var (
 	term              = termenv.ColorProfile()
