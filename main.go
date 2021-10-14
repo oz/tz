@@ -103,7 +103,7 @@ func main() {
 	flag.Parse()
 
 	if *showVersion == true {
-		fmt.Printf("tz %s", CurrentVersion)
+		fmt.Printf("tz %s\n", CurrentVersion)
 		os.Exit(0)
 	}
 
