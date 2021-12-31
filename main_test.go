@@ -58,7 +58,7 @@ func TestUpdateIncHour(t *testing.T) {
 }
 
 func TestUpdateDecHour(t *testing.T) {
-	// "h" key -> go right
+	// "h" key -> go left
 	msg := tea.KeyMsg{
 		Type:  tea.KeyRunes,
 		Runes: []rune{'h'},
