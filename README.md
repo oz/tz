@@ -1,17 +1,18 @@
 # 🌐 A time zone helper
 
-tz helps you schedule things across time zones. It is an interactive TUI
-program that displays time across a few time zones of your choosing.
+tz helps you schedule things across time zones. It's an interactive TUI
+program that displays time across the time zones of your choosing.
 
 
 # Usage
 
-Simply run `tz` with no arguments to show the local time, as well as the
-UTC time zone. It gets more interesting when you pass a list of time
-zones to the program, as they are displayed below the current time zone.
+Run `tz` with no arguments to show the local time, as well as the UTC
+time zone. It gets more useful when you pass some time zones to the
+program, to list those below the local time zone.
 
 For now, you need to select the time zones from the [tz_data][tzdata]
-list, but I plan to make this friendlier for humans too.
+list. Yes, there are plans to make this friendlier for humans too.
+You're welcome to file an issue about it. I enjoy reading those.
 
 If you would rather not type the list everytime, you could set an alias
 for your shell, or use the `TZ_LIST` environment variable with a
@@ -19,7 +20,7 @@ semi-colon separated list of [tz data][tzdata] zone names (see
 *Configuration* below). Command-line arguments trump the environment
 variable.
 
-Check `tz -h` out for other flags.
+Check out `tz -h` for other flags.
 
 <p align="center">
 <img align="center" src="./docs/tz.png" />
@@ -32,9 +33,9 @@ The program will adjust to light and dark terminals themes.
 
 # Installing
 
-If a build is provided for you architecture, you can directly grab a
-release, but no one will be harmed if you build from source, as only
-linux/amd64 builds are provided for now.
+I provide linux/amd64 builds for "official" releases, and you can build
+from source for your favorite architecture. Kind souls have also
+packaged the program for other OSes.
 
 ## Packages
 
@@ -55,21 +56,23 @@ If you're an Archlinux user, packages are also available:
 
 # Configuration
 
-TZ uses standard time zones as described
+The tz program uses standard time zones as described
 [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-You can specify what time zones you want displayed by setting the
-`TZ_LIST` environment variable. Your local time will always be
-displayed. So, if you wanted to display local time + time in
-California, and Paris you would set your `TZ_LIST` to
-`US/Pacific;Europe/Paris`
+You should specify what time zones to display by setting the `TZ_LIST`
+environment variable. The local time is always displayed first. To
+display your local time, the time in California, and the time Paris, you
+have to set `TZ_LIST` to `US/Pacific;Europe/Paris`
 
 ## Zone Alias
 
-tz is configured only through `TZ_LIST`, and that limits us to the tz
-database names, but you can alias these names using a special value: the
-tz name followed by `;` and your alias:
+The `TZ_LIST` env. variable recognizes items from the standard tz
+database names, but you can alias these, using a special value: use the
+standard name followed by `,` and your alias. For example:
 
-`TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"`
+```
+TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"
+```
+
 
 # Building
 
@@ -89,8 +92,15 @@ go test -cover
 ```
 
 
+# Contributing
+
+Please do file bugs, and feature requests.  I am accepting patches too,
+those are the best, but please, open an issue first to discuss your
+changes. 😄
+
+
 # License
 
 The GPL3 license.
 
-Copyright (c) 2021 Arnaud Berthomier
+Copyright (c) 2021-2022 Arnaud Berthomier
