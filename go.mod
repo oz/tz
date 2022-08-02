@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/charmbracelet/bubbletea v0.17.0
 	github.com/muesli/termenv v0.9.0
+	github.com/tkuchiki/go-timezone v0.2.2
 )
 
 require (

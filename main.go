@@ -100,10 +100,16 @@ func main() {
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
+	list := flag.Bool("list", false, "list known timezones")
 	flag.Parse()
 
 	if *showVersion == true {
 		fmt.Printf("tz %s\n", CurrentVersion)
+		os.Exit(0)
+	}
+
+	if *list == true {
+		doTZList()
 		os.Exit(0)
 	}
 
