@@ -25,7 +25,6 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/muesli/termenv"
-	"github.com/tkuchiki/go-timezone"
 )
 
 // CurrentVersion represents the current build version.
@@ -102,7 +101,7 @@ func main() {
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
-	search := flag.String("list", "", "find time zones by name")
+	doSearch := flag.Bool("list", false, "list zones by name")
 	flag.Parse()
 
 	if *showVersion == true {
@@ -110,8 +109,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *search != "" {
-		findZones(strings.ToLower(*search))
+	if *doSearch {
+		q := ""
+		if arg := flag.Arg(0); arg != "" {
+			q = arg
+		}
+		results := SearchZones(strings.ToLower(q))
+		results.Print(os.Stdout)
 		os.Exit(0)
 	}
 
@@ -141,30 +145,5 @@ func main() {
 	if err := p.Start(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
-	}
-}
-
-func findZones(filter string) {
-	t := timezone.New()
-	matches := map[string]*timezone.TzInfo{}
-
-	for _, zones := range t.Timezones() {
-		for _, name := range zones {
-			if !strings.Contains(strings.ToLower(name), filter) {
-				continue
-			}
-
-			ti, err := t.GetTzInfo(name)
-			if err != nil {
-				panic(err)
-			}
-			matches[name] = ti
-		}
-	}
-	for name, ti := range matches {
-		fmt.Printf("%5s (%s) :: %s\n",
-			ti.ShortStandard(),
-			ti.StandardOffsetHHMM(),
-			name)
 	}
 }
