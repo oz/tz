@@ -60,7 +60,7 @@ func (z Zone) String() string {
 }
 
 // ClockEmoji returns the corresponding emoji clock for a given hour
-func (z Zone) ClockEmoji() (clock string) {
+func (z Zone) ClockEmoji() string {
 	h := ((z.currentTime().Hour() % 12) + 12) % 12
 	return EmojiClocks[h]
 }
@@ -71,7 +71,7 @@ func (z Zone) ShortDT() string {
 }
 
 func (z Zone) currentTime() time.Time {
-	now := clock()
+	now := Now.Time()
 	zName, _ := now.Zone()
 	if z.DbName != zName {
 		loc, err := time.LoadLocation(z.DbName)

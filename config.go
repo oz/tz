@@ -47,7 +47,7 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 	zones := make([]*Zone, len(tzConfigs)+1)
 
 	// Setup with Local time zone
-	now := clock()
+	now := Now.Time()
 	localZoneName, offset := now.Zone()
 	zones[0] = &Zone{
 		Name:   fmt.Sprintf("(%s) Local", localZoneName),

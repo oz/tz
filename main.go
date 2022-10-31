@@ -33,6 +33,9 @@ const CurrentVersion = "0.6.1"
 var (
 	term              = termenv.ColorProfile()
 	hasDarkBackground = termenv.HasDarkBackground()
+
+	// Now is used around tz to share/set the current time.
+	Now *Clock = NewClock(0)
 )
 
 type tickMsg time.Time
@@ -73,6 +76,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "left", "h":
 			if m.hour == 0 {
 				m.hour = 23
+				Now.AddDays(-1)
 			} else {
 				m.hour--
 			}
@@ -80,6 +84,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "right", "l":
 			if m.hour > 22 {
 				m.hour = 0
+				Now.AddDays(1)
 			} else {
 				m.hour++
 			}
@@ -94,8 +99,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 	return m, nil
 }
-
-var clock func() time.Time = time.Now
 
 func main() {
 	exitQuick := flag.Bool("q", false, "exit immediately")
@@ -120,13 +123,8 @@ func main() {
 	}
 
 	if *when != 0 {
-		t := time.Unix(*when, 0)
-		clock = func() time.Time {
-			return t
-		}
+		Now = NewClock(*when)
 	}
-
-	now := clock()
 	config, err := LoadConfig(flag.Args())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
@@ -134,8 +132,8 @@ func main() {
 	}
 	var initialModel = model{
 		zones:     config.Zones,
-		now:       now,
-		hour:      now.Hour(),
+		now:       Now.Time(),
+		hour:      Now.Time().Hour(),
 		showDates: false,
 	}
 

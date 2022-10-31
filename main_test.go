@@ -31,13 +31,14 @@ func TestUpdateIncHour(t *testing.T) {
 	}
 
 	tests := []struct {
-		startHour int
-		nextHour  int
+		startHour          int
+		nextHour           int
+		changesClockDateBy int
 	}{
-		{startHour: 0, nextHour: 1},
-		{startHour: 1, nextHour: 2},
+		{startHour: 0, nextHour: 1, changesClockDateBy: 0},
+		{startHour: 1, nextHour: 2, changesClockDateBy: 0},
 		// ...
-		{startHour: 23, nextHour: 0},
+		{startHour: 23, nextHour: 0, changesClockDateBy: 1},
 	}
 
 	for _, test := range tests {
@@ -45,7 +46,12 @@ func TestUpdateIncHour(t *testing.T) {
 			zones: DefaultZones,
 			hour:  test.startHour,
 		}
+
+		// Do we enjoy global mutable state?
+		db := Now.Time().Day()
 		nextState, cmd := m.Update(msg)
+		da := Now.Time().Day()
+
 		if cmd != nil {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
 			return
@@ -53,6 +59,9 @@ func TestUpdateIncHour(t *testing.T) {
 		h := nextState.(model).hour
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
+		}
+		if test.changesClockDateBy != 0 && da == db {
+			t.Errorf("Expected date change of %d day, but got %d", test.changesClockDateBy, da-db)
 		}
 	}
 }
