@@ -53,6 +53,10 @@ If you're an Archlinux user, packages are also available:
 [tz-arch]: https://aur.archlinux.org/packages/tz
 [tz-arch-git]: https://aur.archlinux.org/packages/tz-git
 
+### Go
+```
+go install github.com/oz/tz@latest
+```
 
 # Configuration
 
