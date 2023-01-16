@@ -1,0 +1,29 @@
+name: Build Go Binaries for new releases
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  releases-matrix:
+    name: Build Go Binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin, openbsd, netbsd, freebsd]
+        goarch: ["amd64", "arm", "arm64"]
+        exclude:
+          - goarch: arm
+            goos: darwin
+          - goarch: arm64
+            goos: windows
+    steps:
+    - uses: actions/checkout@v2
+    - uses: wangyoucao577/go-release-action@v1.34
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        sha256sum: true
+        md5sum: false
+        extra_files: COPYING
