@@ -36,7 +36,7 @@ func (m model) View() string {
 
 		startHour := 0
 		if zi > 0 {
-			startHour = (zone.Offset - m.zones[0].Offset) % 24
+			startHour = (zone.currentTime().Hour() - m.zones[0].currentTime().Hour()) % 24
 		}
 
 		dateChanged := false
