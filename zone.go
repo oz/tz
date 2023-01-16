@@ -18,17 +18,15 @@ package main
 
 import "time"
 
-var name, offset = time.Now().Zone()
+var name, _ = time.Now().Zone()
 var DefaultZones = []*Zone{
 	{
 		Name:   "Local",
 		DbName: name,
-		Offset: offset / 3600,
 	},
 	{
 		Name:   "UTC",
 		DbName: "UTC",
-		Offset: 0,
 	},
 }
 
@@ -48,11 +46,10 @@ var EmojiClocks = map[int]string{
 	11: "🕙",
 }
 
-// Zone stores the name of a time zone and its integer offset from UTC.
+// Zone stores the name of a time zone
 type Zone struct {
 	DbName string // Name in tzdata
 	Name   string // Short name
-	Offset int    // Integer offset from UTC, in hours.
 }
 
 func (z Zone) String() string {
