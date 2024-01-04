@@ -70,7 +70,14 @@ func (m model) View() string {
 			}
 		}
 
-		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(zone.ShortDT()))
+		var datetime string
+		if m.isMilitary {
+			datetime = zone.ShortMT()
+		} else {
+			datetime = zone.ShortDT()
+		}
+
+		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(datetime))
 
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
