@@ -17,6 +17,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -120,4 +121,18 @@ func TestUpdateQuitMsg(t *testing.T) {
 	}
 	// tea.Quit is a function, we can't really test with == here, and
 	// calling it is getting into internal territory.
+}
+
+func TestMilitaryTime(t *testing.T) {
+	m := model{
+		zones:      DefaultZones,
+		hour:       14,
+		now:        Now.Time(),
+		isMilitary: true,
+		showDates:  true,
+	}
+	s := m.View()
+	if !strings.Contains(s, m.now.Format("15:04")) {
+		t.Errorf("Expected military time of %s, but got %s", m.now.Format("15:04"), s)
+	}
 }
