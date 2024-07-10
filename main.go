@@ -48,12 +48,13 @@ func tick() tea.Cmd {
 }
 
 type model struct {
-	zones       []*Zone
-	now         time.Time
-	hour        int
-	showDates   bool
-	interactive bool
-	isMilitary  bool
+	zones        []*Zone
+	now          time.Time
+	hour         int
+	showDates    bool
+	interactive  bool
+	isMilitary   bool
+	isTwelveHour bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -107,6 +108,7 @@ func main() {
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
 	doSearch := flag.Bool("list", false, "list zones by name")
 	military := flag.Bool("m", false, "use 24-hour time")
+	twelveHour := flag.Bool("t", false, "use 12-hour time")
 	flag.Parse()
 
 	if *showVersion == true {
@@ -133,11 +135,12 @@ func main() {
 		os.Exit(2)
 	}
 	var initialModel = model{
-		zones:      config.Zones,
-		now:        Now.Time(),
-		hour:       Now.Time().Hour(),
-		showDates:  false,
-		isMilitary: *military,
+		zones:        config.Zones,
+		now:          Now.Time(),
+		hour:         Now.Time().Hour(),
+		showDates:    false,
+		isMilitary:   *military,
+		isTwelveHour: *twelveHour,
 	}
 
 	initialModel.interactive = !*exitQuick

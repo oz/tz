@@ -41,8 +41,24 @@ func (m model) View() string {
 
 		dateChanged := false
 		for i := startHour; i < startHour+24; i++ {
-			hour := ((i % 24) + 24) % 24 // mod 24
-			out := termenv.String(fmt.Sprintf("%2d", hour))
+			var hour int
+			var period string
+
+			// switch AM/PM vs 24-hour in future view
+			if m.isTwelveHour {
+				hour = ((i % 24) + 24) % 12
+				if hour == 0 {
+					hour = 12
+				}
+				if i%24 >= 12 {
+					period = "PM"
+				} else {
+					period = "  "
+				}
+			} else {
+				hour = ((i % 24) + 24) % 24 // mod 24
+			}
+			out := termenv.String(fmt.Sprintf("%2d%s", hour, period))
 
 			out = out.Foreground(term.Color(hourColorCode(hour)))
 			// Cursor
@@ -64,12 +80,20 @@ func (m model) View() string {
 			if hour == 0 {
 				dates.WriteString(formatDayChange(&m, zone))
 				dateChanged = true
+			} else if hour == 12 && period != "PM" {
+				dates.WriteString(formatDayChange(&m, zone))
+				dateChanged = true
 			}
-			if !dateChanged {
+
+			// handle the spacing for the date/calendar icon
+			if !dateChanged && !m.isTwelveHour {
 				dates.WriteString("    ")
+			} else if m.isTwelveHour && !dateChanged {
+				dates.WriteString("      ")
 			}
 		}
 
+		// switch current timestamp from 12 to 24 hour
 		var datetime string
 		if m.isMilitary {
 			datetime = zone.ShortMT()
