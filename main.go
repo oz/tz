@@ -74,6 +74,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q", "esc":
 			return m, tea.Quit
 
+		case "H":
+			Now.AddDays(-1)
+
 		case "left", "h":
 			if m.hour == 0 {
 				m.hour = 23
@@ -81,6 +84,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.hour--
 			}
+			Now.AddHours(-1)
+
+		case "L":
+			Now.AddDays(1)
 
 		case "right", "l":
 			if m.hour > 22 {
@@ -89,6 +96,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.hour++
 			}
+			Now.AddHours(1)
 
 		case "t":
 			Now = NewClock(0)
@@ -140,7 +148,7 @@ func main() {
 		zones:      config.Zones,
 		now:        Now.Time(),
 		hour:       Now.Time().Hour(),
-		showDates:  false,
+		showDates:  true,
 		isMilitary: *military,
 	}
 
