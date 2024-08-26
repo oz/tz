@@ -90,6 +90,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.hour++
 			}
 
+		case "t":
+			Now = NewClock(0)
+			m.hour = Now.Time().Hour()
+
 		case "d":
 			m.showDates = !m.showDates
 		}
