@@ -64,12 +64,12 @@ func (z Zone) ClockEmoji() string {
 
 // ShortDT returns the current time in short format.
 func (z Zone) ShortDT() string {
-	return z.currentTime().Format("3:04PM, Mon 02")
+	return z.currentTime().Format("3:04PM, Mon Jan 02")
 }
 
 // ShortMT returns the current military time in short format.
 func (z Zone) ShortMT() string {
-	return z.currentTime().Format("15:04, Mon 02")
+	return z.currentTime().Format("15:04, Mon Jan 02")
 }
 
 func (z Zone) currentTime() time.Time {
