@@ -81,6 +81,7 @@ type model struct {
 	interactive bool
 	isMilitary  bool
 	watch       bool
+	showHelp    bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -136,6 +137,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			Now = NewClock(0)
 			m.hour = Now.Time().Hour()
 
+		case "?":
+			m.showHelp = !m.showHelp
+
 		case "d":
 			m.showDates = !m.showDates
 		}
@@ -190,6 +194,7 @@ func main() {
 		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
+		showHelp:   false,
 	}
 
 	initialModel.interactive = !*exitQuick

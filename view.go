@@ -83,13 +83,21 @@ func (m model) View() string {
 	}
 
 	if m.interactive {
-		s += status()
+		s += status(m)
 	}
 	return s
 }
 
-func status() string {
-	text := "  q: quit, h/l: hours, H/L: days, </>: weeks, d: toggle date, t: now, o: open in web"
+func status(m model) string {
+
+	var text string
+
+	if m.showHelp {
+		text = "  q: quit, ?: help, h/l: hours, H/L: days, </>: weeks, d: toggle date, t: now, o: open in web"
+	} else {
+		text = "  q: quit, ?: help"
+	}
+
 	for {
 		text += " "
 		if len(text) > UIWidth {
