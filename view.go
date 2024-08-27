@@ -47,7 +47,7 @@ func (m model) View() string {
 			out = out.Foreground(term.Color(hourColorCode(hour)))
 			// Cursor
 			if m.hour == i-startHour {
-				out = out.Background(term.Color("#00B67F"))
+				out = out.Background(term.Color(hourColorCode(hour)))
 				if hasDarkBackground {
 					out = out.Foreground(term.Color("#262626")).Bold()
 				} else {
@@ -77,7 +77,7 @@ func (m model) View() string {
 			datetime = zone.ShortDT()
 		}
 
-		zoneHeader := fmt.Sprintf("%s %s %s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(datetime))
+		zoneHeader := fmt.Sprintf("%s %-60s %76s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(datetime))
 
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
