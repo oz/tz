@@ -89,7 +89,7 @@ func (m model) View() string {
 }
 
 func status() string {
-	text := "  q: quit, d: toggle date"
+	text := "  q: quit, h/l: hours, H/L: days, </>: weeks, d: toggle date, t: now, o: open in web"
 	for {
 		text += " "
 		if len(text) > UIWidth {
