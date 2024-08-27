@@ -187,7 +187,7 @@ func main() {
 		zones:      config.Zones,
 		now:        Now.Time(),
 		hour:       Now.Time().Hour(),
-		showDates:  true,
+		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
 	}
