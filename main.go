@@ -104,7 +104,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "left", "h":
 			if m.hour == 0 {
 				m.hour = 23
-				Now.AddDays(-1)
 			} else {
 				m.hour--
 			}
@@ -113,7 +112,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "right", "l":
 			if m.hour > 22 {
 				m.hour = 0
-				Now.AddDays(1)
 			} else {
 				m.hour++
 			}
