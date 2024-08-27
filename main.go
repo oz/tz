@@ -80,6 +80,7 @@ type model struct {
 	showDates   bool
 	interactive bool
 	isMilitary  bool
+	watch       bool
 }
 
 func (m model) Init() tea.Cmd {
@@ -142,8 +143,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case tickMsg:
-		m.now = time.Time(msg)
-		Now = NewClock(0)
+		if m.watch {
+			m.now = time.Time(msg)
+			Now = NewClock(0)
+			m.hour = Now.Time().Hour()
+		}
 		return m, tick()
 	}
 	return m, nil
@@ -155,6 +159,7 @@ func main() {
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
 	doSearch := flag.Bool("list", false, "list zones by name")
 	military := flag.Bool("m", false, "use 24-hour time")
+	watch := flag.Bool("w", false, "watch live, set time to now every minute")
 	flag.Parse()
 
 	if *showVersion == true {
@@ -186,6 +191,7 @@ func main() {
 		hour:       Now.Time().Hour(),
 		showDates:  true,
 		isMilitary: *military,
+		watch:      *watch,
 	}
 
 	initialModel.interactive = !*exitQuick
