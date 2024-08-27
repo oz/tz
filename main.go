@@ -74,9 +74,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q", "esc":
 			return m, tea.Quit
 
-		case "H":
-			Now.AddDays(-1)
-
 		case "left", "h":
 			if m.hour == 0 {
 				m.hour = 23
@@ -86,9 +83,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			Now.AddHours(-1)
 
-		case "L":
-			Now.AddDays(1)
-
 		case "right", "l":
 			if m.hour > 22 {
 				m.hour = 0
@@ -97,6 +91,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.hour++
 			}
 			Now.AddHours(1)
+
+		case "H":
+			Now.AddDays(-1)
+
+		case "L":
+			Now.AddDays(1)
+
+		case "<":
+			Now.AddDays(-7)
+
+		case ">":
+			Now.AddDays(7)
 
 		case "t":
 			Now = NewClock(0)
