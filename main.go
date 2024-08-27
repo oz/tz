@@ -20,6 +20,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 
@@ -45,6 +47,30 @@ func tick() tea.Cmd {
 	return tea.Every(time.Minute, func(t time.Time) tea.Msg {
 		return tickMsg(t)
 	})
+}
+
+func openURL(url string) error {
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("rundll32", "url.dll,FileProtocolHandler", url)
+	case "darwin":
+		cmd = exec.Command("open", url)
+	case "linux":
+		cmd = exec.Command("xdg-open", url)
+	default:
+		return fmt.Errorf("unsupported platform")
+	}
+
+	return cmd.Start()
+}
+
+func openInTimeAndDateDotCom(t time.Time) error {
+	utcTime := t.In(time.UTC).Format("20060102T150405")
+	url := fmt.Sprintf("https://www.timeanddate.com/worldclock/converter.html?iso=%s&p1=1440", utcTime)
+
+	return openURL(url)
 }
 
 type model struct {
@@ -103,6 +129,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case ">":
 			Now.AddDays(7)
+
+		case "o":
+			openInTimeAndDateDotCom(Now.Time())
 
 		case "t":
 			Now = NewClock(0)
