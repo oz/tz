@@ -80,13 +80,6 @@ func LoadConfigFile() (*Config, error) {
 		panic(err)
 	}
 
-	// Use the config values
-	fmt.Printf("Header: %s\n", config.Header)
-	fmt.Println("Zones:")
-	for _, zone := range config.Zones {
-		fmt.Printf("  ID: %s, Name: %s\n", zone.ID, zone.Name)
-	}
-
 	zones := make([]*Zone, len(config.Zones)+1)
 
 	// Setup with Local time zone
