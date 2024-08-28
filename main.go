@@ -73,6 +73,7 @@ func openInTimeAndDateDotCom(t time.Time) error {
 
 type model struct {
 	zones       []*Zone
+	keymaps     Keymaps
 	clock       Clock
 	showDates   bool
 	interactive bool
@@ -168,6 +169,7 @@ func main() {
 
 	var initialModel = model{
 		zones:      fileConfig.Zones,
+		keymaps:    fileConfig.Keymaps,
 		clock:      *NewClock(0),
 		showDates:  false,
 		isMilitary: *military,

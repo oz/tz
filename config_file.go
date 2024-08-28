@@ -104,7 +104,9 @@ func LoadConfigFile() (*Config, error) {
 		}
 		zones[i+1] = zone
 	}
+
 	conf.Zones = zones
+	conf.Keymaps = Keymaps(config.Keymaps)
 
 	return &conf, nil
 }

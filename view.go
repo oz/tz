@@ -88,14 +88,28 @@ func (m model) View() string {
 	return s
 }
 
-func status(m model) string {
+// Generate the string
+func generateKeymapString(k Keymaps) string {
+	return fmt.Sprintf(", %s/%s: hours, %s/%s: days, %s/%s: weeks, %s: toggle date, %s: now, %s: open in web",
+		// Only use the first of each mapping
+		k.PrevHour[0], k.NextHour[0],
+		k.PrevDay[0], k.NextDay[0],
+		k.PrevWeek[0], k.NextWeek[0],
+		k.ToggleDate[0],
+		k.Now[0],
+		k.OpenWeb[0],
+	)
+}
 
+func status(m model) string {
 	var text string
 
+	helpPrefix := "  q: quit, ?: help"
+
 	if m.showHelp {
-		text = "  q: quit, ?: help, h/l: hours, H/L: days, </>: weeks, d: toggle date, t: now, o: open in web"
+		text = helpPrefix + generateKeymapString(m.keymaps)
 	} else {
-		text = "  q: quit, ?: help"
+		text = helpPrefix
 	}
 
 	for {
