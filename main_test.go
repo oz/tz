@@ -19,9 +19,26 @@ package main
 import (
 	"strings"
 	"testing"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
+
+func getTimestampWithHour(hour int) int64 {
+	if hour == -1 {
+		hour = time.Now().Hour()
+	}
+	return time.Date(
+		time.Now().Year(),
+		time.Now().Month(),
+		time.Now().Day(),
+		hour,
+		0, // Minutes set to 0
+		0, // Seconds set to 0
+		0, // Nanoseconds set to 0
+		time.Now().Location(),
+	).Unix()
+}
 
 func TestUpdateIncHour(t *testing.T) {
 	// "l" key -> go right
@@ -45,19 +62,18 @@ func TestUpdateIncHour(t *testing.T) {
 	for _, test := range tests {
 		m := model{
 			zones: DefaultZones,
-			hour:  test.startHour,
+			clock: *NewClock(getTimestampWithHour(test.startHour)),
 		}
 
-		// Do we enjoy global mutable state?
-		db := Now.Time().Day()
+		db := m.clock.Time().Day()
 		nextState, cmd := m.Update(msg)
-		da := Now.Time().Day()
+		da := m.clock.Time().Day()
 
 		if cmd != nil {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
 			return
 		}
-		h := nextState.(model).hour
+		h := nextState.(model).clock.t.Hour()
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
@@ -88,14 +104,14 @@ func TestUpdateDecHour(t *testing.T) {
 	for _, test := range tests {
 		m := model{
 			zones: DefaultZones,
-			hour:  test.startHour,
+			clock: *NewClock(getTimestampWithHour(test.startHour)),
 		}
 		nextState, cmd := m.Update(msg)
 		if cmd != nil {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
 			return
 		}
-		h := nextState.(model).hour
+		h := nextState.(model).clock.t.Hour()
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
@@ -112,7 +128,7 @@ func TestUpdateQuitMsg(t *testing.T) {
 
 	m := model{
 		zones: DefaultZones,
-		hour:  10,
+		clock: *NewClock(getTimestampWithHour(-1)),
 	}
 	_, cmd := m.Update(msg)
 	if cmd == nil {
@@ -126,13 +142,12 @@ func TestUpdateQuitMsg(t *testing.T) {
 func TestMilitaryTime(t *testing.T) {
 	m := model{
 		zones:      DefaultZones,
-		hour:       14,
-		now:        Now.Time(),
+		clock:      *NewClock(getTimestampWithHour(-1)),
 		isMilitary: true,
 		showDates:  true,
 	}
 	s := m.View()
-	if !strings.Contains(s, m.now.Format("15:04")) {
-		t.Errorf("Expected military time of %s, but got %s", m.now.Format("15:04"), s)
+	if !strings.Contains(s, m.clock.t.Format("15:04")) {
+		t.Errorf("Expected military time of %s, but got %s", m.clock.t.Format("15:04"), s)
 	}
 }

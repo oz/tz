@@ -36,7 +36,7 @@ func (m model) View() string {
 
 		startHour := 0
 		if zi > 0 {
-			startHour = (zone.currentTime().Hour() - m.zones[0].currentTime().Hour()) % 24
+			startHour = (zone.currentTime(m.clock.t).Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
 		}
 
 		dateChanged := false
@@ -46,7 +46,7 @@ func (m model) View() string {
 
 			out = out.Foreground(term.Color(hourColorCode(hour)))
 			// Cursor
-			if m.hour == i-startHour {
+			if m.clock.t.Hour() == i-startHour {
 				out = out.Background(term.Color(hourColorCode(hour)))
 				if hasDarkBackground {
 					out = out.Foreground(term.Color("#262626")).Bold()
@@ -72,12 +72,12 @@ func (m model) View() string {
 
 		var datetime string
 		if m.isMilitary {
-			datetime = zone.ShortMT()
+			datetime = zone.ShortMT(m.clock.t)
 		} else {
-			datetime = zone.ShortDT()
+			datetime = zone.ShortDT(m.clock.t)
 		}
 
-		zoneHeader := fmt.Sprintf("%s %-60s %76s", zone.ClockEmoji(), normalTextStyle(zone.String()), dateTimeStyle(datetime))
+		zoneHeader := fmt.Sprintf("%s %-60s %76s", zone.ClockEmoji(m.clock.t), normalTextStyle(zone.String()), dateTimeStyle(datetime))
 
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
@@ -117,8 +117,8 @@ func status(m model) string {
 }
 
 func formatDayChange(m *model, z *Zone) string {
-	zTime := z.currentTime()
-	if zTime.Hour() > m.now.Hour() {
+	zTime := z.currentTime(m.clock.t)
+	if zTime.Hour() > m.clock.t.Hour() {
 		zTime = zTime.AddDate(0, 0, 1)
 	}
 

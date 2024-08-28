@@ -35,9 +35,6 @@ const CurrentVersion = "0.7.0"
 var (
 	term              = termenv.ColorProfile()
 	hasDarkBackground = termenv.HasDarkBackground()
-
-	// Now is used around tz to share/set the current time.
-	Now *Clock = NewClock(0)
 )
 
 type tickMsg time.Time
@@ -75,8 +72,7 @@ func openInTimeAndDateDotCom(t time.Time) error {
 
 type model struct {
 	zones       []*Zone
-	now         time.Time
-	hour        int
+	clock       Clock
 	showDates   bool
 	interactive bool
 	isMilitary  bool
@@ -103,39 +99,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 
 		case "left", "h":
-			if m.hour == 0 {
-				m.hour = 23
-			} else {
-				m.hour--
-			}
-			Now.AddHours(-1)
+			m.clock.AddHours(-1)
 
 		case "right", "l":
-			if m.hour > 22 {
-				m.hour = 0
-			} else {
-				m.hour++
-			}
-			Now.AddHours(1)
+			m.clock.AddHours(1)
 
 		case "H":
-			Now.AddDays(-1)
+			m.clock.AddDays(-1)
 
 		case "L":
-			Now.AddDays(1)
+			m.clock.AddDays(1)
 
 		case "<":
-			Now.AddDays(-7)
+			m.clock.AddDays(-7)
 
 		case ">":
-			Now.AddDays(7)
+			m.clock.AddDays(7)
 
 		case "o":
-			openInTimeAndDateDotCom(Now.Time())
+			openInTimeAndDateDotCom(m.clock.Time())
 
 		case "t":
-			Now = NewClock(0)
-			m.hour = Now.Time().Hour()
+			m.clock = *NewClock(0)
 
 		case "?":
 			m.showHelp = !m.showHelp
@@ -146,9 +131,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tickMsg:
 		if m.watch {
-			m.now = time.Time(msg)
-			Now = NewClock(0)
-			m.hour = Now.Time().Hour()
+			m.clock = *NewClock(0)
 		}
 		return m, tick()
 	}
@@ -179,9 +162,6 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *when != 0 {
-		Now = NewClock(*when)
-	}
 	config, err := LoadConfig(flag.Args())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
@@ -189,19 +169,33 @@ func main() {
 	}
 	var initialModel = model{
 		zones:      config.Zones,
-		now:        Now.Time(),
-		hour:       Now.Time().Hour(),
+		clock:      *NewClock(0),
 		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
 		showHelp:   false,
 	}
 
+	if *when != 0 {
+		initialModel.clock = *NewClock(*when)
+	}
+
 	initialModel.interactive = !*exitQuick
+
+	// if len(os.Getenv("DEBUG")) > 0 {
+	// 	f, err := tea.LogToFile("debug.log", "debug")
+	// 	if err != nil {
+	// 		fmt.Println("fatal:", err)
+	// 		os.Exit(1)
+	// 	}
+	// 	defer f.Close()
+	// }
 
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
+
+	// loadConfigFile()
 }

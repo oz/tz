@@ -57,30 +57,29 @@ func (z Zone) String() string {
 }
 
 // ClockEmoji returns the corresponding emoji clock for a given hour
-func (z Zone) ClockEmoji() string {
-	h := ((z.currentTime().Hour() % 12) + 12) % 12
+func (z Zone) ClockEmoji(t time.Time) string {
+	h := ((z.currentTime(t).Hour() % 12) + 12) % 12
 	return EmojiClocks[h]
 }
 
 // ShortDT returns the current time in short format.
-func (z Zone) ShortDT() string {
-	return z.currentTime().Format("3:04PM, Mon Jan 02, 2006")
+func (z Zone) ShortDT(t time.Time) string {
+	return z.currentTime(t).Format("3:04PM, Mon Jan 02, 2006")
 }
 
 // ShortMT returns the current military time in short format.
-func (z Zone) ShortMT() string {
-	return z.currentTime().Format("15:04, Mon Jan 02, 2006")
+func (z Zone) ShortMT(t time.Time) string {
+	return z.currentTime(t).Format("15:04, Mon Jan 02, 2006")
 }
 
-func (z Zone) currentTime() time.Time {
-	now := Now.Time()
-	zName, _ := now.Zone()
+func (z Zone) currentTime(t time.Time) time.Time {
+	zName, _ := t.Zone()
 	if z.DbName != zName {
 		loc, err := time.LoadLocation(z.DbName)
 		if err != nil {
-			return now
+			return t
 		}
-		return now.In(loc)
+		return t.In(loc)
 	}
-	return now
+	return t
 }

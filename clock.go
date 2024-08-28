@@ -27,17 +27,17 @@ func (c *Clock) AddDays(n int) {
 	c.t = c.t.AddDate(0, 0, n)
 }
 
-// AddDays adds n days to the current date.
+// AddDays adds n days to the current date and clears the minutes
 func (c *Clock) AddHours(n int) {
 	c.t = time.Date(
-		c.t.Year(),     // Year
-		c.t.Month(),    // Month
-		c.t.Day(),      // Day
-		c.t.Hour(),     // Hour
-		0,              // Minutes set to 0
-		0,              // Seconds set to 0
-		0,              // Nanoseconds set to 0
-		c.t.Location(), // Location (timezone)
+		c.t.Year(),
+		c.t.Month(),
+		c.t.Day(),
+		c.t.Hour(),
+		0, // Minutes set to 0
+		0, // Seconds set to 0
+		0, // Nanoseconds set to 0
+		c.t.Location(),
 	)
 	c.t = c.t.Add(time.Hour * time.Duration(n))
 }
