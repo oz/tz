@@ -73,7 +73,7 @@ func TestUpdateIncHour(t *testing.T) {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
 			return
 		}
-		h := nextState.(model).clock.t.Hour()
+		h := nextState.(*model).clock.t.Hour()
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
@@ -111,7 +111,7 @@ func TestUpdateDecHour(t *testing.T) {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
 			return
 		}
-		h := nextState.(model).clock.t.Hour()
+		h := nextState.(*model).clock.t.Hour()
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
