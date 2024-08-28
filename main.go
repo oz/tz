@@ -90,7 +90,7 @@ func (m model) Init() tea.Cmd {
 	return tick()
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
@@ -182,20 +182,9 @@ func main() {
 
 	initialModel.interactive = !*exitQuick
 
-	// if len(os.Getenv("DEBUG")) > 0 {
-	// 	f, err := tea.LogToFile("debug.log", "debug")
-	// 	if err != nil {
-	// 		fmt.Println("fatal:", err)
-	// 		os.Exit(1)
-	// 	}
-	// 	defer f.Close()
-	// }
-
-	p := tea.NewProgram(initialModel)
+	p := tea.NewProgram(&initialModel)
 	if err := p.Start(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
-
-	// loadConfigFile()
 }
