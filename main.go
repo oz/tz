@@ -163,19 +163,24 @@ func main() {
 		os.Exit(0)
 	}
 
-	config, err := LoadConfig(flag.Args())
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
-		os.Exit(2)
-	}
+	fileConfig, err := LoadConfigFile()
+	// envConfig, err := LoadConfig(flag.Args())
+
 	var initialModel = model{
-		zones:      config.Zones,
+		zones:      fileConfig.Zones,
 		clock:      *NewClock(0),
 		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
 		showHelp:   false,
 	}
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
+		os.Exit(2)
+	}
+
+	// initialModel.zones = envConfig.Zones
 
 	if *when != 0 {
 		initialModel.clock = *NewClock(*when)
