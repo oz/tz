@@ -56,9 +56,7 @@ func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
 }
 
 func LoadConfigFile() (*Config, error) {
-	conf := Config{
-		Zones: DefaultZones,
-	}
+	conf := Config{}
 
 	// Expand the ~ to the home directory
 	homeDir, err := os.UserHomeDir()
@@ -85,14 +83,7 @@ func LoadConfigFile() (*Config, error) {
 		panic(err)
 	}
 
-	zones := make([]*Zone, len(config.Zones)+1)
-
-	// Setup with Local time zone
-	localZoneName, _ := time.Now().Zone()
-	zones[0] = &Zone{
-		Name:   fmt.Sprintf("(%s) Local", localZoneName),
-		DbName: localZoneName,
-	}
+	zones := make([]*Zone, len(config.Zones))
 
 	// Add zones from config file
 	for i, zoneConf := range config.Zones {
@@ -100,7 +91,7 @@ func LoadConfigFile() (*Config, error) {
 		if err != nil {
 			return nil, err
 		}
-		zones[i+1] = zone
+		zones[i] = zone
 	}
 
 	conf.Zones = zones

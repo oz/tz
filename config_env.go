@@ -25,9 +25,7 @@ import (
 
 // LoadConfigEnv from environment
 func LoadConfigEnv(tzConfigs []string) (*Config, error) {
-	conf := Config{
-		Zones: DefaultZones,
-	}
+	conf := Config{}
 
 	if len(tzConfigs) == 0 {
 		tzList := os.Getenv("TZ_LIST")
@@ -39,14 +37,7 @@ func LoadConfigEnv(tzConfigs []string) (*Config, error) {
 			return &conf, nil
 		}
 	}
-	zones := make([]*Zone, len(tzConfigs)+1)
-
-	// Setup with Local time zone
-	localZoneName, _ := time.Now().Zone()
-	zones[0] = &Zone{
-		Name:   fmt.Sprintf("(%s) Local", localZoneName),
-		DbName: localZoneName,
-	}
+	zones := make([]*Zone, len(tzConfigs))
 
 	// Add zones from TZ_LIST
 	for i, zoneConf := range tzConfigs {
@@ -54,7 +45,7 @@ func LoadConfigEnv(tzConfigs []string) (*Config, error) {
 		if err != nil {
 			return nil, err
 		}
-		zones[i+1] = zone
+		zones[i] = zone
 	}
 	conf.Zones = zones
 

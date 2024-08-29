@@ -16,6 +16,11 @@
  **/
 package main
 
+import (
+	"fmt"
+	"time"
+)
+
 // Keymaps represents the key mappings in the TOML file
 type Keymaps struct {
 	PrevHour   []string
@@ -38,7 +43,7 @@ type Config struct {
 // Function to provide default values for the Config struct
 func NewDefaultConfig() Config {
 	return Config{
-		Zones: []*Zone{}, // Default to an empty slice of Zones
+		Zones: DefaultZones,
 		Keymaps: Keymaps{
 			PrevHour:   []string{"h", "left"},
 			NextHour:   []string{"l", "right"},
@@ -54,9 +59,11 @@ func NewDefaultConfig() Config {
 }
 
 func LoadConfig(tzConfigs []string) (Config, error) {
-
 	// Apply config file first
-	fileConfig, _ := LoadConfigFile()
+	fileConfig, fileError := LoadConfigFile()
+	if fileError != nil {
+		panic(fileError)
+	}
 
 	// Override with env var config
 	envConfig, _ := LoadConfigEnv(tzConfigs)
@@ -64,16 +71,27 @@ func LoadConfig(tzConfigs []string) (Config, error) {
 	// Merge configs, with envConfig taking precedence
 	mergedConfig := NewDefaultConfig()
 
+	var zones []*Zone
+
+	// Setup with Local time zone
+	localZoneName, _ := time.Now().Zone()
+	zones = append(zones, &Zone{
+		Name:   fmt.Sprintf("(%s) Local", localZoneName),
+		DbName: localZoneName,
+	})
+
 	// Merge Zones
 	if len(envConfig.Zones) > 0 {
-		mergedConfig.Zones = envConfig.Zones
+		zones = append(zones, envConfig.Zones...)
 	} else if len(fileConfig.Zones) > 0 {
-		mergedConfig.Zones = fileConfig.Zones
+		zones = append(zones, fileConfig.Zones...)
 	}
 
-	logger.Printf("File config: %s", fileConfig.Zones)
-	logger.Printf("Env config: %s", envConfig.Zones)
-	logger.Printf("Merged config: %s", mergedConfig.Zones)
+	mergedConfig.Zones = zones
+
+	logger.Printf("File zones: %s", fileConfig.Zones)
+	logger.Printf("Env zones: %s", envConfig.Zones)
+	logger.Printf("Merged zones: %s", mergedConfig.Zones)
 
 	// Merge Keymaps
 	if len(fileConfig.Keymaps.PrevHour) > 0 {
