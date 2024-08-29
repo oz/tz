@@ -62,7 +62,8 @@ func LoadConfigFile() (*Config, error) {
 	// Expand the ~ to the home directory
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		panic(err)
+		// Silently return
+		return &conf, nil
 	}
 
 	configFilePath := filepath.Join(homeDir, ".config", "tz", "conf.toml")
@@ -70,7 +71,8 @@ func LoadConfigFile() (*Config, error) {
 	// Read the TOML file
 	configFile, err := os.ReadFile(configFilePath)
 	if err != nil {
-		panic(err)
+		// Silently return
+		return &conf, nil
 	}
 
 	// Unmarshal the TOML data into the Config struct
