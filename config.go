@@ -71,6 +71,10 @@ func LoadConfig(tzConfigs []string) (Config, error) {
 		mergedConfig.Zones = fileConfig.Zones
 	}
 
+	logger.Printf("File config: %s", fileConfig.Zones)
+	logger.Printf("Env config: %s", envConfig.Zones)
+	logger.Printf("Merged config: %s", mergedConfig.Zones)
+
 	// Merge Keymaps
 	if len(fileConfig.Keymaps.PrevHour) > 0 {
 		mergedConfig.Keymaps.PrevHour = fileConfig.Keymaps.PrevHour

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -72,6 +73,7 @@ func LoadConfigFile() (*Config, error) {
 	configFile, err := os.ReadFile(configFilePath)
 	if err != nil {
 		// Silently return
+		logger.Println("Config file '~/.config/tz/conf.toml' not found. Skipping...")
 		return &conf, nil
 	}
 
@@ -79,6 +81,7 @@ func LoadConfigFile() (*Config, error) {
 	var config ConfigFile
 	err = toml.Unmarshal(configFile, &config)
 	if err != nil {
+		log.Panicf("Error parsing config file %s \n %v", configFilePath, err)
 		panic(err)
 	}
 

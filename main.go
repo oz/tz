@@ -151,6 +151,9 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func main() {
+	SetupLogger()
+	logger.Println("Startup")
+
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
 	when := flag.Int64("when", 0, "time in seconds since unix epoch")
