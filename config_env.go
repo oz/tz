@@ -23,8 +23,8 @@ import (
 	"time"
 )
 
-// LoadConfig from environment
-func LoadConfig(tzConfigs []string) (*Config, error) {
+// LoadConfigEnv from environment
+func LoadConfigEnv(tzConfigs []string) (*Config, error) {
 	conf := Config{
 		Zones: DefaultZones,
 	}
@@ -50,7 +50,7 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 
 	// Add zones from TZ_LIST
 	for i, zoneConf := range tzConfigs {
-		zone, err := SetupZone(time.Now(), zoneConf)
+		zone, err := ReadZoneFromString(time.Now(), zoneConf)
 		if err != nil {
 			return nil, err
 		}
@@ -61,8 +61,8 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 	return &conf, nil
 }
 
-// SetupZone from current time and a zoneConf string
-func SetupZone(now time.Time, zoneConf string) (*Zone, error) {
+// ReadZoneFromString from current time and a zoneConf string
+func ReadZoneFromString(now time.Time, zoneConf string) (*Zone, error) {
 	names := strings.Split(zoneConf, ",")
 	dbName := strings.Trim(names[0], " ")
 	var name string

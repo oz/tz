@@ -35,7 +35,7 @@ type ConfigFileKeymaps struct {
 	Now        []string `toml:"now"`
 }
 
-func setupZone(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
+func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
 	name := zoneConf.Name
 	dbName := zoneConf.ID
 
@@ -91,7 +91,7 @@ func LoadConfigFile() (*Config, error) {
 
 	// Add zones from config file
 	for i, zoneConf := range config.Zones {
-		zone, err := setupZone(time.Now(), zoneConf)
+		zone, err := ReadZonesFromFile(time.Now(), zoneConf)
 		if err != nil {
 			return nil, err
 		}

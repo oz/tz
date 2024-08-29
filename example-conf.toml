@@ -1,5 +1,3 @@
-header = "What time is it?"
-
 [[zones]]
 id = "NZ"
 name = "NZ"

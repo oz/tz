@@ -174,12 +174,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	fileConfig, err := LoadConfigFile()
-	// envConfig, err := LoadConfig(flag.Args())
+	config, err := LoadConfig(flag.Args())
 
 	var initialModel = model{
-		zones:      fileConfig.Zones,
-		keymaps:    fileConfig.Keymaps,
+		zones:      config.Zones,
+		keymaps:    config.Keymaps,
 		clock:      *NewClock(0),
 		showDates:  false,
 		isMilitary: *military,
@@ -191,8 +190,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
 		os.Exit(2)
 	}
-
-	// initialModel.zones = envConfig.Zones
 
 	if *when != 0 {
 		initialModel.clock = *NewClock(*when)

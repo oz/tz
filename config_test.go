@@ -44,7 +44,7 @@ func TestSetupZone(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		_, err := SetupZone(now, test.zoneName)
+		_, err := ReadZoneFromString(now, test.zoneName)
 		if test.ok != (err == nil) {
 			t.Errorf("Expected %v, but got: %v", test.ok, err)
 		}
@@ -76,7 +76,7 @@ func TestSetupZoneWithCustomNames(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		z, err := SetupZone(now, test.zoneName)
+		z, err := ReadZoneFromString(now, test.zoneName)
 		if test.ok != (err == nil) {
 			t.Errorf("Expected %v, but got: %v", test.ok, err)
 		}
