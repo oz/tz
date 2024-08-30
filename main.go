@@ -26,6 +26,7 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/mattn/go-isatty"
 	"github.com/muesli/termenv"
 )
 
@@ -180,7 +181,7 @@ func main() {
 		initialModel.clock = *NewClock(*when)
 	}
 
-	initialModel.interactive = !*exitQuick
+	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout.Fd())
 
 	p := tea.NewProgram(&initialModel)
 	if err := p.Start(); err != nil {
