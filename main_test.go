@@ -61,8 +61,9 @@ func TestUpdateIncHour(t *testing.T) {
 
 	for _, test := range tests {
 		m := model{
-			zones: DefaultZones,
-			clock: *NewClock(getTimestampWithHour(test.startHour)),
+			zones:   DefaultZones,
+			keymaps: NewDefaultConfig().Keymaps,
+			clock:   *NewClock(getTimestampWithHour(test.startHour)),
 		}
 
 		db := m.clock.Time().Day()
@@ -103,8 +104,9 @@ func TestUpdateDecHour(t *testing.T) {
 
 	for _, test := range tests {
 		m := model{
-			zones: DefaultZones,
-			clock: *NewClock(getTimestampWithHour(test.startHour)),
+			zones:   DefaultZones,
+			keymaps: NewDefaultConfig().Keymaps,
+			clock:   *NewClock(getTimestampWithHour(test.startHour)),
 		}
 		nextState, cmd := m.Update(msg)
 		if cmd != nil {
