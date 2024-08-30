@@ -62,19 +62,77 @@ go install github.com/oz/tz@latest
 
 The tz program uses standard time zones as described
 [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-You should specify what time zones to display by setting the `TZ_LIST`
-environment variable. The local time is always displayed first. To
-display your local time, the time in California, and the time Paris, you
-have to set `TZ_LIST` to `US/Pacific;Europe/Paris`
 
-## Zone Alias
+You can specify preferences through a configuration file, an environment variable,
+or as command arguments.
 
-The `TZ_LIST` env. variable recognizes items from the standard tz
+They are applied in this order, overriding at each subsequent step:
+
+1. Configuration file `~/.config/tz/conf.toml`
+2. Environment variable `TZ_LIST`
+3. Command line arguments `tz UTC`
+
+The local time zone is always displayed first.
+
+## Configuration File
+
+Configs are read from `$HOME/.config/tz/conf.toml`.
+
+Time zone `id`s should reference items from the standard tz database names.
+Alias them by providing your own name with the `name` key.
+
+Sample configuration:
+
+```toml
+[[zones]]
+id = "NZ"
+name = "NZ"
+
+[[zones]]
+id = "Australia/Sydney"
+name = "Sydney"
+
+[[zones]]
+id = "Asia/Kolkata"
+name = "Bangalore"
+
+[[zones]]
+id = "UTC"
+name = "UTC"
+
+[keymaps]
+prev_hour = ["h", "left"]
+next_hour = ["l", "right"]
+prev_day = ["k", "up"]
+next_day = ["j", "down"]
+prev_week = ["p", "<"]
+next_week = ["n", ">"]
+toggle_date = ["d"]
+open_web = ["o", "x"]
+now = ["t"]
+```
+
+## Environment Variable
+
+This method only supports setting time zones. Keymaps must be configured through
+the configuration file.
+
+Specify time zones to display by setting the `TZ_LIST` environment variable. For
+example, to display your local time, the time in California, and the time Paris,
+set `TZ_LIST` to `US/Pacific;Europe/Paris`.
+
+The `TZ_LIST` environment variable recognizes items from the standard tz
 database names, but you can alias these, using a special value: use the
 standard name followed by `,` and your alias. For example:
 
-```
+```bash
 TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"
+```
+
+If adding this to a shell configuration, remember to export it:
+
+```bash
+export TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"
 ```
 
 
@@ -82,7 +140,7 @@ TZ_LIST="Europe/Paris,EMEA office;US/Central,US office"
 
 You need a recent-ish release of go with modules support:
 
-```
+```bash
 git clone https://github.com/oz/tz
 cd tz
 go build
@@ -91,8 +149,15 @@ go build
 
 # Testing
 
-```
+```bash
 go test -cover
+```
+
+
+# Debug
+
+```bash
+DEBUG=1 tz # Logs will write to debug.log
 ```
 
 
