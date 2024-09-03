@@ -11,16 +11,17 @@ jobs:
     env:
       GO111MODULE: auto
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ["1.22", "1.23"]
+
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
-
+          go-version: ${{ matrix.go-version }}
       - name: Build
         run: go build
-
       - name: Test
         run: go test -v .
