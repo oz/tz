@@ -1,6 +1,6 @@
 module github.com/oz/tz
 
-go 1.17
+go 1.22
 
 require (
 	github.com/charmbracelet/bubbletea v0.22.1
