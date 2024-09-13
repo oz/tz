@@ -22,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"slices"
 	"strings"
 	"time"
 
@@ -93,51 +94,47 @@ func (m model) Init() tea.Cmd {
 }
 
 func match(input string, options []string) bool {
-	for _, option := range options {
-		if input == option {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(options, input)
 }
 
 func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
+		key := msg.String()
 		switch {
 
-		case msg.String() == "ctrl+c", msg.String() == "q", msg.String() == "esc":
+		case match(key, m.keymaps.Quit):
 			return m, tea.Quit
 
-		case match(msg.String(), m.keymaps.PrevHour):
+		case match(key, m.keymaps.PrevHour):
 			m.clock.AddHours(-1)
 
-		case match(msg.String(), m.keymaps.NextHour):
+		case match(key, m.keymaps.NextHour):
 			m.clock.AddHours(1)
 
-		case match(msg.String(), m.keymaps.PrevDay):
+		case match(key, m.keymaps.PrevDay):
 			m.clock.AddDays(-1)
 
-		case match(msg.String(), m.keymaps.NextDay):
+		case match(key, m.keymaps.NextDay):
 			m.clock.AddDays(1)
 
-		case match(msg.String(), m.keymaps.PrevWeek):
+		case match(key, m.keymaps.PrevWeek):
 			m.clock.AddDays(-7)
 
-		case match(msg.String(), m.keymaps.NextWeek):
+		case match(key, m.keymaps.NextWeek):
 			m.clock.AddDays(7)
 
-		case match(msg.String(), m.keymaps.OpenWeb):
+		case match(key, m.keymaps.OpenWeb):
 			openInTimeAndDateDotCom(m.clock.Time())
 
-		case match(msg.String(), m.keymaps.Now):
+		case match(key, m.keymaps.Now):
 			m.clock = *NewClock(0)
 
-		case match(msg.String(), m.keymaps.ToggleDate):
+		case match(key, m.keymaps.ToggleDate):
 			m.showDates = !m.showDates
 
-		case msg.String() == "?":
+		case key == "?":
 			m.showHelp = !m.showHelp
 		}
 
