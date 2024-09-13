@@ -34,6 +34,7 @@ type ConfigFileKeymaps struct {
 	ToggleDate []string `toml:"toggle_date"`
 	OpenWeb    []string `toml:"open_web"`
 	Now        []string `toml:"now"`
+	Quit       []string `toml:"quit"`
 }
 
 func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {

@@ -32,6 +32,7 @@ type Keymaps struct {
 	ToggleDate []string
 	OpenWeb    []string
 	Now        []string
+	Quit       []string
 }
 
 // Config stores app configuration
@@ -54,6 +55,7 @@ func NewDefaultConfig() Config {
 			ToggleDate: []string{"d"},
 			OpenWeb:    []string{"o"},
 			Now:        []string{"t"},
+			Quit:       []string{"q", "ctrl+c", "esc"},
 		},
 	}
 }
@@ -128,6 +130,10 @@ func LoadConfig(tzConfigs []string) (Config, error) {
 
 	if len(fileConfig.Keymaps.Now) > 0 {
 		mergedConfig.Keymaps.Now = fileConfig.Keymaps.Now
+	}
+
+	if len(fileConfig.Keymaps.Quit) > 0 {
+		mergedConfig.Keymaps.Quit = fileConfig.Keymaps.Quit
 	}
 
 	return mergedConfig, nil
