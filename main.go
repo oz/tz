@@ -175,6 +175,10 @@ func main() {
 	}
 
 	config, err := LoadConfig(flag.Args())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
+		os.Exit(2)
+	}
 
 	var initialModel = model{
 		zones:      config.Zones,
@@ -184,11 +188,6 @@ func main() {
 		isMilitary: *military,
 		watch:      *watch,
 		showHelp:   false,
-	}
-
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
-		os.Exit(2)
 	}
 
 	if *when != 0 {
