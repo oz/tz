@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -59,34 +58,27 @@ func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
 func LoadConfigFile() (*Config, error) {
 	conf := Config{}
 
-	// Expand the ~ to the home directory
+	// Return early if we can't find a home dir.
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		// Silently return
 		return &conf, nil
 	}
 
 	configFilePath := filepath.Join(homeDir, ".config", "tz", "conf.toml")
-
-	// Read the TOML file
 	configFile, err := os.ReadFile(configFilePath)
 	if err != nil {
-		// Silently return
-		logger.Println("Config file '~/.config/tz/conf.toml' not found. Skipping...")
+		// Ignore unreadable config file.
+		logger.Printf("Config file '%s' not found. Skipping...\n", configFilePath)
 		return &conf, nil
 	}
 
-	// Unmarshal the TOML data into the Config struct
 	var config ConfigFile
-	err = toml.Unmarshal(configFile, &config)
-	if err != nil {
-		log.Panicf("Error parsing config file %s \n %v", configFilePath, err)
-		panic(err)
+	if err = toml.Unmarshal(configFile, &config); err != nil {
+		return nil, fmt.Errorf("Parsing %s: %w\n", configFilePath, err)
 	}
 
-	zones := make([]*Zone, len(config.Zones))
-
 	// Add zones from config file
+	zones := make([]*Zone, len(config.Zones))
 	for i, zoneConf := range config.Zones {
 		zone, err := ReadZonesFromFile(time.Now(), zoneConf)
 		if err != nil {

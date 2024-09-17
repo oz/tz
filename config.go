@@ -60,15 +60,18 @@ func NewDefaultConfig() Config {
 	}
 }
 
-func LoadConfig(tzConfigs []string) (Config, error) {
+func LoadConfig(tzConfigs []string) (*Config, error) {
 	// Apply config file first
 	fileConfig, fileError := LoadConfigFile()
 	if fileError != nil {
-		panic(fileError)
+		return nil, fmt.Errorf("File error: %w", fileError)
 	}
 
 	// Override with env var config
-	envConfig, _ := LoadConfigEnv(tzConfigs)
+	envConfig, envErr := LoadConfigEnv(tzConfigs)
+	if envErr != nil {
+		return nil, fmt.Errorf("Env error: %w", envErr)
+	}
 
 	// Merge configs, with envConfig taking precedence
 	mergedConfig := NewDefaultConfig()
@@ -136,5 +139,5 @@ func LoadConfig(tzConfigs []string) (Config, error) {
 		mergedConfig.Keymaps.Quit = fileConfig.Keymaps.Quit
 	}
 
-	return mergedConfig, nil
+	return &mergedConfig, nil
 }
