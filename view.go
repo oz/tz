@@ -18,25 +18,45 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"strings"
 
 	"github.com/muesli/termenv"
+	xterm "golang.org/x/term"
 )
 
 // Width required to display 24 hours
 const UIWidth = 94
+const MinimumZoneHeaderPadding = 6
+const MaximumZoneHeaderColumns = UIWidth + MinimumZoneHeaderPadding
 
 func (m model) View() string {
 	s := normalTextStyle("\n  What time is it?\n\n").String()
+
+	zoneHeaderWidth := MaximumZoneHeaderColumns
+	envWidth, envErr := strconv.Atoi(os.Getenv("COLUMNS"))
+	if envErr == nil {
+		zoneHeaderWidth = min(envWidth, zoneHeaderWidth)
+	} else {
+		fd := int(os.Stdout.Fd())
+		if xterm.IsTerminal(fd) {
+			termWidth, _, termErr := xterm.GetSize(fd)
+			if termErr == nil {
+				zoneHeaderWidth = min(termWidth, zoneHeaderWidth)
+			}
+		}
+	}
 
 	// Show hours for each zone
 	for zi, zone := range m.zones {
 		hours := strings.Builder{}
 		dates := strings.Builder{}
+		currentTime := zone.currentTime(m.clock.t)
 
 		startHour := 0
 		if zi > 0 {
-			startHour = (zone.currentTime(m.clock.t).Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
+			startHour = (currentTime.Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
 		}
 
 		dateChanged := false
@@ -77,7 +97,12 @@ func (m model) View() string {
 			datetime = zone.ShortDT(m.clock.t)
 		}
 
-		zoneHeader := fmt.Sprintf("%s %-60s %76s", zone.ClockEmoji(m.clock.t), normalTextStyle(zone.String()), dateTimeStyle(datetime))
+		clockString := zone.ClockEmoji(m.clock.t)
+		zoneString := zone.String()
+		usedZoneHeaderWidth := termenv.String(clockString + zoneString + datetime).Width()
+		unusedZoneHeaderWidth := max(0, zoneHeaderWidth - usedZoneHeaderWidth - MinimumZoneHeaderPadding)
+		rightAlignmentSpace := strings.Repeat(" ", unusedZoneHeaderWidth)
+		zoneHeader := fmt.Sprintf("%s %s %s%s", clockString, normalTextStyle(zoneString), rightAlignmentSpace, dateTimeStyle(datetime))
 
 		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
 	}
