@@ -17,11 +17,33 @@
 package main
 
 import (
+	"regexp"
 	"strings"
 	"testing"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/muesli/termenv"
+)
+
+var (
+	ansiControlSequenceRegexp = regexp.MustCompile(regexp.QuoteMeta(termenv.CSI) + "[^m]*m")
+	utcMinuteAfterMidnightTime = time.Date(
+		2017, // Year
+		11, // Month
+		5, // Day
+		0, // Hour
+		1, // Minutes
+		2, // Seconds
+		127, // Nanoseconds
+		time.UTC,
+	)
+	utcMinuteAfterMidnightModel = model{
+		zones:      DefaultZones[len(DefaultZones) - 1:],
+		clock:      *NewClock(utcMinuteAfterMidnightTime.Unix()),
+		isMilitary: true,
+		showDates:  true,
+	}
 )
 
 func getTimestampWithHour(hour int) int64 {
@@ -38,6 +60,15 @@ func getTimestampWithHour(hour int) int64 {
 		0, // Nanoseconds set to 0
 		time.Now().Location(),
 	).Unix()
+}
+
+func stripAnsiControlSequences(s string) string {
+	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
+}
+
+func stripAnsiControlSequencesAndNewline(bytes []byte) string {
+	s := strings.TrimSuffix(string(bytes), "\n")
+	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
 }
 
 func TestUpdateIncHour(t *testing.T) {
