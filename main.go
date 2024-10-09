@@ -129,7 +129,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			openInTimeAndDateDotCom(m.clock.Time())
 
 		case match(key, m.keymaps.Now):
-			m.clock = *NewClock(0)
+			m.clock = *NewClockNow()
 
 		case match(key, m.keymaps.ToggleDate):
 			m.showDates = !m.showDates
@@ -139,8 +139,8 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case tickMsg:
-		if m.watch {
-			m.clock = *NewClock(0)
+		if m.watch && m.clock.isRealTime {
+			m.clock = *NewClockNow()
 		}
 		return m, tick()
 	}
@@ -153,7 +153,7 @@ func main() {
 
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
-	when := flag.Int64("when", 0, "time in seconds since unix epoch")
+	when := flag.Int64("when", 0, "time in seconds since unix epoch (disables -w)")
 	doSearch := flag.Bool("list", false, "list zones by name")
 	military := flag.Bool("m", false, "use 24-hour time")
 	watch := flag.Bool("w", false, "watch live, set time to now every minute")
@@ -183,7 +183,7 @@ func main() {
 	var initialModel = model{
 		zones:      config.Zones,
 		keymaps:    config.Keymaps,
-		clock:      *NewClock(0),
+		clock:      *NewClockNow(),
 		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
@@ -191,7 +191,7 @@ func main() {
 	}
 
 	if *when != 0 {
-		initialModel.clock = *NewClock(*when)
+		initialModel.clock = *NewClockUnixTimestamp(*when)
 	}
 
 	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout.Fd())

@@ -40,13 +40,13 @@ var (
 	)
 	utcMinuteAfterMidnightModel = model{
 		zones:      DefaultZones[len(DefaultZones) - 1:],
-		clock:      *NewClock(utcMinuteAfterMidnightTime.Unix()),
+		clock:      *NewClockTime(utcMinuteAfterMidnightTime),
 		isMilitary: true,
 		showDates:  true,
 	}
 )
 
-func getTimestampWithHour(hour int) int64 {
+func getTimestampWithHour(hour int) time.Time {
 	if hour == -1 {
 		hour = time.Now().Hour()
 	}
@@ -59,7 +59,7 @@ func getTimestampWithHour(hour int) int64 {
 		0, // Seconds set to 0
 		0, // Nanoseconds set to 0
 		time.Now().Location(),
-	).Unix()
+	)
 }
 
 func stripAnsiControlSequences(s string) string {
@@ -94,7 +94,7 @@ func TestUpdateIncHour(t *testing.T) {
 		m := model{
 			zones:   DefaultZones,
 			keymaps: NewDefaultConfig().Keymaps,
-			clock:   *NewClock(getTimestampWithHour(test.startHour)),
+			clock:   *NewClockTime(getTimestampWithHour(test.startHour)),
 		}
 
 		db := m.clock.Time().Day()
@@ -137,7 +137,7 @@ func TestUpdateDecHour(t *testing.T) {
 		m := model{
 			zones:   DefaultZones,
 			keymaps: NewDefaultConfig().Keymaps,
-			clock:   *NewClock(getTimestampWithHour(test.startHour)),
+			clock:   *NewClockTime(getTimestampWithHour(test.startHour)),
 		}
 		nextState, cmd := m.Update(msg)
 		if cmd != nil {
@@ -162,7 +162,7 @@ func TestUpdateQuitMsg(t *testing.T) {
 	m := model{
 		zones:   DefaultZones,
 		keymaps: NewDefaultConfig().Keymaps,
-		clock:   *NewClock(getTimestampWithHour(-1)),
+		clock:   *NewClock(),
 	}
 	_, cmd := m.Update(msg)
 	if cmd == nil {
@@ -176,7 +176,7 @@ func TestUpdateQuitMsg(t *testing.T) {
 func TestMilitaryTime(t *testing.T) {
 	m := model{
 		zones:      DefaultZones,
-		clock:      *NewClock(getTimestampWithHour(-1)),
+		clock:      *NewClock(),
 		isMilitary: true,
 		showDates:  true,
 	}
