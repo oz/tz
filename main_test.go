@@ -70,6 +70,11 @@ func stripAnsiControlSequencesAndNewline(bytes []byte) string {
 	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
 }
 
+func TestMain(m *testing.M) {
+	SetupLogger()
+	m.Run()
+}
+
 func TestUpdateIncHour(t *testing.T) {
 	// "l" key -> go right
 	msg := tea.KeyMsg{
