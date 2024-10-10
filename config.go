@@ -33,6 +33,7 @@ type Keymaps struct {
 	ToggleDate []string
 	OpenWeb    []string
 	Now        []string
+	Help       []string
 	Quit       []string
 }
 
@@ -53,6 +54,7 @@ var DefaultKeymaps = Keymaps{
 	ToggleDate: []string{"d"},
 	OpenWeb:    []string{"o"},
 	Now:        []string{"t"},
+	Help:       []string{"?"},
 	Quit:       []string{"q", "ctrl+c", "esc"},
 }
 
@@ -141,6 +143,7 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 		mergedConfig.Keymaps.ToggleDate,
 		mergedConfig.Keymaps.OpenWeb,
 		mergedConfig.Keymaps.Now,
+		mergedConfig.Keymaps.Help,
 		mergedConfig.Keymaps.Quit,
 	}
 	var keysUsed = make(map[string]bool)

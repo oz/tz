@@ -134,7 +134,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case match(key, m.keymaps.ToggleDate):
 			m.showDates = !m.showDates
 
-		case key == "?":
+		case match(key, m.keymaps.Help):
 			m.showHelp = !m.showHelp
 		}
 
