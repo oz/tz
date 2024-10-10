@@ -125,6 +125,64 @@ func TestDstStartDays(t *testing.T) {
 	RunDstDaysTest(t, "Europe DST start", testDataFile, europeStartDst)
 }
 
+func TestDstSpecialMidnights(t *testing.T) {
+	// The following are expressed in UTC, because the local date boundary is unusual:
+	cubaDstStart := time.Date(2017, time.March, 12, 5, 0, 0, 0, time.UTC) // 12 Mar Cuba missing midnight
+	cubaDstEnd := time.Date(2017, time.November, 5, 4, 0, 0, 0, time.UTC) // 5 Mar Cuba double midnight
+
+	testDataFile := "testdata/view/test-dst-midnights.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	config, err := LoadDefaultConfig([]string{
+		"UTC",  // Z
+		"Cuba", // Z-5 (CST), Z-4 (CDT)
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	midnightTestZones := config.Zones[1:]
+
+	tests := []struct {
+		name string
+		time time.Time
+	}{
+		{"Start DST missing midnight", cubaDstStart},
+		{"End DST double midnight", cubaDstEnd},
+	}
+
+	var outputData = make([]txtar.File, len(tests))
+	for i, test := range tests {
+		state := model{
+			zones:      midnightTestZones,
+			clock:      *NewClockTime(test.time),
+			isMilitary: true,
+			showDates:  true,
+		}
+		observed := stripAnsiControlSequences(state.View())
+		outputData[i] = txtar.File{
+			Name: fmt.Sprintf("%v (%v = %v)", test.name, test.time.Format(time.RFC3339), test.time.Unix()),
+			Data: []byte(observed),
+		}
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: outputData,
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	for i, test := range tests {
+		observed := stripAnsiControlSequencesAndNewline(outputData[i].Data)
+		expected := stripAnsiControlSequencesAndNewline(testData.Files[i].Data)
+		if observed != expected {
+			t.Errorf("Midnight DST: Mismatched %s: Check git diff %s", test.name, testDataFile)
+		}
+	}
+}
+
 func TestFractionalTimezoneOffsets(t *testing.T) {
 	testDataFile := "testdata/view/test-fractional-timezone-offsets.txt"
 	testData, err := txtar.ParseFile(testDataFile)
