@@ -1,0 +1,261 @@
+Test local timezones other than UTC, with UTC as a reference for consistency.
+Checking:
+- Fractional-hour timezones
+- Daylight saving peculiarities
+
+How to read the results (this is the method used in view_test.go’s TestLocalTimezones):
+- Numbered as [group][test] so within a [group] we check that all [test] are ‘aligned’
+- Read the ‘alignment’ by looking at the date-time in each test title and finding its column
+  within the test (be sure you look on the correct side of any date line), then check that all
+  the hours in the columns _below_ Local are the same for all tests within the group.
+  For example:
+  - First test [0][0] is timestamped midnight UTC, which is the first column on the left.
+  - Second test [0][1] is timestamped 5:30 am in India, which is the sixth column from the left.
+  - Third test [0][2] is timestamped 8:00 pm in Cuba, which is the 4th column from the right.
+  - These three columns should show the same hours vertically.
+- Although there are other ways of checking it, these may be harder because of differences
+  caused by daylight-saving offsets on either side of midnight.
+
+Note: The expectation for test case [1][2] (Cuba) is an exceptional corner case,
+because the DST-ending midnight is not the first hour of  day, hence no 📆 icon.
+
+-- [0][0] UTC (2017-11-05T00:00:00Z = 1509840000) --
+
+  What time is it?
+
+  🕛 Local 00:00, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕛 (UTC) UTC 00:00, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕐 (CET) Europe/Paris 01:00, Sun 05
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕑 (IST) Israel 02:00, Sun 05
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕔 (IST) Asia/Calcutta 05:30, Sun 05
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕗 (+0845) Australia/Eucla 08:45, Sun 05
+   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
+                                                                  📆 Mon 06
+  🕙 (AEDT) Australia/Sydney 11:00, Sun 05
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati 14:00, Sun 05
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕑 (HST) Pacific/Honolulu 14:00, Sat 04
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕖 (CDT) US/Central 19:00, Sat 04
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Sun 05
+  🕗 (CDT) Cuba 20:00, Sat 04
+  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+                  📆 Sun 05
+  🕘 (-03) America/Argentina/ComodRivadavia 21:00, Sat 04
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+-- [0][1] Asia/Calcutta (2017-11-05T05:30:00+05:30 = 1509840000) --
+
+  What time is it?
+
+  🕔 Local 05:30, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕛 (UTC) UTC 00:00, Sun 05
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Sun 05
+  🕐 (CET) Europe/Paris 01:00, Sun 05
+  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+                  📆 Sun 05
+  🕑 (IST) Israel 02:00, Sun 05
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+  🕔 (IST) Asia/Calcutta 05:30, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕗 (+0845) Australia/Eucla 08:45, Sun 05
+   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
+                                                                                      📆 Mon 06
+  🕙 (AEDT) Australia/Sydney 11:00, Sun 05
+   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
+                                                                          📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati 14:00, Sun 05
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Mon 06
+  🕑 (HST) Pacific/Honolulu 14:00, Sat 04
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Sun 05
+  🕖 (CDT) US/Central 19:00, Sat 04
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕗 (CDT) Cuba 20:00, Sat 04
+  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+                                      📆 Sun 05
+  🕘 (-03) America/Argentina/ComodRivadavia 21:00, Sat 04
+  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+                                  📆 Sun 05
+-- [0][2] Cuba (2017-11-04T20:00:00-04:00 = 1509840000) --
+
+  What time is it?
+
+  🕗 Local 20:00, Sat 04
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sat 04
+  🕛 (UTC) UTC 00:00, Sun 05
+   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3  
+                                                                                  📆 Sun 05
+  🕐 (CET) Europe/Paris 01:00, Sun 05
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Sun 05
+  🕑 (IST) Israel 02:00, Sun 05
+   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
+                                                                          📆 Sun 05
+  🕔 (IST) Asia/Calcutta 05:30, Sun 05
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Sun 05
+  🕗 (+0845) Australia/Eucla 08:45, Sun 05
+  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  
+                                                  📆 Sun 05
+  🕙 (AEDT) Australia/Sydney 11:00, Sun 05
+  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+                                      📆 Sun 05
+  🕑 (+14) Pacific/Kiritimati 14:00, Sun 05
+  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                          📆 Sun 05
+  🕑 (HST) Pacific/Honolulu 14:00, Sat 04
+  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                          📆 Sat 04
+  🕖 (CDT) US/Central 19:00, Sat 04
+  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  
+      📆 Sat 04
+  🕗 (CDT) Cuba 20:00, Sat 04
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sat 04
+  🕘 (-03) America/Argentina/ComodRivadavia 21:00, Sat 04
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Sun 05
+-- [1][0] UTC (2017-11-06T00:30:00Z = 1509928200) --
+
+  What time is it?
+
+  🕛 Local 00:30, Mon 06
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Mon 06
+  🕛 (UTC) UTC 00:30, Mon 06
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Mon 06
+  🕐 (CET) Europe/Paris 01:30, Mon 06
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Tue 07
+  🕑 (IST) Israel 02:30, Mon 06
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Tue 07
+  🕕 (IST) Asia/Calcutta 06:00, Mon 06
+   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
+                                                                          📆 Tue 07
+  🕘 (+0845) Australia/Eucla 09:15, Mon 06
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Tue 07
+  🕙 (AEDT) Australia/Sydney 11:30, Mon 06
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Tue 07
+  🕑 (+14) Pacific/Kiritimati 14:30, Mon 06
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Tue 07
+  🕑 (HST) Pacific/Honolulu 14:30, Sun 05
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕕 (CDT) US/Central 18:30, Sun 05
+  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                          📆 Mon 06
+  🕖 (CDT) Cuba 19:30, Sun 05
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Mon 06
+  🕘 (-03) America/Argentina/ComodRivadavia 21:30, Sun 05
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Mon 06
+-- [1][1] Asia/Calcutta (2017-11-06T06:00:00+05:30 = 1509928200) --
+
+  What time is it?
+
+  🕕 Local 06:00, Mon 06
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Mon 06
+  🕛 (UTC) UTC 00:30, Mon 06
+  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                          📆 Mon 06
+  🕐 (CET) Europe/Paris 01:30, Mon 06
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Mon 06
+  🕑 (IST) Israel 02:30, Mon 06
+  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+                  📆 Mon 06
+  🕕 (IST) Asia/Calcutta 06:00, Mon 06
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Mon 06
+  🕘 (+0845) Australia/Eucla 09:15, Mon 06
+   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
+                                                                                      📆 Tue 07
+  🕙 (AEDT) Australia/Sydney 11:30, Mon 06
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Tue 07
+  🕑 (+14) Pacific/Kiritimati 14:30, Mon 06
+   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
+                                                                  📆 Tue 07
+  🕑 (HST) Pacific/Honolulu 14:30, Sun 05
+   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
+                                                                  📆 Mon 06
+  🕕 (CDT) US/Central 18:30, Sun 05
+  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  
+                                                  📆 Mon 06
+  🕖 (CDT) Cuba 19:30, Sun 05
+  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  
+                                              📆 Mon 06
+  🕘 (-03) America/Argentina/ComodRivadavia 21:30, Sun 05
+  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+                                      📆 Mon 06
+-- [1][2] Cuba (2017-11-05T19:30:00-05:00 = 1509928200) --
+
+  What time is it?
+
+  🕖 Local 19:30, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕛 (UTC) UTC 00:30, Mon 06
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕐 (CET) Europe/Paris 01:30, Mon 06
+   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
+                                                                          📆 Mon 06
+  🕑 (IST) Israel 02:30, Mon 06
+   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6  
+                                                                      📆 Mon 06
+  🕕 (IST) Asia/Calcutta 06:00, Mon 06
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕘 (+0845) Australia/Eucla 09:15, Mon 06
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕙 (AEDT) Australia/Sydney 11:30, Mon 06
+  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+                                  📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati 14:30, Mon 06
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Mon 06
+  🕑 (HST) Pacific/Honolulu 14:30, Sun 05
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Sun 05
+  🕕 (CDT) US/Central 18:30, Sun 05
+  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  
+      📆 Sun 05
+  🕖 (CDT) Cuba 19:30, Sun 05
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕘 (-03) America/Argentina/ComodRivadavia 21:30, Sun 05
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
