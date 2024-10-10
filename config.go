@@ -18,7 +18,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 // Keymaps represents the key mappings in the TOML file
@@ -76,20 +75,15 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 	// Merge configs, with envConfig taking precedence
 	mergedConfig := NewDefaultConfig()
 
-	var zones []*Zone
-
-	// Setup with Local time zone
-	localZoneName, _ := time.Now().Zone()
-	zones = append(zones, &Zone{
-		Name:   fmt.Sprintf("(%s) Local", localZoneName),
-		DbName: localZoneName,
-	})
-
 	// Merge Zones
+	var zones []*Zone = []*Zone{DefaultZones[0]}
+
 	if len(envConfig.Zones) > 0 {
 		zones = append(zones, envConfig.Zones...)
 	} else if len(fileConfig.Zones) > 0 {
 		zones = append(zones, fileConfig.Zones...)
+	} else {
+		zones = append(zones, DefaultZones[1:]...)
 	}
 
 	mergedConfig.Zones = zones
