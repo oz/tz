@@ -43,6 +43,7 @@ var (
 	utcMinuteAfterMidnightModel = model{
 		zones:      DefaultZones[len(DefaultZones) - 1:],
 		clock:      *NewClockTime(utcMinuteAfterMidnightTime),
+		keymaps:    DefaultKeymaps,
 		isMilitary: true,
 		showDates:  true,
 	}
@@ -152,6 +153,53 @@ func TestUpdateDecHour(t *testing.T) {
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
+	}
+}
+
+func TestUpdateShowHelpMsg(t *testing.T) {
+	// "?" key -> help
+	msg := tea.KeyMsg{
+		Type:  tea.KeyRunes,
+		Runes: []rune{'?'},
+		Alt:   false,
+	}
+
+	m := utcMinuteAfterMidnightModel
+	if m.showHelp {
+		t.Error("showHelp should be disabled by default")
+	}
+
+	status1 := status(m)
+
+	if _, cmd := m.Update(msg); cmd != nil {
+		t.Fatalf("Expected nil Cmd, but got %v", cmd)
+	}
+
+	if !m.showHelp {
+		t.Error("showHelp not enabled by '?' key")
+	}
+
+	oldHasDarkBackground := hasDarkBackground
+	hasDarkBackground = true
+	status2 := status(m)
+	hasDarkBackground = oldHasDarkBackground
+
+	if status2 == status1 || !strings.Contains(status2, "d: toggle date") {
+		t.Errorf("Expected help, but got:\n%v", status2)
+	}
+
+	if _, cmd := m.Update(msg); cmd != nil {
+		t.Fatalf("Expected nil Cmd, but got %v", cmd)
+	}
+
+	if m.showHelp {
+		t.Error("showHelp not toggled")
+	}
+
+	status3 := status(m)
+
+	if status3 != status1 {
+		t.Errorf("Expected final status identical to initial status, but got:\n%v", status3)
 	}
 }
 

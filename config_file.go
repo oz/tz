@@ -33,6 +33,7 @@ type ConfigFileKeymaps struct {
 	ToggleDate []string `toml:"toggle_date"`
 	OpenWeb    []string `toml:"open_web"`
 	Now        []string `toml:"now"`
+	Help       []string `toml:"help"`
 	Quit       []string `toml:"quit"`
 }
 
