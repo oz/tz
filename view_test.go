@@ -23,6 +23,7 @@ import (
 	"testing"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"golang.org/x/tools/txtar"
 )
 
@@ -122,6 +123,89 @@ func TestDstStartDays(t *testing.T) {
 	testDataFile := "testdata/view/test-dst-start-days.txt"
 	europeStartDst := time.Date(2024, time.March, 31, 1, 0, 0, 0, time.UTC)
 	RunDstDaysTest(t, "Europe DST start", testDataFile, europeStartDst)
+}
+
+func TestFractionalTimezoneOffsets(t *testing.T) {
+	testDataFile := "testdata/view/test-fractional-timezone-offsets.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tests := []struct {
+		name string
+		datetime string
+		keystrokes string
+	}{
+		{"Start time", "2017-11-05T00:29:02Z", ""},
+		{"Plus 1 hour", "2017-11-05T01:29:02Z", "l"},
+		{"Minus 15 minutes", "2017-11-05T01:14:02Z", "---------------"}, // @todo implement new keys
+		{"Return to start", "2017-11-05T00:29:02Z", "HL<>+++++++++++++++h"},
+		{"Minus 1 hour, date changed", "2017-11-04T23:29:02Z", "h"},
+		{"Return to start", "2017-11-05T00:29:02Z", "l"},
+	}
+
+	start, err := time.Parse(time.RFC3339, tests[0].datetime)
+	if err != nil {
+		t.Fatalf("Could not parse test Start time: %v", err)
+	}
+
+	state := &model{
+		zones:      LoadDstTestZones(t),
+		clock:      *NewClockTime(start),
+		keymaps:    DefaultKeymaps,
+		isMilitary: true,
+		showDates:  true,
+	}
+
+	var observations []string
+	var outputData = []txtar.File{}
+	for _, test := range tests {
+		for k, key := range test.keystrokes {
+			msg := tea.KeyMsg{
+				Type:  tea.KeyRunes,
+				Runes: []rune{key},
+				Alt:   false,
+			}
+
+			_, cmd := state.Update(msg)
+			if cmd != nil {
+				t.Fatalf("Expected nil Cmd for '%v' (key %v), but got %v", key, k, cmd)
+			}
+		}
+
+		observed := stripAnsiControlSequences(state.View())
+		observations = append(observations, observed)
+		observedDatetime := state.clock.t.Format(time.RFC3339)
+		observedUnixtime := state.clock.t.Unix()
+		if observedDatetime != test.datetime {
+			t.Errorf("Fraction Timezones: Mismatched datetime for %v: expected %v but got %v", test.name, test.datetime, observedDatetime)
+		}
+		outputData = append(
+			outputData,
+			txtar.File{
+				Name: fmt.Sprintf("%v (%v = %v)", test.name, observedDatetime, observedUnixtime),
+				Data: []byte(observed),
+			},
+		)
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: outputData,
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	for i, test := range tests {
+		var expected string = ""
+		if len(testData.Files) > 0 {
+			expected = stripAnsiControlSequencesAndNewline(testData.Files[i].Data)
+		}
+		observed := stripAnsiControlSequencesAndNewline(outputData[i].Data)
+		if expected != observed {
+			t.Errorf("Fraction Timezones: Mismatched %s: Check git diff %s", test.name, testDataFile)
+		}
+	}
 }
 
 func TestRightAlignment(t *testing.T) {
