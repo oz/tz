@@ -266,6 +266,124 @@ func TestFractionalTimezoneOffsets(t *testing.T) {
 	}
 }
 
+// Test all vertical alignments, from the perspectives of different local zones
+func TestLocalTimezones(t *testing.T) {
+	testDataFile := "testdata/view/test-local-timezones.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	testGroups := [][]struct {
+		localZone string
+		localTime string
+	}{
+		{
+			{"UTC", "2017-11-05T00:00:00Z"},
+			{"Asia/Calcutta", "2017-11-05T05:30:00+05:30"},
+			{"Cuba", "2017-11-04T20:00:00-04:00"},
+		},
+		{
+			{"UTC", "2017-11-06T00:30:00Z"},
+			{"Asia/Calcutta", "2017-11-06T06:00:00+05:30"},
+			{"Cuba", "2017-11-05T19:30:00-05:00"},
+		},
+	}
+
+	displayZones := LoadDstTestZones(t)
+	var outputData = []txtar.File{}
+	for i, testGroup := range testGroups {
+		for j, test := range testGroup {
+			testTime, err := time.Parse(time.RFC3339, test.localTime)
+			if err != nil {
+				t.Fatalf("Could not parse test time configuration [%v][%v]: '%v'", i, j, test.localTime)
+			}
+
+			localZoneAtTop := make([]*Zone, 0, len(displayZones) + 1)
+			for _, zone := range(displayZones) {
+				if zone.DbName == test.localZone {
+					// Copy localZone to the top of list to render all other zones relative to it
+					localZone := *zone
+					localZone.Name = "Local"
+					localZoneAtTop = append(localZoneAtTop, &localZone)
+					localZoneAtTop = append(localZoneAtTop, displayZones...)
+					break
+				}
+			}
+			if len(localZoneAtTop) == 0 {
+				t.Fatalf("Could not find displayable timezone for case [%v][%v]: '%v'", i, j, test.localTime)
+			}
+
+			state := model{
+				zones:       localZoneAtTop,
+				clock:       *NewClockTime(testTime),
+				isMilitary:  true,
+				showDates:   true,
+			}
+
+			observed := stripAnsiControlSequences(state.View())
+			outputData = append(outputData, txtar.File{
+				Name: fmt.Sprintf("[%v][%v] %v (%v = %v)", i, j, test.localZone, testTime.Format(time.RFC3339), testTime.Unix()),
+				Data: []byte(observed),
+			})
+		}
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: outputData,
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	var count = 0
+	for i, testGroup := range testGroups {
+		// Implementation explained in the testData file:
+		comparisonColumns := make([]string, len(testGroup))
+
+		for j, test := range testGroup {
+			// Test for any changes
+			observed := stripAnsiControlSequencesAndNewline(outputData[count].Data)
+			expected := stripAnsiControlSequencesAndNewline(testData.Files[count].Data)
+			if observed != expected {
+				t.Errorf("Local Timezones: Unexpected result [%v][%v] for %v: Check git diff %v", i, j, test.localZone, testDataFile)
+			}
+
+			// Test for expected properties (this is sensitive to the layout format)
+			hourIndex := 11
+			localTime := test.localTime[hourIndex:hourIndex + 2]
+			if localTime[0] == '0' {
+				localTime = " " + localTime[1:]
+			}
+			localTime = " " + localTime + " "
+
+			localLine := 4
+			lines := strings.Split(observed, "\n")
+			columnIndex := strings.Index(lines[localLine], localTime)
+			if columnIndex < 0 {
+				t.Errorf("Local Timezones: Failed [%v][%v] for %v: Could not find local hour %v", i, j, test.localZone, localTime)
+			} else {
+				rowGap := 3
+				column := strings.Builder{}
+				for l := localLine + rowGap; l < len(lines); l += rowGap {
+					line := lines[l]
+					column.WriteString(line[columnIndex:columnIndex + 3])
+				}
+				comparisonColumns[j] = column.String()
+			}
+
+			count = count + 1
+		}
+
+		for _, result := range comparisonColumns {
+			if result != comparisonColumns[0] {
+				t.Errorf("Local Timezones: Inconsistencies in group [%v]:\n%v", i, strings.Join(comparisonColumns, "\n"))
+				break
+			}
+		}
+
+	}
+}
+
 func TestRightAlignment(t *testing.T) {
 	testDataFile := "testdata/view/test-right-alignment.txt"
 	testData, err := txtar.ParseFile(testDataFile)
