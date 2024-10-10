@@ -92,7 +92,7 @@ func TestUpdateIncHour(t *testing.T) {
 	for _, test := range tests {
 		m := model{
 			zones:   DefaultZones,
-			keymaps: NewDefaultConfig().Keymaps,
+			keymaps: DefaultKeymaps,
 			clock:   *NewClockTime(getTimestampWithHour(test.startHour)),
 		}
 
@@ -135,7 +135,7 @@ func TestUpdateDecHour(t *testing.T) {
 	for _, test := range tests {
 		m := model{
 			zones:   DefaultZones,
-			keymaps: NewDefaultConfig().Keymaps,
+			keymaps: DefaultKeymaps,
 			clock:   *NewClockTime(getTimestampWithHour(test.startHour)),
 		}
 		_, cmd := m.Update(msg)
@@ -160,7 +160,7 @@ func TestUpdateQuitMsg(t *testing.T) {
 
 	m := model{
 		zones:   DefaultZones,
-		keymaps: NewDefaultConfig().Keymaps,
+		keymaps: DefaultKeymaps,
 		clock:   *NewClockTime(getTimestampWithHour(10)),
 	}
 	_, cmd := m.Update(msg)

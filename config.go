@@ -43,22 +43,17 @@ type Config struct {
 }
 
 // Function to provide default values for the Config struct
-func NewDefaultConfig() Config {
-	return Config{
-		Zones: DefaultZones,
-		Keymaps: Keymaps{
-			PrevHour:   []string{"h", "left"},
-			NextHour:   []string{"l", "right"},
-			PrevDay:    []string{"k", "up"},
-			NextDay:    []string{"j", "down"},
-			PrevWeek:   []string{"p"},
-			NextWeek:   []string{"n"},
-			ToggleDate: []string{"d"},
-			OpenWeb:    []string{"o"},
-			Now:        []string{"t"},
-			Quit:       []string{"q", "ctrl+c", "esc"},
-		},
-	}
+var DefaultKeymaps = Keymaps{
+	PrevHour:   []string{"h", "left"},
+	NextHour:   []string{"l", "right"},
+	PrevDay:    []string{"k", "up"},
+	NextDay:    []string{"j", "down"},
+	PrevWeek:   []string{"p"},
+	NextWeek:   []string{"n"},
+	ToggleDate: []string{"d"},
+	OpenWeb:    []string{"o"},
+	Now:        []string{"t"},
+	Quit:       []string{"q", "ctrl+c", "esc"},
 }
 
 func LoadConfig(tzConfigs []string) (*Config, error) {
@@ -75,20 +70,21 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 	}
 
 	// Merge configs, with envConfig taking precedence
-	mergedConfig := NewDefaultConfig()
-
-	// Merge Zones
-	var zones []*Zone = []*Zone{DefaultZones[0]}
-
-	if len(envConfig.Zones) > 0 {
-		zones = append(zones, envConfig.Zones...)
-	} else if len(fileConfig.Zones) > 0 {
-		zones = append(zones, fileConfig.Zones...)
-	} else {
-		zones = append(zones, DefaultZones[1:]...)
+	mergedConfig := Config{
+		Zones:   []*Zone{DefaultZones[0]},
+		Keymaps: DefaultKeymaps,
 	}
 
-	mergedConfig.Zones = zones
+	// Merge Zones
+	var configZones []*Zone
+	if len(envConfig.Zones) > 0 {
+		configZones = envConfig.Zones
+	} else if len(fileConfig.Zones) > 0 {
+		configZones = fileConfig.Zones
+	} else {
+		configZones = DefaultZones[1:]
+	}
+	mergedConfig.Zones = append(mergedConfig.Zones, configZones...)
 
 	logger.Printf("File zones: %s", fileConfig.Zones)
 	logger.Printf("Env zones: %s", envConfig.Zones)
