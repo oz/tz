@@ -21,258 +21,258 @@ This checks the following requirements:
 
   What time is it?
 
-  🕐 (UTC) UTC 01:00, Sun 31
+  🕐 (UTC) UTC                                                             01:00, Sun Mar 31, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 31
-  🕒 (CEST) Europe/Paris 03:00, Sun 31
+  🕒 (CEST) Europe/Paris                                                   03:00, Sun Mar 31, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 01
-  🕓 (IDT) Israel 04:00, Sun 31
+  🕓 (IDT) Israel                                                          04:00, Sun Mar 31, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Mon 01
-  🕕 (IST) Asia/Calcutta 06:30, Sun 31
+  🕕 (IST) Asia/Calcutta                                                   06:30, Sun Mar 31, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Mon 01
-  🕘 (+0845) Australia/Eucla 09:45, Sun 31
+  🕘 (+0845) Australia/Eucla                                               09:45, Sun Mar 31, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Mon 01
-  🕛 (AEDT) Australia/Sydney 12:00, Sun 31
+  🕛 (AEDT) Australia/Sydney                                               12:00, Sun Mar 31, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Mon 01
-  🕒 (+14) Pacific/Kiritimati 15:00, Sun 31
+  🕒 (+14) Pacific/Kiritimati                                              15:00, Sun Mar 31, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Mon 01
-  🕒 (HST) Pacific/Honolulu 15:00, Sat 30
+  🕒 (HST) Pacific/Honolulu                                                15:00, Sat Mar 30, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sun 31
-  🕗 (CDT) US/Central 20:00, Sat 30
+  🕗 (CDT) US/Central                                                      20:00, Sat Mar 30, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sun 31
-  🕘 (CDT) Cuba 21:00, Sat 30
+  🕘 (CDT) Cuba                                                            21:00, Sat Mar 30, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Sun 31
-  🕙 (-03) America/Argentina/ComodRivadavia 22:00, Sat 30
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:00, Sat Mar 30, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 31
 -- Hour before (2024-03-31T00:00:00Z = 1711843200) --
 
   What time is it?
 
-  🕛 (UTC) UTC 00:00, Sun 31
+  🕛 (UTC) UTC                                                             00:00, Sun Mar 31, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 31
-  🕐 (CET) Europe/Paris 01:00, Sun 31
+  🕐 (CET) Europe/Paris                                                    01:00, Sun Mar 31, 2024
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Mon 01
-  🕒 (IDT) Israel 03:00, Sun 31
+  🕒 (IDT) Israel                                                          03:00, Sun Mar 31, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Mon 01
-  🕔 (IST) Asia/Calcutta 05:30, Sun 31
+  🕔 (IST) Asia/Calcutta                                                   05:30, Sun Mar 31, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Mon 01
-  🕗 (+0845) Australia/Eucla 08:45, Sun 31
+  🕗 (+0845) Australia/Eucla                                               08:45, Sun Mar 31, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Mon 01
-  🕙 (AEDT) Australia/Sydney 11:00, Sun 31
+  🕙 (AEDT) Australia/Sydney                                               11:00, Sun Mar 31, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Mon 01
-  🕑 (+14) Pacific/Kiritimati 14:00, Sun 31
+  🕑 (+14) Pacific/Kiritimati                                              14:00, Sun Mar 31, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Mon 01
-  🕑 (HST) Pacific/Honolulu 14:00, Sat 30
+  🕑 (HST) Pacific/Honolulu                                                14:00, Sat Mar 30, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sun 31
-  🕖 (CDT) US/Central 19:00, Sat 30
+  🕖 (CDT) US/Central                                                      19:00, Sat Mar 30, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sun 31
-  🕗 (CDT) Cuba 20:00, Sat 30
+  🕗 (CDT) Cuba                                                            20:00, Sat Mar 30, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Sun 31
-  🕘 (-03) America/Argentina/ComodRivadavia 21:00, Sat 30
+  🕘 (-03) America/Argentina/ComodRivadavia                                21:00, Sat Mar 30, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 31
 -- Hour after (2024-03-31T02:00:00Z = 1711850400) --
 
   What time is it?
 
-  🕑 (UTC) UTC 02:00, Sun 31
+  🕑 (UTC) UTC                                                             02:00, Sun Mar 31, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 31
-  🕓 (CEST) Europe/Paris 04:00, Sun 31
+  🕓 (CEST) Europe/Paris                                                   04:00, Sun Mar 31, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 01
-  🕔 (IDT) Israel 05:00, Sun 31
+  🕔 (IDT) Israel                                                          05:00, Sun Mar 31, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Mon 01
-  🕖 (IST) Asia/Calcutta 07:30, Sun 31
+  🕖 (IST) Asia/Calcutta                                                   07:30, Sun Mar 31, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Mon 01
-  🕙 (+0845) Australia/Eucla 10:45, Sun 31
+  🕙 (+0845) Australia/Eucla                                               10:45, Sun Mar 31, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Mon 01
-  🕐 (AEDT) Australia/Sydney 13:00, Sun 31
+  🕐 (AEDT) Australia/Sydney                                               13:00, Sun Mar 31, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Mon 01
-  🕓 (+14) Pacific/Kiritimati 16:00, Sun 31
+  🕓 (+14) Pacific/Kiritimati                                              16:00, Sun Mar 31, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Mon 01
-  🕓 (HST) Pacific/Honolulu 16:00, Sat 30
+  🕓 (HST) Pacific/Honolulu                                                16:00, Sat Mar 30, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sun 31
-  🕘 (CDT) US/Central 21:00, Sat 30
+  🕘 (CDT) US/Central                                                      21:00, Sat Mar 30, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sun 31
-  🕙 (CDT) Cuba 22:00, Sat 30
+  🕙 (CDT) Cuba                                                            22:00, Sat Mar 30, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Sun 31
-  🕙 (-03) America/Argentina/ComodRivadavia 23:00, Sat 30
+  🕙 (-03) America/Argentina/ComodRivadavia                                23:00, Sat Mar 30, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 31
 -- 3 days before (2024-03-28T01:00:00Z = 1711587600) --
 
   What time is it?
 
-  🕐 (UTC) UTC 01:00, Thu 28
+  🕐 (UTC) UTC                                                             01:00, Thu Mar 28, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Thu 28
-  🕑 (CET) Europe/Paris 02:00, Thu 28
+  🕑 (CET) Europe/Paris                                                    02:00, Thu Mar 28, 2024
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Fri 29
-  🕒 (IST) Israel 03:00, Thu 28
+  🕒 (IST) Israel                                                          03:00, Thu Mar 28, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Fri 29
-  🕕 (IST) Asia/Calcutta 06:30, Thu 28
+  🕕 (IST) Asia/Calcutta                                                   06:30, Thu Mar 28, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Fri 29
-  🕘 (+0845) Australia/Eucla 09:45, Thu 28
+  🕘 (+0845) Australia/Eucla                                               09:45, Thu Mar 28, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Fri 29
-  🕛 (AEDT) Australia/Sydney 12:00, Thu 28
+  🕛 (AEDT) Australia/Sydney                                               12:00, Thu Mar 28, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Fri 29
-  🕒 (+14) Pacific/Kiritimati 15:00, Thu 28
+  🕒 (+14) Pacific/Kiritimati                                              15:00, Thu Mar 28, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Fri 29
-  🕒 (HST) Pacific/Honolulu 15:00, Wed 27
+  🕒 (HST) Pacific/Honolulu                                                15:00, Wed Mar 27, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Thu 28
-  🕗 (CDT) US/Central 20:00, Wed 27
+  🕗 (CDT) US/Central                                                      20:00, Wed Mar 27, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Thu 28
-  🕘 (CDT) Cuba 21:00, Wed 27
+  🕘 (CDT) Cuba                                                            21:00, Wed Mar 27, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Thu 28
-  🕙 (-03) America/Argentina/ComodRivadavia 22:00, Wed 27
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:00, Wed Mar 27, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Thu 28
 -- 2 days before (2024-03-29T01:00:00Z = 1711674000) --
 
   What time is it?
 
-  🕐 (UTC) UTC 01:00, Fri 29
+  🕐 (UTC) UTC                                                             01:00, Fri Mar 29, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Fri 29
-  🕑 (CET) Europe/Paris 02:00, Fri 29
+  🕑 (CET) Europe/Paris                                                    02:00, Fri Mar 29, 2024
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Sat 30
-  🕓 (IDT) Israel 04:00, Fri 29
+  🕓 (IDT) Israel                                                          04:00, Fri Mar 29, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Sat 30
-  🕕 (IST) Asia/Calcutta 06:30, Fri 29
+  🕕 (IST) Asia/Calcutta                                                   06:30, Fri Mar 29, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Sat 30
-  🕘 (+0845) Australia/Eucla 09:45, Fri 29
+  🕘 (+0845) Australia/Eucla                                               09:45, Fri Mar 29, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Sat 30
-  🕛 (AEDT) Australia/Sydney 12:00, Fri 29
+  🕛 (AEDT) Australia/Sydney                                               12:00, Fri Mar 29, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Sat 30
-  🕒 (+14) Pacific/Kiritimati 15:00, Fri 29
+  🕒 (+14) Pacific/Kiritimati                                              15:00, Fri Mar 29, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sat 30
-  🕒 (HST) Pacific/Honolulu 15:00, Thu 28
+  🕒 (HST) Pacific/Honolulu                                                15:00, Thu Mar 28, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Fri 29
-  🕗 (CDT) US/Central 20:00, Thu 28
+  🕗 (CDT) US/Central                                                      20:00, Thu Mar 28, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Fri 29
-  🕘 (CDT) Cuba 21:00, Thu 28
+  🕘 (CDT) Cuba                                                            21:00, Thu Mar 28, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Fri 29
-  🕙 (-03) America/Argentina/ComodRivadavia 22:00, Thu 28
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:00, Thu Mar 28, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Fri 29
 -- 1 day before (2024-03-30T01:00:00Z = 1711760400) --
 
   What time is it?
 
-  🕐 (UTC) UTC 01:00, Sat 30
+  🕐 (UTC) UTC                                                             01:00, Sat Mar 30, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sat 30
-  🕑 (CET) Europe/Paris 02:00, Sat 30
+  🕑 (CET) Europe/Paris                                                    02:00, Sat Mar 30, 2024
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Sun 31
-  🕓 (IDT) Israel 04:00, Sat 30
+  🕓 (IDT) Israel                                                          04:00, Sat Mar 30, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Sun 31
-  🕕 (IST) Asia/Calcutta 06:30, Sat 30
+  🕕 (IST) Asia/Calcutta                                                   06:30, Sat Mar 30, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Sun 31
-  🕘 (+0845) Australia/Eucla 09:45, Sat 30
+  🕘 (+0845) Australia/Eucla                                               09:45, Sat Mar 30, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Sun 31
-  🕛 (AEDT) Australia/Sydney 12:00, Sat 30
+  🕛 (AEDT) Australia/Sydney                                               12:00, Sat Mar 30, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Sun 31
-  🕒 (+14) Pacific/Kiritimati 15:00, Sat 30
+  🕒 (+14) Pacific/Kiritimati                                              15:00, Sat Mar 30, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sun 31
-  🕒 (HST) Pacific/Honolulu 15:00, Fri 29
+  🕒 (HST) Pacific/Honolulu                                                15:00, Fri Mar 29, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Sat 30
-  🕗 (CDT) US/Central 20:00, Fri 29
+  🕗 (CDT) US/Central                                                      20:00, Fri Mar 29, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sat 30
-  🕘 (CDT) Cuba 21:00, Fri 29
+  🕘 (CDT) Cuba                                                            21:00, Fri Mar 29, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Sat 30
-  🕙 (-03) America/Argentina/ComodRivadavia 22:00, Fri 29
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:00, Fri Mar 29, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sat 30
 -- Day after (2024-04-01T01:00:00Z = 1711933200) --
 
   What time is it?
 
-  🕐 (UTC) UTC 01:00, Mon 01
+  🕐 (UTC) UTC                                                             01:00, Mon Apr 01, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Mon 01
-  🕒 (CEST) Europe/Paris 03:00, Mon 01
+  🕒 (CEST) Europe/Paris                                                   03:00, Mon Apr 01, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Tue 02
-  🕓 (IDT) Israel 04:00, Mon 01
+  🕓 (IDT) Israel                                                          04:00, Mon Apr 01, 2024
    3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2  
                                                                                       📆 Tue 02
-  🕕 (IST) Asia/Calcutta 06:30, Mon 01
+  🕕 (IST) Asia/Calcutta                                                   06:30, Mon Apr 01, 2024
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Tue 02
-  🕘 (+0845) Australia/Eucla 09:45, Mon 01
+  🕘 (+0845) Australia/Eucla                                               09:45, Mon Apr 01, 2024
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Tue 02
-  🕛 (AEDT) Australia/Sydney 12:00, Mon 01
+  🕛 (AEDT) Australia/Sydney                                               12:00, Mon Apr 01, 2024
   11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
                                                       📆 Tue 02
-  🕒 (+14) Pacific/Kiritimati 15:00, Mon 01
+  🕒 (+14) Pacific/Kiritimati                                              15:00, Mon Apr 01, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Tue 02
-  🕒 (HST) Pacific/Honolulu 15:00, Sun 31
+  🕒 (HST) Pacific/Honolulu                                                15:00, Sun Mar 31, 2024
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Mon 01
-  🕗 (CDT) US/Central 20:00, Sun 31
+  🕗 (CDT) US/Central                                                      20:00, Sun Mar 31, 2024
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Mon 01
-  🕘 (CDT) Cuba 21:00, Sun 31
+  🕘 (CDT) Cuba                                                            21:00, Sun Mar 31, 2024
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Mon 01
-  🕙 (-03) America/Argentina/ComodRivadavia 22:00, Sun 31
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:00, Sun Mar 31, 2024
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Mon 01
