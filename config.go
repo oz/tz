@@ -18,6 +18,8 @@ package main
 
 import (
 	"fmt"
+	"slices"
+	"strings"
 )
 
 // Keymaps represents the key mappings in the TOML file
@@ -131,6 +133,34 @@ func LoadConfig(tzConfigs []string) (*Config, error) {
 
 	if len(fileConfig.Keymaps.Quit) > 0 {
 		mergedConfig.Keymaps.Quit = fileConfig.Keymaps.Quit
+	}
+
+	allKeymaps := [][]string {
+		mergedConfig.Keymaps.PrevHour,
+		mergedConfig.Keymaps.NextHour,
+		mergedConfig.Keymaps.PrevDay,
+		mergedConfig.Keymaps.NextDay,
+		mergedConfig.Keymaps.PrevWeek,
+		mergedConfig.Keymaps.NextWeek,
+		mergedConfig.Keymaps.ToggleDate,
+		mergedConfig.Keymaps.OpenWeb,
+		mergedConfig.Keymaps.Now,
+		mergedConfig.Keymaps.Quit,
+	}
+	var keysUsed = make(map[string]bool)
+	var keysDuplicated []string
+	for _, keys := range allKeymaps {
+		for _, key := range keys {
+			if _, used := keysUsed[key]; used == false {
+				keysUsed[key] = true
+			} else {
+				keysDuplicated = append(keysDuplicated, key)
+			}
+		}
+	}
+	if len(keysDuplicated) > 0 {
+		slices.Sort(keysDuplicated)
+		return nil, fmt.Errorf("Key(s) mapped multiple times in config: %v", strings.Join(keysDuplicated, " "))
 	}
 
 	return &mergedConfig, nil
