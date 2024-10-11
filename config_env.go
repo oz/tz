@@ -24,7 +24,7 @@ import (
 )
 
 // LoadConfigEnv from environment
-func LoadConfigEnv(tzConfigs []string) (*Config, error) {
+func LoadConfigEnv(tzConfigs []string, now time.Time) (*Config, error) {
 	conf := Config{}
 
 	if len(tzConfigs) == 0 {
@@ -41,7 +41,7 @@ func LoadConfigEnv(tzConfigs []string) (*Config, error) {
 
 	// Add zones from TZ_LIST
 	for i, zoneConf := range tzConfigs {
-		zone, err := ReadZoneFromString(time.Now(), zoneConf)
+		zone, err := ReadZoneFromString(now, zoneConf)
 		if err != nil {
 			return nil, err
 		}

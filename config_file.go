@@ -67,7 +67,7 @@ func DefaultConfigFile() (*string, error) {
 	return &configFilePath, nil
 }
 
-func LoadConfigFile(configFilePath string) (*Config, error) {
+func LoadConfigFile(configFilePath string, now time.Time) (*Config, error) {
 	conf := Config{}
 
 	configFile, err := os.ReadFile(configFilePath)
@@ -85,7 +85,7 @@ func LoadConfigFile(configFilePath string) (*Config, error) {
 	// Add zones from config file
 	zones := make([]*Zone, len(config.Zones))
 	for i, zoneConf := range config.Zones {
-		zone, err := ReadZonesFromFile(time.Now(), zoneConf)
+		zone, err := ReadZonesFromFile(now, zoneConf)
 		if err != nil {
 			return nil, err
 		}
