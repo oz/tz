@@ -15,6 +15,9 @@ id = "UTC"
 name = "UTC"
 
 [keymaps]
+prev_minute = ["-"]
+next_minute = ["+"]
+zero_minute = ["0"]
 prev_hour = ["h", "left"]
 next_hour = ["l", "right"]
 prev_day = ["k", "up"]
@@ -24,4 +27,5 @@ next_week = ["n", ">"]
 toggle_date = ["d"]
 open_web = ["o", "x"]
 now = ["t"]
+help = ["f1"]
 quit = ["q", "esc", "ctrl+c"]

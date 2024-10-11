@@ -25,6 +25,9 @@ import (
 
 // Keymaps represents the key mappings in the TOML file
 type Keymaps struct {
+	PrevMinute []string
+	NextMinute []string
+	ZeroMinute []string
 	PrevHour   []string
 	NextHour   []string
 	PrevDay    []string
@@ -46,6 +49,9 @@ type Config struct {
 
 // Function to provide default values for the Config struct
 var DefaultKeymaps = Keymaps{
+	PrevMinute: []string{"-"},
+	NextMinute: []string{"+"},
+	ZeroMinute: []string{"0"},
 	PrevHour:   []string{"h", "left"},
 	NextHour:   []string{"l", "right"},
 	PrevDay:    []string{"H", "shift+left", "pgup", "shift+up", "ctrl+u"},
@@ -104,6 +110,18 @@ func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 	logger.Printf("Merged zones: %s", mergedConfig.Zones)
 
 	// Merge Keymaps
+	if len(fileConfig.Keymaps.PrevMinute) > 0 {
+		mergedConfig.Keymaps.PrevMinute = fileConfig.Keymaps.PrevMinute
+	}
+
+	if len(fileConfig.Keymaps.NextMinute) > 0 {
+		mergedConfig.Keymaps.NextMinute = fileConfig.Keymaps.NextMinute
+	}
+
+	if len(fileConfig.Keymaps.ZeroMinute) > 0 {
+		mergedConfig.Keymaps.ZeroMinute = fileConfig.Keymaps.ZeroMinute
+	}
+
 	if len(fileConfig.Keymaps.PrevHour) > 0 {
 		mergedConfig.Keymaps.PrevHour = fileConfig.Keymaps.PrevHour
 	}
@@ -140,11 +158,18 @@ func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 		mergedConfig.Keymaps.Now = fileConfig.Keymaps.Now
 	}
 
+	if len(fileConfig.Keymaps.Help) > 0 {
+		mergedConfig.Keymaps.Help = fileConfig.Keymaps.Help
+	}
+
 	if len(fileConfig.Keymaps.Quit) > 0 {
 		mergedConfig.Keymaps.Quit = fileConfig.Keymaps.Quit
 	}
 
 	allKeymaps := [][]string {
+		mergedConfig.Keymaps.PrevMinute,
+		mergedConfig.Keymaps.NextMinute,
+		mergedConfig.Keymaps.ZeroMinute,
 		mergedConfig.Keymaps.PrevHour,
 		mergedConfig.Keymaps.NextHour,
 		mergedConfig.Keymaps.PrevDay,

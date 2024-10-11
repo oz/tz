@@ -44,6 +44,12 @@ func (c *Clock) AddHours(n int) {
 	c.isRealTime = false
 }
 
+// AddMinutes adds n minutes to the current date-time, keeping the seconds
+func (c *Clock) AddMinutes(n int) {
+	c.t = c.t.Add(time.Minute * time.Duration(n))
+	c.isRealTime = false
+}
+
 // Get the wrapped time.Time struct
 func (c *Clock) Time() time.Time {
 	return c.t
