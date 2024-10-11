@@ -55,9 +55,9 @@ func getTimestampWithHour(hour int) time.Time {
 		time.Now().Month(),
 		time.Now().Day(),
 		hour,
-		0, // Minutes set to 0
-		0, // Seconds set to 0
-		0, // Nanoseconds set to 0
+		43, // Minutes
+		59, // Seconds
+		127, // Nanoseconds
 		time.Now().Location(),
 	)
 }
@@ -102,9 +102,11 @@ func TestUpdateIncHour(t *testing.T) {
 			clock:   *NewClockTime(getTimestampWithHour(test.startHour)),
 		}
 
-		db := m.clock.Time().Day()
+		tb := m.clock.Time()
+		db := tb.Day()
 		_, cmd := m.Update(msg)
-		da := m.clock.Time().Day()
+		ta := m.clock.Time()
+		da := ta.Day()
 
 		if cmd != nil {
 			t.Errorf("Expected nil Cmd, but got %v", cmd)
@@ -116,6 +118,9 @@ func TestUpdateIncHour(t *testing.T) {
 		}
 		if test.changesClockDateBy != 0 && da == db {
 			t.Errorf("Expected date change of %d day, but got %d", test.changesClockDateBy, da-db)
+		}
+		if ta.Minute() != tb.Minute() {
+			t.Errorf("Unexpected change of minute from '%s' to '%s'", tb, ta)
 		}
 	}
 }
