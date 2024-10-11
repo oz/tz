@@ -18,6 +18,7 @@ package main
 
 import (
 	"testing"
+	"time"
 )
 
 func TestDefaultConfigFile(t *testing.T) {
@@ -28,8 +29,9 @@ func TestDefaultConfigFile(t *testing.T) {
 }
 
 func TestExampleConfigFile(t *testing.T) {
+	now := time.Now()
 	tomlPath := "./example-conf.toml"
-	config, err := LoadConfigFile(tomlPath)
+	config, err := LoadConfigFile(tomlPath, now)
 	if err != nil {
 		t.Fatalf("Could not read test config from %s: %v", tomlPath, err)
 	}

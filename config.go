@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"time"
 )
 
 // Keymaps represents the key mappings in the TOML file
@@ -67,14 +68,16 @@ func LoadDefaultConfig(tzConfigs []string) (*Config, error) {
 }
 
 func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
+	now := time.Now()
+
 	// Apply config file first
-	fileConfig, fileError := LoadConfigFile(tomlFile)
+	fileConfig, fileError := LoadConfigFile(tomlFile, now)
 	if fileError != nil {
 		return nil, fmt.Errorf("File error: %w", fileError)
 	}
 
 	// Override with env var config
-	envConfig, envErr := LoadConfigEnv(tzConfigs)
+	envConfig, envErr := LoadConfigEnv(tzConfigs, now)
 	if envErr != nil {
 		return nil, fmt.Errorf("Env error: %w", envErr)
 	}
