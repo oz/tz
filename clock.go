@@ -38,18 +38,8 @@ func (c *Clock) AddDays(n int) {
 	c.isRealTime = false
 }
 
-// AddDays adds n days to the current date and clears the minutes
+// AddDays adds n hours to the current date-time, keeping the minutes
 func (c *Clock) AddHours(n int) {
-	c.t = time.Date(
-		c.t.Year(),
-		c.t.Month(),
-		c.t.Day(),
-		c.t.Hour(),
-		0, // Minutes set to 0
-		0, // Seconds set to 0
-		0, // Nanoseconds set to 0
-		c.t.Location(),
-	)
 	c.t = c.t.Add(time.Hour * time.Duration(n))
 	c.isRealTime = false
 }
