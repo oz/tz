@@ -107,6 +107,24 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case match(key, m.keymaps.Quit):
 			return m, tea.Quit
 
+		case match(key, m.keymaps.PrevMinute):
+			m.clock.AddMinutes(-1)
+
+		case match(key, m.keymaps.NextMinute):
+			m.clock.AddMinutes(1)
+
+		case match(key, m.keymaps.ZeroMinute):
+			m.clock = *NewClockTime(time.Date(
+				m.clock.t.Year(),
+				m.clock.t.Month(),
+				m.clock.t.Day(),
+				m.clock.t.Hour(),
+				0,
+				0,
+				0,
+				m.clock.t.Location(),
+			))
+
 		case match(key, m.keymaps.PrevHour):
 			m.clock.AddHours(-1)
 

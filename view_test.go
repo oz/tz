@@ -197,7 +197,7 @@ func TestFractionalTimezoneOffsets(t *testing.T) {
 	}{
 		{"Start time", "2017-11-05T00:29:02Z", ""},
 		{"Plus 1 hour", "2017-11-05T01:29:02Z", "l"},
-		{"Minus 15 minutes", "2017-11-05T01:14:02Z", "---------------"}, // @todo implement new keys
+		{"Minus 15 minutes", "2017-11-05T01:14:02Z", "---------------"},
 		{"Return to start", "2017-11-05T00:29:02Z", "HL<>+++++++++++++++h"},
 		{"Minus 1 hour, date changed", "2017-11-04T23:29:02Z", "h"},
 		{"Return to start", "2017-11-05T00:29:02Z", "l"},

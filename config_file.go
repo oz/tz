@@ -24,6 +24,9 @@ type ConfigFileZone struct {
 
 // Keymaps represents the key mappings in the TOML file
 type ConfigFileKeymaps struct {
+	PrevMinute []string `toml:"prev_minute"`
+	NextMinute []string `toml:"next_minute"`
+	ZeroMinute []string `toml:"zero_minute"`
 	PrevHour   []string `toml:"prev_hour"`
 	NextHour   []string `toml:"next_hour"`
 	PrevDay    []string `toml:"prev_day"`

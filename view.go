@@ -21,6 +21,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/muesli/termenv"
 	xterm "golang.org/x/term"
@@ -48,25 +49,34 @@ func (m model) View() string {
 		}
 	}
 
+	midnight := time.Date(
+		m.clock.t.Year(),
+		m.clock.t.Month(),
+		m.clock.t.Day(),
+		0, // Hours
+		m.clock.t.Minute(),
+		0, // Seconds
+		0, // Nanoseconds
+		m.clock.t.Location(),
+	)
+	midnightOffset := time.Duration(m.clock.t.UnixNano() - midnight.UnixNano())
+	cursorColumn := int(midnightOffset / time.Hour)
+
 	// Show hours for each zone
-	for zi, zone := range m.zones {
+	for _, zone := range m.zones {
 		hours := strings.Builder{}
 		dates := strings.Builder{}
 		timeInZone := zone.currentTime(m.clock.t)
-
-		startHour := 0
-		if zi > 0 {
-			startHour = (timeInZone.Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
-		}
+		midnightInZone := timeInZone.Add(-midnightOffset)
 
 		dateChanged := false
-		for i := startHour; i < startHour+24; i++ {
-			hour := ((i % 24) + 24) % 24 // mod 24
+		for column := 0; column < 24; column++ {
+			hour := midnightInZone.Add(time.Duration(column) * time.Hour).Hour()
 			out := termenv.String(fmt.Sprintf("%2d", hour))
 
 			out = out.Foreground(term.Color(hourColorCode(hour)))
 			// Cursor
-			if m.clock.t.Hour() == i-startHour {
+			if column == cursorColumn {
 				out = out.Background(term.Color(hourColorCode(hour)))
 				if hasDarkBackground {
 					out = out.Foreground(term.Color("#262626")).Bold()
@@ -113,36 +123,48 @@ func (m model) View() string {
 	return s
 }
 
-// Generate the string
-func generateKeymapString(k Keymaps) string {
-	return fmt.Sprintf(", %s/%s: hours, %s/%s: days, %s/%s: weeks, %s: toggle date, %s: now, %s: open in web",
-		// Only use the first of each mapping
-		k.PrevHour[0], k.NextHour[0],
-		k.PrevDay[0], k.NextDay[0],
-		k.PrevWeek[0], k.NextWeek[0],
-		k.ToggleDate[0],
-		k.Now[0],
-		k.OpenWeb[0],
-	)
+// Generate the help lines
+func generateKeymapStrings(k Keymaps, showAll bool) []string {
+	helpKey := fmt.Sprintf("%s: help", k.Help[0])
+	quitKey := fmt.Sprintf("%s: quit", k.Quit[0])
+
+	if showAll {
+		delimiter := ", "
+		return []string {
+			strings.Join(
+				[]string {
+					helpKey,
+					fmt.Sprintf("%s/%s/%s: minutes", k.PrevMinute[0], k.NextMinute[0], k.ZeroMinute[0]),
+					fmt.Sprintf("%s/%s: hours", k.PrevHour[0], k.NextHour[0]),
+					fmt.Sprintf("%s/%s: days", k.PrevDay[0], k.NextDay[0]),
+					fmt.Sprintf("%s/%s: weeks", k.PrevWeek[0], k.NextWeek[0]),
+					fmt.Sprintf("%s: go to now", k.Now[0]),
+				},
+				delimiter,
+			),
+			strings.Join(
+				[]string {
+					quitKey,
+					fmt.Sprintf("%s: toggle dates", k.ToggleDate[0]),
+					fmt.Sprintf("%s: open in web", k.OpenWeb[0]),
+				},
+				delimiter,
+			),
+		}
+	} else {
+		return []string {
+			helpKey,
+			quitKey,
+		}
+	}
 }
 
 func status(m model) string {
-	var text string
+	var text []string = generateKeymapStrings(m.keymaps, m.showHelp)
 
-	helpPrefix := "  q: quit, ?: help"
-
-	if m.showHelp {
-		text = helpPrefix + generateKeymapString(m.keymaps)
-	} else {
-		text = helpPrefix
-	}
-
-	for {
-		text += " "
-		if len(text) > UIWidth {
-			text = text[0:UIWidth]
-			break
-		}
+	backgroundPadding := strings.Repeat(" ", UIWidth)
+	for i, line := range text {
+		text[i] = ("  " + line + backgroundPadding)[:UIWidth]
 	}
 
 	color := "#939183"
@@ -150,7 +172,7 @@ func status(m model) string {
 		color = "#605C5A"
 	}
 
-	status := termenv.String(text).Foreground(term.Color(color))
+	status := termenv.String(strings.Join(text, "\n")).Foreground(term.Color(color))
 
 	return status.String()
 }
