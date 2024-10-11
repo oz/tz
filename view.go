@@ -52,11 +52,11 @@ func (m model) View() string {
 	for zi, zone := range m.zones {
 		hours := strings.Builder{}
 		dates := strings.Builder{}
-		currentTime := zone.currentTime(m.clock.t)
+		timeInZone := zone.currentTime(m.clock.t)
 
 		startHour := 0
 		if zi > 0 {
-			startHour = (currentTime.Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
+			startHour = (timeInZone.Hour() - m.zones[0].currentTime(m.clock.t).Hour()) % 24
 		}
 
 		dateChanged := false
