@@ -51,12 +51,10 @@ func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
 	if name == "" {
 		name = loc.String()
 	}
-	then := now.In(loc)
-	shortName, _ := then.Zone()
 	return &Zone{
 		Loc:    loc,
 		DbName: loc.String(),
-		Name:   fmt.Sprintf("(%s) %s", shortName, name),
+		Name:   name,
 	}, nil
 }
 
