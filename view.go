@@ -69,6 +69,7 @@ func (m model) View() string {
 		timeInZone := zone.currentTime(m.clock.t)
 		midnightInZone := timeInZone.Add(-midnightOffset)
 		wasDST := midnightInZone.Add(-time.Hour).IsDST()
+		previousHour := midnightInZone.Add(-time.Hour).Hour()
 
 		dateChanged := false
 		for column := 0; column < 24; column++ {
@@ -92,10 +93,11 @@ func (m model) View() string {
 
 			// Show the day under the hour, when the date changes.
 			if m.showDates {
-				if hour == 0 {
+				if hour < previousHour {
 					dates.WriteString(formatDayChange(&m, zone))
 					dateChanged = true
 				}
+
 				if wasDST != nowDST {
 					if nowDST {
 						dates.WriteString("=DST")
@@ -108,6 +110,7 @@ func (m model) View() string {
 			}
 
 			wasDST = nowDST
+			previousHour = hour
 		}
 
 		var datetime string

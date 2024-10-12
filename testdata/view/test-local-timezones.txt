@@ -55,7 +55,7 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
                       📆 Sun 05≠DST
   🕗 (CDT) Cuba                                                            20:00, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05≠DST
+                  📆 Sun 05≠DST
   🕘 (-03) America/Argentina/ComodRivadavia                                21:00, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
@@ -95,7 +95,7 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
                                           📆 Sun 05≠DST
   🕗 (CDT) Cuba                                                            20:00, Sat Nov 04, 2017
   15  16  17  18  19  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
-                                      📆 Sun 05📆 Sun 05≠DST
+                                      📆 Sun 05≠DST
   🕘 (-03) America/Argentina/ComodRivadavia                                21:00, Sat Nov 04, 2017
   16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
                                   📆 Sun 05
@@ -225,7 +225,7 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   🕖 Local                                                                 19:30, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
-  📆 Sun 05≠DST
+  ≠DST                                                                                            
   🕛 (UTC) UTC                                                             00:30, Mon Nov 06, 2017
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Mon 06
@@ -255,7 +255,7 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
   📆 Sun 05≠DST
   🕖 (CDT) Cuba                                                            19:30, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
-  📆 Sun 05≠DST
+  ≠DST                                                                                            
   🕘 (-03) America/Argentina/ComodRivadavia                                21:30, Sun Nov 05, 2017
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 06
