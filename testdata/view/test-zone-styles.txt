@@ -1,0 +1,25 @@
+-- expected --
+🕛 (UTC) UTC
+🕛 [Z+00:00] (UTC) UTC
+🕛 [+00:00] (UTC) UTC
+-- observed: AbbreviationZoneStyle --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                           12:01AM, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+-- observed: WithZOffsetZoneStyle --
+
+  What time is it?
+
+  🕛 [Z+00:00] (UTC) UTC                                                 12:01AM, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+-- observed: WithRelativeZoneStyle --
+
+  What time is it?
+
+  🕛 [+00:00] (UTC) UTC                                                  12:01AM, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05

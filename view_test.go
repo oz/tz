@@ -319,6 +319,7 @@ func TestLocalTimezones(t *testing.T) {
 				clock:       *NewClockTime(testTime),
 				isMilitary:  true,
 				showDates:   true,
+				zoneStyle:   WithRelativeZoneStyle,
 			}
 
 			observed := stripAnsiControlSequences(state.View())
@@ -437,6 +438,89 @@ func TestRightAlignment(t *testing.T) {
 	for i, test := range tests {
 		if !strings.Contains(observations[i], expectations[i]) {
 			t.Errorf("Expected %d-column alignment “%s”, but got: “%s”", test.columns, expectations[i], observations[i])
+		}
+	}
+}
+
+func TestZoneStyles(t *testing.T) {
+	testDataFile := "testdata/view/test-zone-styles.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := stripAnsiControlSequencesAndNewline(testData.Files[0].Data)
+
+	tests := []struct {
+		name string
+		zoneStyle ZoneStyle
+	}{
+		{"AbbreviationZoneStyle", AbbreviationZoneStyle},
+		{"WithZOffsetZoneStyle", WithZOffsetZoneStyle},
+		{"WithRelativeZoneStyle", WithRelativeZoneStyle},
+	}
+
+	var observations []string
+	var outputs = []txtar.File{
+		{
+			Name: "expected",
+			Data: []byte(expected),
+		},
+	}
+	oldHasDarkBackground := hasDarkBackground
+	hasDarkBackground = true
+	var state = utcMinuteAfterMidnightModel
+	state.isMilitary = false
+	for i, test := range tests {
+		if state.zoneStyle != test.zoneStyle {
+			t.Errorf("Expected %s %v for test %d but got: %v", test.name, test.zoneStyle, i, state.zoneStyle)
+		}
+		observed := stripAnsiControlSequences(state.View())
+		observations = append(observations, observed)
+		outputs = append(
+			outputs,
+			txtar.File{
+				Name: fmt.Sprintf("observed: %v", test.name),
+				Data: []byte(observed),
+			},
+		)
+		msg := tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{'z'},
+			Alt:   false,
+		}
+		_, cmd := state.Update(msg)
+		if cmd != nil {
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
+		}
+	}
+	hasDarkBackground = oldHasDarkBackground
+
+	for i := len(tests) - 1; i >= 0; i-- {
+		msg := tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{'Z'},
+			Alt:   false,
+		}
+		_, cmd := state.Update(msg)
+		if cmd != nil {
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
+		}
+		if state.zoneStyle != tests[i].zoneStyle {
+			t.Errorf("Expected %s %v for reverse test %d but got: %v", tests[i].name, tests[i].zoneStyle, i, state.zoneStyle)
+		}
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: outputs,
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	expectations := strings.Split(expected, "\n")
+	for i, test := range tests {
+		if !strings.Contains(observations[i], expectations[i]) {
+			t.Errorf("Expected %v “%s”, but got: “%s”", test.name, expectations[i], observations[i])
 		}
 	}
 }
