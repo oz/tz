@@ -81,6 +81,7 @@ type model struct {
 	isMilitary  bool
 	watch       bool
 	showHelp    bool
+	zoneStyle   ZoneStyle
 }
 
 func (m model) Init() tea.Cmd {
@@ -142,6 +143,12 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case match(key, m.keymaps.NextWeek):
 			m.clock.AddDays(7)
+
+		case match(key, m.keymaps.PrevZStyle):
+			m.zoneStyle = m.zoneStyle.previous()
+
+		case match(key, m.keymaps.NextZStyle):
+			m.zoneStyle = m.zoneStyle.next()
 
 		case match(key, m.keymaps.OpenWeb):
 			openInTimeAndDateDotCom(m.clock.Time())
@@ -206,6 +213,7 @@ func main() {
 		isMilitary: *military,
 		watch:      *watch,
 		showHelp:   false,
+		zoneStyle:  AbbreviationZoneStyle,
 	}
 
 	if *when != 0 {

@@ -33,6 +33,8 @@ type ConfigFileKeymaps struct {
 	NextDay    []string `toml:"next_day"`
 	PrevWeek   []string `toml:"prev_week"`
 	NextWeek   []string `toml:"next_week"`
+	PrevZStyle []string `toml:"prev_zone_style"`
+	NextZStyle []string `toml:"next_zone_style"`
 	ToggleDate []string `toml:"toggle_date"`
 	OpenWeb    []string `toml:"open_web"`
 	Now        []string `toml:"now"`
