@@ -24,10 +24,10 @@ This checks the following requirements:
   🕐 (UTC) UTC                                                             01:00, Sun Oct 27, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 27
-  🕑 (CEST) Europe/Paris                                                   02:00, Sun Oct 27, 2024
+  🕑 (CET) Europe/Paris                                                    02:00, Sun Oct 27, 2024
    2   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
       ≠DST                                                                                    📆 Mon 28
-  🕒 (IDT) Israel                                                          03:00, Sun Oct 27, 2024
+  🕒 (IST) Israel                                                          03:00, Sun Oct 27, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 28
   🕕 (IST) Asia/Calcutta                                                   06:30, Sun Oct 27, 2024
@@ -64,7 +64,7 @@ This checks the following requirements:
   🕑 (CEST) Europe/Paris                                                   02:00, Sun Oct 27, 2024
    2   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
       ≠DST                                                                                    📆 Mon 28
-  🕑 (IDT) Israel                                                          02:00, Sun Oct 27, 2024
+  🕑 (IST) Israel                                                          02:00, Sun Oct 27, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 28
   🕔 (IST) Asia/Calcutta                                                   05:30, Sun Oct 27, 2024
@@ -98,10 +98,10 @@ This checks the following requirements:
   🕑 (UTC) UTC                                                             02:00, Sun Oct 27, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 27
-  🕒 (CEST) Europe/Paris                                                   03:00, Sun Oct 27, 2024
+  🕒 (CET) Europe/Paris                                                    03:00, Sun Oct 27, 2024
    2   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
       ≠DST                                                                                    📆 Mon 28
-  🕓 (IDT) Israel                                                          04:00, Sun Oct 27, 2024
+  🕓 (IST) Israel                                                          04:00, Sun Oct 27, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 28
   🕖 (IST) Asia/Calcutta                                                   07:30, Sun Oct 27, 2024
@@ -246,10 +246,10 @@ This checks the following requirements:
   🕐 (UTC) UTC                                                             01:00, Mon Oct 28, 2024
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Mon 28
-  🕑 (CEST) Europe/Paris                                                   02:00, Mon Oct 28, 2024
+  🕑 (CET) Europe/Paris                                                    02:00, Mon Oct 28, 2024
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Tue 29
-  🕒 (IDT) Israel                                                          03:00, Mon Oct 28, 2024
+  🕒 (IST) Israel                                                          03:00, Mon Oct 28, 2024
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Tue 29
   🕕 (IST) Asia/Calcutta                                                   06:30, Mon Oct 28, 2024

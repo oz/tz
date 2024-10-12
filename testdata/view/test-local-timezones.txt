@@ -23,16 +23,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕛 Local                                                                 00:00, Sun Nov 05, 2017
+  🕛 (UTC) Local                                                           00:00, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 05
   🕛 (UTC) UTC                                                             00:00, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 05
-  🕐 (CEST) Europe/Paris                                                   01:00, Sun Nov 05, 2017
+  🕐 (CET) Europe/Paris                                                    01:00, Sun Nov 05, 2017
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Mon 06
-  🕑 (IDT) Israel                                                          02:00, Sun Nov 05, 2017
+  🕑 (IST) Israel                                                          02:00, Sun Nov 05, 2017
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Mon 06
   🕔 (IST) Asia/Calcutta                                                   05:30, Sun Nov 05, 2017
@@ -63,16 +63,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕔 Local                                                                 05:30, Sun Nov 05, 2017
+  🕔 (IST) Local                                                           05:30, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 05
   🕛 (UTC) UTC                                                             00:00, Sun Nov 05, 2017
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sun 05
-  🕐 (CEST) Europe/Paris                                                   01:00, Sun Nov 05, 2017
+  🕐 (CET) Europe/Paris                                                    01:00, Sun Nov 05, 2017
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Sun 05
-  🕑 (IDT) Israel                                                          02:00, Sun Nov 05, 2017
+  🕑 (IST) Israel                                                          02:00, Sun Nov 05, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
   🕔 (IST) Asia/Calcutta                                                   05:30, Sun Nov 05, 2017
@@ -103,16 +103,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕗 Local                                                                 20:00, Sat Nov 04, 2017
+  🕗 (CDT) Local                                                           20:00, Sat Nov 04, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sat 04
   🕛 (UTC) UTC                                                             00:00, Sun Nov 05, 2017
    4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3  
                                                                                   📆 Sun 05
-  🕐 (CEST) Europe/Paris                                                   01:00, Sun Nov 05, 2017
+  🕐 (CET) Europe/Paris                                                    01:00, Sun Nov 05, 2017
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Sun 05
-  🕑 (IDT) Israel                                                          02:00, Sun Nov 05, 2017
+  🕑 (IST) Israel                                                          02:00, Sun Nov 05, 2017
    6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
                                                                           📆 Sun 05
   🕔 (IST) Asia/Calcutta                                                   05:30, Sun Nov 05, 2017
@@ -143,16 +143,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕛 Local                                                                 00:30, Mon Nov 06, 2017
+  🕛 (UTC) Local                                                           00:30, Mon Nov 06, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Mon 06
   🕛 (UTC) UTC                                                             00:30, Mon Nov 06, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Mon 06
-  🕐 (CEST) Europe/Paris                                                   01:30, Mon Nov 06, 2017
+  🕐 (CET) Europe/Paris                                                    01:30, Mon Nov 06, 2017
    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
                                                                                               📆 Tue 07
-  🕑 (IDT) Israel                                                          02:30, Mon Nov 06, 2017
+  🕑 (IST) Israel                                                          02:30, Mon Nov 06, 2017
    2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
                                                                                           📆 Tue 07
   🕕 (IST) Asia/Calcutta                                                   06:00, Mon Nov 06, 2017
@@ -170,10 +170,10 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
   🕑 (HST) Pacific/Honolulu                                                14:30, Sun Nov 05, 2017
   14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
                                           📆 Mon 06
-  🕕 (CDT) US/Central                                                      18:30, Sun Nov 05, 2017
+  🕕 (CST) US/Central                                                      18:30, Sun Nov 05, 2017
   18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
                           📆 Mon 06
-  🕖 (CDT) Cuba                                                            19:30, Sun Nov 05, 2017
+  🕖 (CST) Cuba                                                            19:30, Sun Nov 05, 2017
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Mon 06
   🕘 (-03) America/Argentina/ComodRivadavia                                21:30, Sun Nov 05, 2017
@@ -183,16 +183,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕕 Local                                                                 06:00, Mon Nov 06, 2017
+  🕕 (IST) Local                                                           06:00, Mon Nov 06, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Mon 06
   🕛 (UTC) UTC                                                             00:30, Mon Nov 06, 2017
   18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
                           📆 Mon 06
-  🕐 (CEST) Europe/Paris                                                   01:30, Mon Nov 06, 2017
+  🕐 (CET) Europe/Paris                                                    01:30, Mon Nov 06, 2017
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Mon 06
-  🕑 (IDT) Israel                                                          02:30, Mon Nov 06, 2017
+  🕑 (IST) Israel                                                          02:30, Mon Nov 06, 2017
   20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
                   📆 Mon 06
   🕕 (IST) Asia/Calcutta                                                   06:00, Mon Nov 06, 2017
@@ -210,10 +210,10 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
   🕑 (HST) Pacific/Honolulu                                                14:30, Sun Nov 05, 2017
    8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
                                                                   📆 Mon 06
-  🕕 (CDT) US/Central                                                      18:30, Sun Nov 05, 2017
+  🕕 (CST) US/Central                                                      18:30, Sun Nov 05, 2017
   12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  
                                                   📆 Mon 06
-  🕖 (CDT) Cuba                                                            19:30, Sun Nov 05, 2017
+  🕖 (CST) Cuba                                                            19:30, Sun Nov 05, 2017
   13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  
                                               📆 Mon 06
   🕘 (-03) America/Argentina/ComodRivadavia                                21:30, Sun Nov 05, 2017
@@ -223,16 +223,16 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
 
   What time is it?
 
-  🕖 Local                                                                 19:30, Sun Nov 05, 2017
+  🕖 (CST) Local                                                           19:30, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   ≠DST                                                                                            
   🕛 (UTC) UTC                                                             00:30, Mon Nov 06, 2017
    5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
                                                                               📆 Mon 06
-  🕐 (CEST) Europe/Paris                                                   01:30, Mon Nov 06, 2017
+  🕐 (CET) Europe/Paris                                                    01:30, Mon Nov 06, 2017
    6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5  
                                                                           📆 Mon 06
-  🕑 (IDT) Israel                                                          02:30, Mon Nov 06, 2017
+  🕑 (IST) Israel                                                          02:30, Mon Nov 06, 2017
    7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6  
                                                                       📆 Mon 06
   🕕 (IST) Asia/Calcutta                                                   06:00, Mon Nov 06, 2017
@@ -250,10 +250,10 @@ because the DST-ending midnight is not the first hour of  day, hence no 📆 ico
   🕑 (HST) Pacific/Honolulu                                                14:30, Sun Nov 05, 2017
   19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
                       📆 Sun 05
-  🕕 (CDT) US/Central                                                      18:30, Sun Nov 05, 2017
+  🕕 (CST) US/Central                                                      18:30, Sun Nov 05, 2017
    0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  
   📆 Sun 05≠DST
-  🕖 (CDT) Cuba                                                            19:30, Sun Nov 05, 2017
+  🕖 (CST) Cuba                                                            19:30, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   ≠DST                                                                                            
   🕘 (-03) America/Argentina/ComodRivadavia                                21:30, Sun Nov 05, 2017
