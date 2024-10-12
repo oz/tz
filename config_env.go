@@ -71,6 +71,7 @@ func ReadZoneFromString(now time.Time, zoneConf string) (*Zone, error) {
 	then := now.In(loc)
 	shortName, _ := then.Zone()
 	return &Zone{
+		Loc:    loc,
 		DbName: loc.String(),
 		Name:   fmt.Sprintf("(%s) %s", shortName, name),
 	}, nil
