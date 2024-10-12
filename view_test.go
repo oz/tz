@@ -319,6 +319,7 @@ func TestLocalTimezones(t *testing.T) {
 				clock:       *NewClockTime(testTime),
 				isMilitary:  true,
 				showDates:   true,
+				formatStyle: IsoFormatStyle,
 				zoneStyle:   WithRelativeZoneStyle,
 			}
 
@@ -438,6 +439,88 @@ func TestRightAlignment(t *testing.T) {
 	for i, test := range tests {
 		if !strings.Contains(observations[i], expectations[i]) {
 			t.Errorf("Expected %d-column alignment “%s”, but got: “%s”", test.columns, expectations[i], observations[i])
+		}
+	}
+}
+
+func TestTimeFormats(t *testing.T) {
+	testDataFile := "testdata/view/test-time-formats.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := stripAnsiControlSequencesAndNewline(testData.Files[0].Data)
+
+	tests := []struct {
+		name string
+		formatStyle FormatStyle
+	}{
+		{"DefaultFormatStyle", DefaultFormatStyle},
+		{"IsoFormatStyle", IsoFormatStyle},
+		{"UnixFormatStyle", UnixFormatStyle},
+	}
+
+	var observations []string
+	var outputs = []txtar.File{
+		{
+			Name: "expected",
+			Data: []byte(expected),
+		},
+	}
+	oldHasDarkBackground := hasDarkBackground
+	hasDarkBackground = true
+	var state = utcMinuteAfterMidnightModel
+	for i, test := range tests {
+		if state.formatStyle != test.formatStyle {
+			t.Errorf("Expected %s %v for test %d but got: %v", test.name, test.formatStyle, i, state.formatStyle)
+		}
+		observed := stripAnsiControlSequences(state.View())
+		observations = append(observations, observed)
+		outputs = append(
+			outputs,
+			txtar.File{
+				Name: fmt.Sprintf("observed: %v", test.name),
+				Data: []byte(observed),
+			},
+		)
+		msg := tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{'f'},
+			Alt:   false,
+		}
+		_, cmd := state.Update(msg)
+		if cmd != nil {
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
+		}
+	}
+	hasDarkBackground = oldHasDarkBackground
+
+	for i := len(tests) - 1; i >= 0; i-- {
+		msg := tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{'F'},
+			Alt:   false,
+		}
+		_, cmd := state.Update(msg)
+		if cmd != nil {
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
+		}
+		if state.formatStyle != tests[i].formatStyle {
+			t.Errorf("Expected %s %v for reverse test %d but got: %v", tests[i].name, tests[i].formatStyle, i, state.formatStyle)
+		}
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: outputs,
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	expectations := strings.Split(expected, "\n")
+	for i, test := range tests {
+		if !strings.Contains(observations[i], expectations[i]) {
+			t.Errorf("Expected %v “%s”, but got: “%s”", test.name, expectations[i], observations[i])
 		}
 	}
 }

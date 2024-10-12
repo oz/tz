@@ -27,6 +27,36 @@ import (
 	xterm "golang.org/x/term"
 )
 
+type FormatStyle int
+
+const (
+	DefaultFormatStyle FormatStyle = iota
+	IsoFormatStyle
+	UnixFormatStyle
+)
+
+func (fs FormatStyle) next() FormatStyle {
+	switch (fs) {
+	case DefaultFormatStyle:
+		return IsoFormatStyle
+	case IsoFormatStyle:
+		return UnixFormatStyle
+	default:
+		return DefaultFormatStyle
+	}
+}
+
+func (fs FormatStyle) previous() FormatStyle {
+	switch (fs) {
+	case DefaultFormatStyle:
+		return UnixFormatStyle
+	case UnixFormatStyle:
+		return IsoFormatStyle
+	default:
+		return DefaultFormatStyle
+	}
+}
+
 type ZoneStyle int
 
 const (
@@ -144,10 +174,26 @@ func (m model) View() string {
 		}
 
 		var datetime string
-		if m.isMilitary {
-			datetime = zone.ShortMT(m.clock.t)
-		} else {
-			datetime = zone.ShortDT(m.clock.t)
+		switch m.formatStyle {
+		case IsoFormatStyle:
+				datetime = timeInZone.Format("2006-01-02T15:04-07:00")
+		case UnixFormatStyle:
+			_, weekOfYear := timeInZone.ISOWeek()
+			dayOfYear := timeInZone.Format("__2")
+			yesNo := map[bool]string{true: "With", false: "No"}
+			datetime = fmt.Sprintf(
+				"%v DST, Week %v, Day %v, Unix %v",
+				yesNo[timeInZone.IsDST()],
+				weekOfYear,
+				dayOfYear,
+				timeInZone.Unix(),
+			)
+		default:
+			if m.isMilitary {
+				datetime = zone.ShortMT(m.clock.t)
+			} else {
+				datetime = zone.ShortDT(m.clock.t)
+			}
 		}
 
 		var zoneString = zone.VerboseString(timeInZone)
@@ -201,6 +247,7 @@ func generateKeymapStrings(k Keymaps, showAll bool) []string {
 				[]string {
 					quitKey,
 					fmt.Sprintf("%s: toggle dates", k.ToggleDate[0]),
+					fmt.Sprintf("%s: toggle formats", k.NextFStyle[0]),
 					fmt.Sprintf("%s: toggle zone offsets", k.NextZStyle[0]),
 					fmt.Sprintf("%s: open in web", k.OpenWeb[0]),
 				},
