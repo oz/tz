@@ -121,7 +121,7 @@ func (m model) View() string {
 		}
 
 		clockString := zone.ClockEmoji(m.clock.t)
-		zoneString := zone.String()
+		zoneString := zone.VerboseString(m.clock.t)
 		usedZoneHeaderWidth := termenv.String(clockString + zoneString + datetime).Width()
 		unusedZoneHeaderWidth := max(0, zoneHeaderWidth - usedZoneHeaderWidth - MinimumZoneHeaderPadding)
 		rightAlignmentSpace := strings.Repeat(" ", unusedZoneHeaderWidth)
