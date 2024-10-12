@@ -35,10 +35,10 @@ Check the following:
                                           📆 Sun 05
   🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
   19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
-                      📆 Sun 05
+                      📆 Sun 05≠DST
   🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05
+                  📆 Sun 05📆 Sun 05≠DST
   🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
@@ -72,10 +72,10 @@ Check the following:
                                           📆 Sun 05
   🕗 (CDT) US/Central                                                      20:29, Sat Nov 04, 2017
   19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
-                      📆 Sun 05
+                      📆 Sun 05≠DST
   🕘 (CDT) Cuba                                                            21:29, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05
+                  📆 Sun 05📆 Sun 05≠DST
   🕙 (-03) America/Argentina/ComodRivadavia                                22:29, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
@@ -109,10 +109,10 @@ Check the following:
                                           📆 Sun 05
   🕗 (CDT) US/Central                                                      20:14, Sat Nov 04, 2017
   19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
-                      📆 Sun 05
+                      📆 Sun 05≠DST
   🕘 (CDT) Cuba                                                            21:14, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05
+                  📆 Sun 05📆 Sun 05≠DST
   🕙 (-03) America/Argentina/ComodRivadavia                                22:14, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
@@ -146,10 +146,10 @@ Check the following:
                                           📆 Sun 05
   🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
   19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
-                      📆 Sun 05
+                      📆 Sun 05≠DST
   🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05
+                  📆 Sun 05📆 Sun 05≠DST
   🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
@@ -220,10 +220,10 @@ Check the following:
                                           📆 Sun 05
   🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
   19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
-                      📆 Sun 05
+                      📆 Sun 05≠DST
   🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
   20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
-                  📆 Sun 05📆 Sun 05
+                  📆 Sun 05📆 Sun 05≠DST
   🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
   21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
               📆 Sun 05
