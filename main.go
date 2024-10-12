@@ -81,6 +81,7 @@ type model struct {
 	isMilitary  bool
 	watch       bool
 	showHelp    bool
+	formatStyle FormatStyle
 	zoneStyle   ZoneStyle
 }
 
@@ -143,6 +144,12 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case match(key, m.keymaps.NextWeek):
 			m.clock.AddDays(7)
+
+		case match(key, m.keymaps.NextFStyle):
+			m.formatStyle = m.formatStyle.next()
+
+		case match(key, m.keymaps.PrevFStyle):
+			m.formatStyle = m.formatStyle.previous()
 
 		case match(key, m.keymaps.PrevZStyle):
 			m.zoneStyle = m.zoneStyle.previous()

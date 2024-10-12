@@ -34,6 +34,8 @@ type Keymaps struct {
 	NextDay    []string
 	PrevWeek   []string
 	NextWeek   []string
+	PrevFStyle []string
+	NextFStyle []string
 	PrevZStyle []string
 	NextZStyle []string
 	ToggleDate []string
@@ -60,6 +62,8 @@ var DefaultKeymaps = Keymaps{
 	NextDay:    []string{"L", "shift+right", "pgdown", "shift+down", "ctrl+d"},
 	PrevWeek:   []string{"p", "ctrl+left", "shift+pgup", "ctrl+b"},
 	NextWeek:   []string{"n", "ctrl+right", "shift+pgdown", "ctrl+f"},
+	PrevFStyle: []string{"F"},
+	NextFStyle: []string{"f"},
 	PrevZStyle: []string{"Z"},
 	NextZStyle: []string{"z"},
 	ToggleDate: []string{"d"},
@@ -150,6 +154,14 @@ func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 		mergedConfig.Keymaps.NextWeek = fileConfig.Keymaps.NextWeek
 	}
 
+	if len(fileConfig.Keymaps.PrevFStyle) > 0 {
+		mergedConfig.Keymaps.PrevFStyle = fileConfig.Keymaps.PrevFStyle
+	}
+
+	if len(fileConfig.Keymaps.NextFStyle) > 0 {
+		mergedConfig.Keymaps.NextFStyle = fileConfig.Keymaps.NextFStyle
+	}
+
 	if len(fileConfig.Keymaps.PrevZStyle) > 0 {
 		mergedConfig.Keymaps.PrevZStyle = fileConfig.Keymaps.PrevZStyle
 	}
@@ -188,6 +200,8 @@ func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 		mergedConfig.Keymaps.NextDay,
 		mergedConfig.Keymaps.PrevWeek,
 		mergedConfig.Keymaps.NextWeek,
+		mergedConfig.Keymaps.PrevFStyle,
+		mergedConfig.Keymaps.NextFStyle,
 		mergedConfig.Keymaps.PrevZStyle,
 		mergedConfig.Keymaps.NextZStyle,
 		mergedConfig.Keymaps.ToggleDate,
