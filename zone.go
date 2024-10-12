@@ -16,7 +16,10 @@
  **/
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 var now = time.Now()
 var name, _ = now.Zone()
@@ -58,6 +61,10 @@ type Zone struct {
 
 func (z Zone) String() string {
 	return z.Name
+}
+
+func (z Zone) VerboseString(t time.Time) string {
+	return fmt.Sprintf("(%s) %s", z.Abbreviation(t), z.Name)
 }
 
 // Abbreviated short name for the zone (e.g. acronym "ABC" if available, or else a number like "-3").

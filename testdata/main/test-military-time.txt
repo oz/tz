@@ -7,6 +7,6 @@ However for clarity, we include a colon delimiter between hours and minutes anyw
 
   What time is it?
 
-  🕛 UTC                                                                   00:01, Sun Nov 05, 2017
+  🕛 (UTC) UTC                                                             00:01, Sun Nov 05, 2017
    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
   📆 Sun 05
