@@ -76,6 +76,7 @@ type model struct {
 	zones       []*Zone
 	keymaps     Keymaps
 	clock       Clock
+	highlighted int // 0 == none, else row number indexed from 1
 	showDates   bool
 	interactive bool
 	isMilitary  bool
@@ -144,6 +145,14 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case match(key, m.keymaps.NextWeek):
 			m.clock.AddDays(7)
+
+		case match(key, m.keymaps.PrevLine):
+			modulo := len(m.zones) + 1
+			m.highlighted = (m.highlighted - 1 + modulo) % modulo
+
+		case match(key, m.keymaps.NextLine):
+			modulo := len(m.zones) + 1
+			m.highlighted = (m.highlighted + 1) % modulo
 
 		case match(key, m.keymaps.NextFStyle):
 			m.formatStyle = m.formatStyle.next()

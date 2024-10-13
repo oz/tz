@@ -33,6 +33,8 @@ type ConfigFileKeymaps struct {
 	NextDay    []string `toml:"next_day"`
 	PrevWeek   []string `toml:"prev_week"`
 	NextWeek   []string `toml:"next_week"`
+	PrevLine   []string `toml:"prev_line_select"`
+	NextLine   []string `toml:"next_line_select"`
 	PrevFStyle []string `toml:"prev_format_style"`
 	NextFStyle []string `toml:"next_format_style"`
 	PrevZStyle []string `toml:"prev_zone_style"`

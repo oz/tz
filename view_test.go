@@ -266,6 +266,46 @@ func TestFractionalTimezoneOffsets(t *testing.T) {
 	}
 }
 
+func TestHighlightMarkers(t *testing.T) {
+	testDataFile := "testdata/view/test-highlight-markers.txt"
+	testData, err := txtar.ParseFile(testDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := stripAnsiControlSequencesAndNewline(testData.Files[0].Data)
+
+	keys := "jkj" // down, up, down
+
+	var state = utcMinuteAfterMidnightModel
+	for k, key := range keys {
+		msg := tea.KeyMsg{
+			Type:  tea.KeyRunes,
+			Runes: []rune{key},
+			Alt:   false,
+		}
+		_, cmd := state.Update(msg)
+		if cmd != nil {
+			t.Fatalf("Expected nil Cmd for '%v' (key %v), but got %v", key, k, cmd)
+		}
+	}
+
+	observed := txtar.File{
+		Name: "Highlight Local Zone",
+		Data: []byte(stripAnsiControlSequences(state.View())),
+	}
+
+	archive := txtar.Archive{
+		Comment: testData.Comment,
+		Files: []txtar.File{observed},
+	}
+	os.WriteFile(testDataFile, txtar.Format(&archive), 0666)
+
+	if expected != stripAnsiControlSequencesAndNewline(observed.Data) {
+		t.Errorf("Fraction Timezones: Mismatched highlight markers: Check git diff %s", testDataFile)
+	}
+}
+
 // Test all vertical alignments, from the perspectives of different local zones
 func TestLocalTimezones(t *testing.T) {
 	testDataFile := "testdata/view/test-local-timezones.txt"

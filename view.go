@@ -123,13 +123,14 @@ func (m model) View() string {
 	cursorColumn := int(midnightOffset / time.Hour)
 
 	// Show hours for each zone
-	for _, zone := range m.zones {
+	for i, zone := range m.zones {
 		hours := strings.Builder{}
 		dates := strings.Builder{}
 		timeInZone := zone.currentTime(m.clock.t)
 		midnightInZone := timeInZone.Add(-midnightOffset)
 		wasDST := midnightInZone.Add(-time.Hour).IsDST()
 		previousHour := midnightInZone.Add(-time.Hour).Hour()
+		highlighted := i == (m.highlighted - 1)
 
 		dateChanged := false
 		for column := 0; column < 24; column++ {
@@ -215,7 +216,14 @@ func (m model) View() string {
 		rightAlignmentSpace := strings.Repeat(" ", unusedZoneHeaderWidth)
 		zoneHeader := fmt.Sprintf("%s %s %s%s", clockString, normalTextStyle(zoneString), rightAlignmentSpace, dateTimeStyle(datetime))
 
-		s += fmt.Sprintf("  %s\n  %s\n  %s\n", zoneHeader, hours.String(), dates.String())
+		marker := "  "
+		if highlighted {
+			marker = termenv.String(">>").Reverse().String()
+		}
+		lines := []string{zoneHeader, hours.String(), dates.String()}
+		for _, line := range lines {
+			s += fmt.Sprintf("%s%s\n", marker, line)
+		}
 	}
 
 	if m.interactive {
@@ -240,6 +248,7 @@ func generateKeymapStrings(k Keymaps, showAll bool) []string {
 					fmt.Sprintf("%s/%s: days", k.PrevDay[0], k.NextDay[0]),
 					fmt.Sprintf("%s/%s: weeks", k.PrevWeek[0], k.NextWeek[0]),
 					fmt.Sprintf("%s: go to now", k.Now[0]),
+					fmt.Sprintf("%s/%s: highlight", k.NextLine[0], k.PrevLine[0]),
 				},
 				delimiter,
 			),
