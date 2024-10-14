@@ -74,11 +74,14 @@ func openInTimeAndDateDotCom(t time.Time) error {
 type model struct {
 	zones       []*Zone
 	clock       Clock
+	highlighted int // 0 == none, else row number indexed from 1
 	showDates   bool
 	interactive bool
 	isMilitary  bool
 	watch       bool
 	showHelp    bool
+	formatStyle FormatStyle
+	zoneStyle   ZoneStyle
 }
 
 func (m model) Init() tea.Cmd {
@@ -99,6 +102,32 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q", "esc":
 			return m, tea.Quit
 
+		case "-":
+			m.clock.AddMinutes(-1)
+
+		case "+":
+			m.clock.AddMinutes(1)
+
+		case "0":
+			m.clock = *NewClockTime(time.Date(
+				m.clock.t.Year(),
+				m.clock.t.Month(),
+				m.clock.t.Day(),
+				m.clock.t.Hour(),
+				0,
+				0,
+				0,
+				m.clock.t.Location(),
+			))
+
+		case "up", "k":
+			modulo := len(m.zones) + 1
+			m.highlighted = (m.highlighted - 1 + modulo) % modulo
+
+		case "down", "j":
+			modulo := len(m.zones) + 1
+			m.highlighted = (m.highlighted + 1) % modulo
+
 		case "left", "h":
 			m.clock.AddHours(-1)
 
@@ -117,22 +146,34 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case ">":
 			m.clock.AddDays(7)
 
+		case "f":
+			m.formatStyle = m.formatStyle.next()
+
+		case "F":
+			m.formatStyle = m.formatStyle.previous()
+
 		case "o":
 			openInTimeAndDateDotCom(m.clock.Time())
 
 		case "t":
-			m.clock = *NewClock(0)
+			m.clock = *NewClockNow()
 
 		case "?":
 			m.showHelp = !m.showHelp
 
 		case "d":
 			m.showDates = !m.showDates
+
+		case "z":
+			m.zoneStyle = m.zoneStyle.next()
+
+		case "Z":
+			m.zoneStyle = m.zoneStyle.previous()
 		}
 
 	case tickMsg:
-		if m.watch {
-			m.clock = *NewClock(0)
+		if m.watch && m.clock.isRealTime {
+			m.clock = *NewClockNow()
 		}
 		return m, tick()
 	}
@@ -142,8 +183,8 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func main() {
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
-	when := flag.Int64("when", 0, "time in seconds since unix epoch")
-	doSearch := flag.Bool("list", false, "list zones by name")
+	when := flag.Int64("when", 0, "time in seconds since unix epoch (disables -w)")
+	doSearch := flag.Bool("list [filter]", false, "list zones by name")
 	military := flag.Bool("m", false, "use 24-hour time")
 	watch := flag.Bool("w", false, "watch live, set time to now every minute")
 	flag.Parse()
@@ -170,15 +211,16 @@ func main() {
 	}
 	var initialModel = model{
 		zones:      config.Zones,
-		clock:      *NewClock(0),
+		clock:      *NewClockNow(),
 		showDates:  false,
 		isMilitary: *military,
 		watch:      *watch,
 		showHelp:   false,
+		zoneStyle:  AbbreviationZoneStyle,
 	}
 
 	if *when != 0 {
-		initialModel.clock = *NewClock(*when)
+		initialModel.clock = *NewClockUnixTimestamp(*when)
 	}
 
 	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout.Fd())

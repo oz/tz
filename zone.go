@@ -16,7 +16,10 @@
  **/
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 var name, _ = time.Now().Zone()
 var DefaultZones = []*Zone{
@@ -48,12 +51,20 @@ var EmojiClocks = map[int]string{
 
 // Zone stores the name of a time zone
 type Zone struct {
+	Loc    *time.Location
 	DbName string // Name in tzdata
-	Name   string // Short name
+	Name   string // Preferred name (user-provided, or else DbName by default)
 }
 
-func (z Zone) String() string {
-	return z.Name
+func (z Zone) String(t time.Time) string {
+	return fmt.Sprintf("(%s) %s", z.Abbreviation(t), z.Name)
+}
+
+// Abbreviated short name for the zone (e.g. acronym "ABC" if available, or else a number like "-3").
+// It depends dynamically on the daylight saving policy in the zone at time `t`.
+func (z Zone) Abbreviation(t time.Time) string {
+	shortName, _ := z.currentTime(t).Zone()
+	return shortName
 }
 
 // ClockEmoji returns the corresponding emoji clock for a given hour
@@ -75,11 +86,7 @@ func (z Zone) ShortMT(t time.Time) string {
 func (z Zone) currentTime(t time.Time) time.Time {
 	zName, _ := t.Zone()
 	if z.DbName != zName {
-		loc, err := time.LoadLocation(z.DbName)
-		if err != nil {
-			return t
-		}
-		return t.In(loc)
+		return t.In(z.Loc)
 	}
 	return t
 }

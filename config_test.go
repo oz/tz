@@ -17,10 +17,47 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestLoadConfigParser(t *testing.T) {
+	tests := []struct {
+		args     []string
+		envArg   string
+		expected string
+	}{
+		{nil, "", "Local;UTC"},
+		{[]string{"GMT"}, "UTC", "Local;GMT"},
+		{[]string{"", "GMT", ""}, "UTC", "Local;UTC;GMT;UTC"},
+		{nil, "GMT", "Local;GMT"},
+		{nil, ";GMT;", "Local;UTC;GMT;UTC"},
+		{nil, "Unknown", ""},
+	}
+
+	oldEnv := os.Getenv("TZ_LIST")
+	for _, test := range tests {
+		os.Setenv("TZ_LIST", test.envArg)
+		config, err := LoadConfig(test.args)
+		if err != nil {
+			if test.expected != "" {
+				t.Error(err)
+			}
+		} else {
+			names := make([]string, len(config.Zones))
+			for i, z := range config.Zones {
+				names[i] = z.Name
+			}
+			observed := strings.Join(names, ";")
+			if observed != test.expected {
+				t.Errorf("Expected '%v' to be: '%v'", observed, test.expected)
+			}
+		}
+	}
+	os.Setenv("TZ_LIST", oldEnv)
+}
 
 func TestSetupZone(t *testing.T) {
 	now := time.Now()

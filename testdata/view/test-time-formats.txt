@@ -1,0 +1,25 @@
+-- expected --
+00:01, Sun Nov 05, 2017
+2017-11-05T00:01+00:00
+No DST, Week 44, Day 309, Unix 1509840062
+-- observed: DefaultFormatStyle --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                             00:01, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+-- observed: IsoFormatStyle --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                              2017-11-05T00:01+00:00
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+-- observed: UnixFormatStyle --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                           No DST, Week 44, Day 309, Unix 1509840062
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05

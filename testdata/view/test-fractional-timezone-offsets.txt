@@ -1,0 +1,229 @@
+Check the following:
+- Fractional timezones are displayed in the correct columns.
+- Left & right navigation across fractional hours shifts the timelines correctly.
+- Left & right navigation round-trip equals the starting point.
+- Double-midnight for Cuba midnight DST end
+- Crossing date boundaries
+
+-- Start time (2017-11-05T00:29:02Z = 1509841742) --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                             00:29, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕐 (CET) Europe/Paris                                                    01:29, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕑 (IST) Israel                                                          02:29, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕔 (IST) Asia/Calcutta                                                   05:59, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕘 (+0845) Australia/Eucla                                               09:14, Sun Nov 05, 2017
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Mon 06
+  🕙 (AEDT) Australia/Sydney                                               11:29, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati                                              14:29, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕑 (HST) Pacific/Honolulu                                                14:29, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                      📆 Sun 05≠DST
+  🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
+  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                  📆 Sun 05≠DST
+  🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+-- Plus 1 hour (2017-11-05T01:29:02Z = 1509845342) --
+
+  What time is it?
+
+  🕐 (UTC) UTC                                                             01:29, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕑 (CET) Europe/Paris                                                    02:29, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕒 (IST) Israel                                                          03:29, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕕 (IST) Asia/Calcutta                                                   06:59, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕙 (+0845) Australia/Eucla                                               10:14, Sun Nov 05, 2017
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Mon 06
+  🕛 (AEDT) Australia/Sydney                                               12:29, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕒 (+14) Pacific/Kiritimati                                              15:29, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕒 (HST) Pacific/Honolulu                                                15:29, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕗 (CDT) US/Central                                                      20:29, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                      📆 Sun 05≠DST
+  🕘 (CDT) Cuba                                                            21:29, Sat Nov 04, 2017
+  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                  📆 Sun 05≠DST
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:29, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+-- Minus 15 minutes (2017-11-05T01:14:02Z = 1509844442) --
+
+  What time is it?
+
+  🕐 (UTC) UTC                                                             01:14, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕑 (CET) Europe/Paris                                                    02:14, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕒 (IST) Israel                                                          03:14, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕕 (IST) Asia/Calcutta                                                   06:44, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕘 (+0845) Australia/Eucla                                               09:59, Sun Nov 05, 2017
+   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7  
+                                                                  📆 Mon 06
+  🕛 (AEDT) Australia/Sydney                                               12:14, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕒 (+14) Pacific/Kiritimati                                              15:14, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕒 (HST) Pacific/Honolulu                                                15:14, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕗 (CDT) US/Central                                                      20:14, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                      📆 Sun 05≠DST
+  🕘 (CDT) Cuba                                                            21:14, Sat Nov 04, 2017
+  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                  📆 Sun 05≠DST
+  🕙 (-03) America/Argentina/ComodRivadavia                                22:14, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+-- Return to start (2017-11-05T00:29:02Z = 1509841742) --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                             00:29, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕐 (CET) Europe/Paris                                                    01:29, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕑 (IST) Israel                                                          02:29, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕔 (IST) Asia/Calcutta                                                   05:59, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕘 (+0845) Australia/Eucla                                               09:14, Sun Nov 05, 2017
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Mon 06
+  🕙 (AEDT) Australia/Sydney                                               11:29, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati                                              14:29, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕑 (HST) Pacific/Honolulu                                                14:29, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                      📆 Sun 05≠DST
+  🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
+  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                  📆 Sun 05≠DST
+  🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
+-- Minus 1 hour, date changed (2017-11-04T23:29:02Z = 1509838142) --
+
+  What time is it?
+
+  🕙 (UTC) UTC                                                             23:29, Sat Nov 04, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sat 04
+  🕛 (CET) Europe/Paris                                                    00:29, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Sun 05
+  🕐 (IST) Israel                                                          01:29, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Sun 05
+  🕓 (IST) Asia/Calcutta                                                   04:59, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Sun 05
+  🕗 (+0845) Australia/Eucla                                               08:14, Sun Nov 05, 2017
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Sun 05
+  🕙 (AEDT) Australia/Sydney                                               10:29, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Sun 05
+  🕐 (+14) Pacific/Kiritimati                                              13:29, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕐 (HST) Pacific/Honolulu                                                13:29, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sat 04
+  🕕 (CDT) US/Central                                                      18:29, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                      📆 Sat 04
+  🕖 (CDT) Cuba                                                            19:29, Sat Nov 04, 2017
+  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+                  📆 Sat 04
+  🕗 (-03) America/Argentina/ComodRivadavia                                20:29, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sat 04
+-- Return to start (2017-11-05T00:29:02Z = 1509841742) --
+
+  What time is it?
+
+  🕛 (UTC) UTC                                                             00:29, Sun Nov 05, 2017
+   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  
+  📆 Sun 05
+  🕐 (CET) Europe/Paris                                                    01:29, Sun Nov 05, 2017
+   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0  
+                                                                                              📆 Mon 06
+  🕑 (IST) Israel                                                          02:29, Sun Nov 05, 2017
+   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1  
+                                                                                          📆 Mon 06
+  🕔 (IST) Asia/Calcutta                                                   05:59, Sun Nov 05, 2017
+   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4  
+                                                                              📆 Mon 06
+  🕘 (+0845) Australia/Eucla                                               09:14, Sun Nov 05, 2017
+   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8  
+                                                              📆 Mon 06
+  🕙 (AEDT) Australia/Sydney                                               11:29, Sun Nov 05, 2017
+  11  12  13  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  
+                                                      📆 Mon 06
+  🕑 (+14) Pacific/Kiritimati                                              14:29, Sun Nov 05, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Mon 06
+  🕑 (HST) Pacific/Honolulu                                                14:29, Sat Nov 04, 2017
+  14  15  16  17  18  19  20  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+                                          📆 Sun 05
+  🕖 (CDT) US/Central                                                      19:29, Sat Nov 04, 2017
+  19  20  21  22  23   0   1   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+                      📆 Sun 05≠DST
+  🕗 (CDT) Cuba                                                            20:29, Sat Nov 04, 2017
+  20  21  22  23   0   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  
+                  📆 Sun 05≠DST
+  🕘 (-03) America/Argentina/ComodRivadavia                                21:29, Sat Nov 04, 2017
+  21  22  23   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  
+              📆 Sun 05
