@@ -129,8 +129,9 @@ func TestUpdateQuitMsg(t *testing.T) {
 	}
 
 	m := model{
-		zones: DefaultZones,
-		clock: *NewClock(getTimestampWithHour(-1)),
+		zones:   DefaultZones,
+		keymaps: NewDefaultConfig().Keymaps,
+		clock:   *NewClock(getTimestampWithHour(-1)),
 	}
 	_, cmd := m.Update(msg)
 	if cmd == nil {
