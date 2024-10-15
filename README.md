@@ -16,9 +16,8 @@ You're welcome to file an issue about it. I enjoy reading those.
 
 If you would rather not type the list everytime, you could set an alias
 for your shell, or use the `TZ_LIST` environment variable with a
-semi-colon separated list of [tz data][tzdata] zone names (see
-*Configuration* below). Command-line arguments trump the environment
-variable.
+semi-colon separated list of [tz data][tzdata] zone names, or use a
+configuration file (see *Configuration* below).
 
 Check out `tz -h` for other flags.
 
@@ -110,6 +109,7 @@ next_week = ["n", ">"]
 toggle_date = ["d"]
 open_web = ["o", "x"]
 now = ["t"]
+quit = ["q", "esc", "ctrl+c"]
 ```
 
 ## Environment Variable
