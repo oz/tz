@@ -56,16 +56,20 @@ func ReadZonesFromFile(now time.Time, zoneConf ConfigFileZone) (*Zone, error) {
 	}, nil
 }
 
-func LoadConfigFile() (*Config, error) {
-	conf := Config{}
-
+func DefaultConfigFile() (*string, error) {
 	// Return early if we can't find a home dir.
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		return &conf, nil
+		return nil, err
 	}
 
 	configFilePath := filepath.Join(homeDir, ".config", "tz", "conf.toml")
+	return &configFilePath, nil
+}
+
+func LoadConfigFile(configFilePath string) (*Config, error) {
+	conf := Config{}
+
 	configFile, err := os.ReadFile(configFilePath)
 	if err != nil {
 		// Ignore unreadable config file.

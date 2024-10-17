@@ -58,9 +58,17 @@ var DefaultKeymaps = Keymaps{
 	Quit:       []string{"q", "ctrl+c", "esc"},
 }
 
-func LoadConfig(tzConfigs []string) (*Config, error) {
+func LoadDefaultConfig(tzConfigs []string) (*Config, error) {
+	fileName, fileError := DefaultConfigFile()
+	if fileError != nil {
+		return nil, fmt.Errorf("File error: %w", fileError)
+	}
+	return LoadConfig(*fileName, tzConfigs)
+}
+
+func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 	// Apply config file first
-	fileConfig, fileError := LoadConfigFile()
+	fileConfig, fileError := LoadConfigFile(tomlFile)
 	if fileError != nil {
 		return nil, fmt.Errorf("File error: %w", fileError)
 	}
