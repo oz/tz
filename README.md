@@ -80,37 +80,7 @@ Configs are read from `$HOME/.config/tz/conf.toml`.
 Time zone `id`s should reference items from the standard tz database names.
 Alias them by providing your own name with the `name` key.
 
-Sample configuration:
-
-```toml
-[[zones]]
-id = "NZ"
-name = "NZ"
-
-[[zones]]
-id = "Australia/Sydney"
-name = "Sydney"
-
-[[zones]]
-id = "Asia/Kolkata"
-name = "Bangalore"
-
-[[zones]]
-id = "UTC"
-name = "UTC"
-
-[keymaps]
-prev_hour = ["h", "left"]
-next_hour = ["l", "right"]
-prev_day = ["k", "up"]
-next_day = ["j", "down"]
-prev_week = ["p", "<"]
-next_week = ["n", ">"]
-toggle_date = ["d"]
-open_web = ["o", "x"]
-now = ["t"]
-quit = ["q", "esc", "ctrl+c"]
-```
+Sample configuration: [example-conf.toml](./example-conf.toml)
 
 ## Environment Variable
 

@@ -17,10 +17,47 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestConfigKeysDuplicated(t *testing.T) {
+	tomlPath := "./config_test_keys_dup.toml"
+	_, err := LoadConfig(tomlPath, nil)
+	if err == nil {
+		t.Errorf("Expected error while reading %s, but didn’t get one", tomlPath)
+	}
+
+	expectedError := "Key(s) mapped multiple times in config: q"
+	if !strings.Contains(err.Error(), expectedError) {
+		t.Errorf("Expected specific error while reading %s, but get a different one: %v", tomlPath, err)
+	}
+}
+
+func TestLoadConfig(t *testing.T) {
+	oldTzList, tzListWasSet := os.LookupEnv("TZ_LIST")
+	os.Unsetenv("TZ_LIST")
+
+	tomlPath := "./example-conf.toml"
+	_, err := LoadConfig(tomlPath, nil)
+	if err != nil {
+		t.Errorf("Could not read %s: %v", tomlPath, err)
+	}
+
+	if tzListWasSet {
+		os.Setenv("TZ_LIST", oldTzList)
+		SetupLogger()
+	}
+}
+
+func TestLoadDefaultConfig(t *testing.T) {
+	_, err := LoadDefaultConfig(nil)
+		if err != nil {
+			t.Fatalf("Could not read default config file: %v", err)
+		}
+}
 
 func TestSetupZone(t *testing.T) {
 	now := time.Now()
