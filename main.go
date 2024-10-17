@@ -174,7 +174,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	config, err := LoadConfig(flag.Args())
+	config, err := LoadDefaultConfig(flag.Args())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
 		os.Exit(2)
