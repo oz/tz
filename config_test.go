@@ -24,7 +24,7 @@ import (
 )
 
 func TestConfigKeysDuplicated(t *testing.T) {
-	tomlPath := "./config_test_keys_dup.toml"
+	tomlPath := "./testdata/config/config_test_keys_dup.toml"
 	_, err := LoadConfig(tomlPath, nil)
 	if err == nil {
 		t.Errorf("Expected error while reading %s, but didn’t get one", tomlPath)
