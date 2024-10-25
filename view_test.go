@@ -201,6 +201,7 @@ func TestFractionalTimezoneOffsets(t *testing.T) {
 		{"Return to start", "2017-11-05T00:29:02Z", "HLpn+++++++++++++++h"},
 		{"Minus 1 hour, date changed", "2017-11-04T23:29:02Z", "h"},
 		{"Return to start", "2017-11-05T00:29:02Z", "l"},
+		{"Zero minutes", "2017-11-05T00:00:00Z", "0"},
 	}
 
 	start, err := time.Parse(time.RFC3339, tests[0].datetime)
