@@ -17,6 +17,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"regexp"
 	"strings"
 	"testing"
@@ -48,6 +50,17 @@ var (
 	}
 )
 
+func failUnlessExpectedError(t *testing.T, err error, expectedError string, contextFormat string, a ...any) {
+	msg := fmt.Sprintf(contextFormat, a...)
+	if err != nil {
+		if !strings.Contains(err.Error(), expectedError) {
+			t.Fatalf("Expected specific error %s, but got a different error: %v", msg, err)
+		}
+	} else {
+		t.Fatalf("Expected error %s, but none occurred", msg)
+	}
+}
+
 func getTimestampWithHour(hour int) time.Time {
 	return time.Date(
 		time.Now().Year(),
@@ -61,6 +74,21 @@ func getTimestampWithHour(hour int) time.Time {
 	)
 }
 
+func parseMainArgsWithPanicRecovery(panicErr *error) *model {
+	*panicErr = nil
+	savedFlags := flag.CommandLine
+	flag.CommandLine = flag.NewFlagSet("main_test", flag.PanicOnError)
+
+	defer func() {
+		flag.CommandLine = savedFlags
+		if err, recovered := recover().(error); recovered {
+			*panicErr = err
+		}
+	}()
+
+	return parseMainArgs()
+}
+
 func stripAnsiControlSequences(s string) string {
 	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
 }
@@ -70,9 +98,214 @@ func stripAnsiControlSequencesAndNewline(bytes []byte) string {
 	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
 }
 
+func testMainArgWhen(t *testing.T, when int64) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	// 1. Test initial state with -when (overrides -w)
+	osWrapper.HomeDir = "."
+	osWrapper.Setargs([]string{"-when", fmt.Sprintf("%v", when), "-w"})
+	model := parseMainArgsWithPanicRecovery(&err)
+
+	if err != nil {
+		t.Errorf("Unexpected failure for `-when %v`: %v", when, err)
+	}
+	if osWrapper.ExitCode != nil {
+		t.Errorf("Unexpected exit code for -when %v`: %v", when, *osWrapper.ExitCode)
+	}
+	if model == nil {
+		t.Fatalf("Model was nil after parsing `-when %v`", when)
+	}
+	if model.clock.t.Unix() != when {
+		t.Errorf("Model `-when %v` clock.time was incorrect: %v (%v)", when, model.clock.t.Unix(), model.clock.t)
+	}
+	if model.clock.isRealTime {
+		t.Errorf("Model `-when %v` clock.isRealTime was incorrect: %v", when, model.clock.isRealTime)
+	}
+
+	// 2. Test that tick does not change the state with -when
+	tickMsg := tickMsg(time.Now())
+	if _, cmd := model.Update(tickMsg); cmd == nil {
+		t.Fatalf("Expected non-nil Cmd, but got %v", cmd)
+	}
+	if model.clock.t.Unix() != when {
+		t.Errorf("Model `-when %v` clock.time was unstable after tickMsg: %v (%v)", when, model.clock.t.Unix(), model.clock.t)
+	}
+	if model.clock.isRealTime {
+		t.Errorf("Model `-when %v` clock.isRealTime was incorrect after tickMsg: %v", when, model.clock.isRealTime)
+	}
+
+	// 3. Cancel `-when` and activate `-w` using the interactive `t` key
+	keyMsg := tea.KeyMsg{
+		Type:  tea.KeyRunes,
+		Runes: []rune{'t'},
+	}
+	if _, cmd := model.Update(keyMsg); cmd != nil {
+		t.Fatalf("Expected nil Cmd, but got %v", cmd)
+	}
+	if model.clock.t.Unix() == when {
+		t.Errorf("Model clock.time was incorrect after `t` key: %v (time %v)", model.clock.t.Unix(), model.clock.t)
+	}
+	if !model.clock.isRealTime {
+		t.Errorf("Model clock.isRealTime was incorrect after `t` key: %v", model.clock.isRealTime)
+	}
+
+	// 4. Test that ticks are tracking the current time with -w
+	oldTime := model.clock.t
+	if _, cmd := model.Update(tickMsg); cmd == nil {
+		t.Fatalf("Expected non-nil Cmd, but got %v", cmd)
+	}
+	if model.clock.t == oldTime {
+		t.Errorf("Model clock.time was incorrect with -w option: %v", model.clock.t)
+	}
+	if !model.clock.isRealTime {
+		t.Errorf("Model clock.isRealTime was incorrect with -w option: %v", model.clock.isRealTime)
+	}
+}
+
 func TestMain(m *testing.M) {
 	SetupLogger()
 	m.Run()
+}
+
+func TestMainArgNone(t *testing.T) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	osWrapper.HomeDir = "."
+	osWrapper.Setargs([]string{})
+	model := parseMainArgsWithPanicRecovery(&err)
+
+	if err != nil {
+		t.Errorf("Unexpected failure for empty flag args: %v", err)
+	}
+	if osWrapper.ExitCode != nil {
+		t.Errorf("Unexpected exit code for zero flag args: %v", *osWrapper.ExitCode)
+	}
+	if model == nil {
+		t.Errorf("Model was nil after parsing flag args")
+	} else {
+		if model.isMilitary {
+			t.Errorf("Default model.isMilitary was %v but expected false", model.isMilitary)
+		}
+		if model.showDates {
+			t.Errorf("Default model.showDates was %v but expected false", model.showDates)
+		}
+		if model.showHelp {
+			t.Errorf("Default model.showHelp was %v but expected false", model.showHelp)
+		}
+		if model.watch {
+			t.Errorf("Default model.watch was %v but expected false", model.watch)
+		}
+		if !model.clock.isRealTime {
+			t.Errorf("Default model.clock.isRealTime was %v but expected true", model.clock.isRealTime)
+		}
+	}
+
+	osWrapper.HomeDir = ""
+	expectedOutput := "Config error: File error: TestingOsWrapper.HomeDir is not yet set"
+	parseMainArgsWithPanicRecovery(&err)
+	if osWrapper.ExitCode == nil {
+		t.Error("Main should exit for invalid HomeDir, but it did not")
+	} else if *osWrapper.ExitCode != 2 {
+		t.Errorf("Main should exit with code 0 for invalid HomeDir, but got %v", *osWrapper.ExitCode)
+	}
+	if output := strings.TrimSpace(osWrapper.ConsumeStderr()); output != expectedOutput {
+		t.Errorf("Main should have printed '%v', but got '%v'", expectedOutput, output)
+	}
+}
+
+func TestMainArgInvalid(t *testing.T) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	osWrapper.Setargs([]string{"- "})
+	osWrapper.RedirectPlatformOutput() // capture "flag" package messages
+	parseMainArgsWithPanicRecovery(&err)
+	osWrapper.RevertPlatformOutput() // print "testing" package messages
+	failUnlessExpectedError(t, err, "flag provided but not defined: - ", "in %s", t.Name())
+
+	expectedOutputFragment := "flag provided but not defined: - \nUsage"
+	if output := strings.TrimSpace(osWrapper.ConsumeStderr()); !strings.Contains(output, expectedOutputFragment) {
+		t.Errorf("Main `- ` flag arg should have printed '%v', but got '%v'", expectedOutputFragment, output)
+	}
+}
+
+func TestMainArgList(t *testing.T) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	osWrapper.Setargs([]string{"-list", "UTC"})
+	parseMainArgsWithPanicRecovery(&err)
+	if err != nil {
+		t.Errorf("Unexpected failure for -list flag: %v", err)
+	}
+	if osWrapper.ExitCode == nil {
+		t.Error("Main -list should exit, but it did not")
+	} else if *osWrapper.ExitCode != 0 {
+		t.Errorf("Main -list should exit with code 0, but got %v", *osWrapper.ExitCode)
+	}
+
+	stderr := osWrapper.ConsumeStderr()
+	if len(stderr) > 0 {
+		t.Errorf("Unexpected stderr for -list flag: %v", stderr)
+	}
+
+	stdout := osWrapper.ConsumeStdout()
+	expectedOutputFragment := "UTC (+00:00) :: UTC"
+	if !strings.Contains(stdout, expectedOutputFragment) {
+		t.Errorf("Stdout for -list flag did not contain '%v': %v", expectedOutputFragment, stdout)
+	}
+
+	osWrapper.Setargs([]string{"-list", "!"})
+	expectedOutput := "Unknown time zone !"
+	parseMainArgsWithPanicRecovery(&err)
+	if err != nil {
+		t.Errorf("Unexpected failure for -list flag: %v", err)
+	}
+	if osWrapper.ExitCode == nil {
+		t.Error("Main -list should exit, but did not")
+	} else if *osWrapper.ExitCode != 3 {
+		t.Errorf("Main -list should exit with code 3, but got %v", *osWrapper.ExitCode)
+	}
+	if output := strings.TrimSpace(osWrapper.ConsumeStderr()); output != expectedOutput {
+		t.Errorf("Main -list should have printed '%v', but got '%v'", expectedOutput, output)
+	}
+}
+
+func TestMainArgVersion(t *testing.T) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	osWrapper.Setargs([]string{"-v"})
+	parseMainArgsWithPanicRecovery(&err)
+
+	if err != nil {
+		t.Errorf("Unexpected failure for -v flag: %v", err)
+	}
+
+	stderr := osWrapper.ConsumeStderr()
+	if len(stderr) > 0 {
+		t.Errorf("Unexpected stderr for -v flag: %v", stderr)
+	}
+
+	stdout := strings.TrimSpace(osWrapper.ConsumeStdout())
+	expectedOutput := fmt.Sprintf("tz %v", CurrentVersion)
+	if stdout != expectedOutput {
+		t.Errorf("Unexpected stdout for -v flag (expected '%v'): %v", expectedOutput, stdout)
+	}
+
+	if osWrapper.ExitCode == nil {
+		t.Error("Main -v should exit, but did not")
+	} else if *osWrapper.ExitCode != 0 {
+		t.Errorf("Main -v should exit with code 0, but got %v", *osWrapper.ExitCode)
+	}
+}
+
+func TestMainArgWhen(t *testing.T) {
+	testMainArgWhen(t, 1)
+	testMainArgWhen(t, -1)
+	testMainArgWhen(t, 0)
 }
 
 func TestUpdateIncHour(t *testing.T) {
@@ -155,6 +388,30 @@ func TestUpdateDecHour(t *testing.T) {
 		if h != test.nextHour {
 			t.Errorf("Expected %d, but got %d", test.nextHour, h)
 		}
+	}
+}
+
+func TestUpdateShowDatesMsg(t *testing.T) {
+	// "d" key -> toggle dates
+	msg := tea.KeyMsg{
+		Type:  tea.KeyRunes,
+		Runes: []rune{'d'},
+	}
+
+	m := utcMinuteAfterMidnightModel
+
+	dateMarker := "📆"
+
+	if !strings.Contains(m.View(), dateMarker) {
+		t.Fatalf("Dates should be shown in utcMinuteAfterMidnightModel")
+	}
+
+	if _, cmd := m.Update(msg); cmd != nil {
+		t.Fatalf("Expected nil Cmd, but got %v", cmd)
+	}
+
+	if strings.Contains(m.View(), dateMarker) {
+		t.Fatalf("Dates should have been toggled after `d` key")
 	}
 }
 

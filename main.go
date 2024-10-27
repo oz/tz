@@ -187,8 +187,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func main() {
-	SetupLogger()
+func parseMainArgs() *model {
 	logger.Println("Startup")
 
 	exitQuick := flag.Bool("q", false, "exit immediately")
@@ -202,7 +201,7 @@ func main() {
 	if *showVersion {
 		fmt.Fprintf(os.Stdout(), "tz %s\n", CurrentVersion)
 		os.Exit(0)
-		return
+		return nil
 	}
 
 	if *doSearch {
@@ -213,14 +212,14 @@ func main() {
 		results := SearchZones(strings.ToLower(q))
 		results.Print(os.Stdout())
 		os.Exit(0)
-		return
+		return nil
 	}
 
 	config, err := LoadDefaultConfig(flag.Args())
 	if err != nil {
 		fmt.Fprintf(os.Stderr(), "Config error: %s\n", err)
 		os.Exit(2)
-		return
+		return nil
 	}
 
 	var initialModel = model{
@@ -240,7 +239,13 @@ func main() {
 
 	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout().Fd())
 
-	p := tea.NewProgram(&initialModel)
+	return &initialModel
+}
+
+func main() {
+	SetupLogger()
+	initialModel := parseMainArgs()
+	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {
 		fmt.Fprintf(os.Stderr(), "Alas, there's been an error: %v", err)
 		os.Exit(1)
