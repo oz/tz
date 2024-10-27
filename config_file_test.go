@@ -28,6 +28,15 @@ func TestDefaultConfigFile(t *testing.T) {
 	}
 }
 
+func TestEmptyConfigFile(t *testing.T) {
+	now := time.Now()
+	tomlPath := "./testdata/config_file/empty.toml"
+	_, err := LoadConfigFile(tomlPath, now)
+	if err != nil {
+		t.Fatalf("Unexpected error reading empty config %s: %v", tomlPath, err)
+	}
+}
+
 func TestExampleConfigFile(t *testing.T) {
 	now := time.Now()
 	tomlPath := "./example-conf.toml"
@@ -43,4 +52,26 @@ func TestExampleConfigFile(t *testing.T) {
 	if len(config.Keymaps.OpenWeb) < 2 {
 		t.Errorf("Expected at least 2 keys for open_web in %s, found %v", tomlPath, len(config.Keymaps.OpenWeb))
 	}
+}
+
+func TestInvalidConfigFile(t *testing.T) {
+	now := time.Now()
+	tomlPath := "./testdata/config_file/invalid.toml"
+
+	{
+		_, err := LoadConfigFile(tomlPath, now)
+		failUnlessExpectedError(t, err, "toml: expected character ]", "reading %s", tomlPath)
+	}
+
+	{
+		_, err := LoadConfig(tomlPath, nil)
+		failUnlessExpectedError(t, err, "toml: expected character ]", "reading %s", tomlPath)
+	}
+}
+
+func TestUnknownZoneConfigFile(t *testing.T) {
+	now := time.Now()
+	tomlPath := "./testdata/config_file/unknown_zone.toml"
+	_, err := LoadConfigFile(tomlPath, now)
+	failUnlessExpectedError(t, err, "unknown time zone !", "reading %s", tomlPath)
 }
