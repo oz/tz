@@ -258,18 +258,21 @@ func TestMainArgList(t *testing.T) {
 	}
 
 	osWrapper.Setargs([]string{"-list", "!"})
-	expectedOutput := "Unknown time zone !"
+	expectedErrOutput := "Unknown time zone !"
 	parseMainArgsWithPanicRecovery(&err)
 	if err != nil {
-		t.Errorf("Unexpected failure for -list flag: %v", err)
+		t.Errorf("Unexpected failure for `-list !` flag: %v", err)
 	}
 	if osWrapper.ExitCode == nil {
-		t.Error("Main -list should exit, but did not")
+		t.Error("Main `-list !` should exit, but did not")
 	} else if *osWrapper.ExitCode != 3 {
-		t.Errorf("Main -list should exit with code 3, but got %v", *osWrapper.ExitCode)
+		t.Errorf("Main `-list !` should exit with code 3, but got %v", *osWrapper.ExitCode)
 	}
-	if output := strings.TrimSpace(osWrapper.ConsumeStderr()); output != expectedOutput {
-		t.Errorf("Main -list should have printed '%v', but got '%v'", expectedOutput, output)
+	if errOutput := strings.TrimSpace(osWrapper.ConsumeStderr()); errOutput != expectedErrOutput {
+		t.Errorf("Main `-list !` should have stderr '%v', but got '%v'", expectedErrOutput, errOutput)
+	}
+	if stdOutput := osWrapper.ConsumeStdout(); len(stdOutput) > 0 {
+		t.Errorf("Main `-list !` should have empty stdout, but got '%v'", stdOutput)
 	}
 }
 

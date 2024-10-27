@@ -236,6 +236,11 @@ func parseMainArgs() *model {
 			q = arg
 		}
 		results := SearchZones(strings.ToLower(q))
+		if len(results) < 1 {
+			fmt.Fprintf(os.Stderr(), "Unknown time zone %s\n", q)
+			os.Exit(3)
+			return nil
+		}
 		results.Print(os.Stdout())
 		os.Exit(0)
 		return nil
