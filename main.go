@@ -17,11 +17,13 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os/exec"
 	"runtime"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -37,6 +39,29 @@ var (
 	term              = termenv.ColorProfile()
 	hasDarkBackground = termenv.HasDarkBackground()
 )
+
+type whenValue struct {
+	when **int64
+}
+
+func (w whenValue) String() string {
+	if w.when != nil && *w.when != nil {
+		return strconv.FormatInt(**w.when, 10)
+	}
+	return ""
+}
+
+func (w whenValue) Set(s string) error {
+	if i, err := strconv.ParseInt(s, 0, 64); err == nil {
+		*w.when = &i
+		return nil
+	} else if t, err := time.Parse(time.RFC3339, s); err == nil {
+		u := t.Unix()
+		*w.when = &u
+		return nil
+	}
+	return errors.New("Could not parse integer (format: 123) or date-time (format: 2006-01-02T15:04:05+07:00)")
+}
 
 type tickMsg time.Time
 
@@ -190,9 +215,10 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func parseMainArgs() *model {
 	logger.Println("Startup")
 
+	var when *int64
+	flag.Var(whenValue{&when}, "when", "date-time in seconds since unix epoch, or in ISO8601/RFC3339 format (disables -w)")
 	exitQuick := flag.Bool("q", false, "exit immediately")
 	showVersion := flag.Bool("v", false, "show version")
-	when := flag.Int64("when", 0, "time in seconds since unix epoch (disables -w)")
 	doSearch := flag.Bool("list", false, "[filter] list or search zones by name")
 	military := flag.Bool("m", false, "use 24-hour time")
 	watch := flag.Bool("w", false, "watch live, set time to now every minute")
@@ -233,7 +259,7 @@ func parseMainArgs() *model {
 		zoneStyle:  AbbreviationZoneStyle,
 	}
 
-	if *when != 0 {
+	if when != nil {
 		initialModel.clock = *NewClockUnixTimestamp(*when)
 	}
 

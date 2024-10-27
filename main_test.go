@@ -98,13 +98,13 @@ func stripAnsiControlSequencesAndNewline(bytes []byte) string {
 	return ansiControlSequenceRegexp.ReplaceAllString(s, "")
 }
 
-func testMainArgWhen(t *testing.T, when int64) {
+func testMainArgWhen(t *testing.T, when string, whenSeconds int64) {
 	var err error
 	var osWrapper = NewTestingOsWrapper(t)
 
 	// 1. Test initial state with -when (overrides -w)
 	osWrapper.HomeDir = "."
-	osWrapper.Setargs([]string{"-when", fmt.Sprintf("%v", when), "-w"})
+	osWrapper.Setargs([]string{"-when", when, "-w"})
 	model := parseMainArgsWithPanicRecovery(&err)
 
 	if err != nil {
@@ -116,7 +116,7 @@ func testMainArgWhen(t *testing.T, when int64) {
 	if model == nil {
 		t.Fatalf("Model was nil after parsing `-when %v`", when)
 	}
-	if model.clock.t.Unix() != when {
+	if model.clock.t.Unix() != whenSeconds {
 		t.Errorf("Model `-when %v` clock.time was incorrect: %v (%v)", when, model.clock.t.Unix(), model.clock.t)
 	}
 	if model.clock.isRealTime {
@@ -128,7 +128,7 @@ func testMainArgWhen(t *testing.T, when int64) {
 	if _, cmd := model.Update(tickMsg); cmd == nil {
 		t.Fatalf("Expected non-nil Cmd, but got %v", cmd)
 	}
-	if model.clock.t.Unix() != when {
+	if model.clock.t.Unix() != whenSeconds {
 		t.Errorf("Model `-when %v` clock.time was unstable after tickMsg: %v (%v)", when, model.clock.t.Unix(), model.clock.t)
 	}
 	if model.clock.isRealTime {
@@ -143,7 +143,7 @@ func testMainArgWhen(t *testing.T, when int64) {
 	if _, cmd := model.Update(keyMsg); cmd != nil {
 		t.Fatalf("Expected nil Cmd, but got %v", cmd)
 	}
-	if model.clock.t.Unix() == when {
+	if model.clock.t.Unix() == whenSeconds {
 		t.Errorf("Model clock.time was incorrect after `t` key: %v (time %v)", model.clock.t.Unix(), model.clock.t)
 	}
 	if !model.clock.isRealTime {
@@ -303,9 +303,27 @@ func TestMainArgVersion(t *testing.T) {
 }
 
 func TestMainArgWhen(t *testing.T) {
-	testMainArgWhen(t, 1)
-	testMainArgWhen(t, -1)
-	testMainArgWhen(t, 0)
+	testMainArgWhen(t, "1", 1)
+	testMainArgWhen(t, "-1", -1)
+	testMainArgWhen(t, "0", 0)
+	testMainArgWhen(t, "1970-01-01T00:00:01Z", 1)
+	testMainArgWhen(t, "2006-01-02T15:04:05-07:00", 1136239445)
+}
+
+func TestMainArgWhenInvalid(t *testing.T) {
+	var err error
+	var osWrapper = NewTestingOsWrapper(t)
+
+	osWrapper.Setargs([]string{"-when", "midnight"})
+	osWrapper.RedirectPlatformOutput() // capture "flag" package messages
+	parseMainArgsWithPanicRecovery(&err)
+	osWrapper.RevertPlatformOutput() // print "testing" package messages
+	failUnlessExpectedError(t, err, "invalid value \"midnight\" for flag -when: Could not parse", "in %s", t.Name())
+
+	expectedUsageFragment := "date-time in seconds since unix epoch, or in ISO8601/RFC3339 format"
+	if output := strings.TrimSpace(osWrapper.ConsumeStderr()); !strings.Contains(output, expectedUsageFragment) {
+		t.Errorf("Main `-when midnight` flag arg should have printed '%v', but got '%v'", expectedUsageFragment, output)
+	}
 }
 
 func TestUpdateIncHour(t *testing.T) {
