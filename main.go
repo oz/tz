@@ -19,7 +19,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"os/exec"
 	"runtime"
 	"slices"
@@ -201,8 +200,9 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Printf("tz %s\n", CurrentVersion)
+		fmt.Fprintf(os.Stdout(), "tz %s\n", CurrentVersion)
 		os.Exit(0)
+		return
 	}
 
 	if *doSearch {
@@ -211,14 +211,16 @@ func main() {
 			q = arg
 		}
 		results := SearchZones(strings.ToLower(q))
-		results.Print(os.Stdout)
+		results.Print(os.Stdout())
 		os.Exit(0)
+		return
 	}
 
 	config, err := LoadDefaultConfig(flag.Args())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Config error: %s\n", err)
+		fmt.Fprintf(os.Stderr(), "Config error: %s\n", err)
 		os.Exit(2)
+		return
 	}
 
 	var initialModel = model{
@@ -236,11 +238,12 @@ func main() {
 		initialModel.clock = *NewClockUnixTimestamp(*when)
 	}
 
-	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout.Fd())
+	initialModel.interactive = !*exitQuick && isatty.IsTerminal(os.Stdout().Fd())
 
 	p := tea.NewProgram(&initialModel)
 	if err := p.Start(); err != nil {
-		fmt.Printf("Alas, there's been an error: %v", err)
+		fmt.Fprintf(os.Stderr(), "Alas, there's been an error: %v", err)
 		os.Exit(1)
+		return
 	}
 }

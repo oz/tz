@@ -18,7 +18,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -100,7 +99,7 @@ func (m model) View() string {
 	if envErr == nil {
 		zoneHeaderWidth = min(envWidth, zoneHeaderWidth)
 	} else {
-		fd := int(os.Stdout.Fd())
+		fd := int(os.Stdout().Fd())
 		if xterm.IsTerminal(fd) {
 			termWidth, _, termErr := xterm.GetSize(fd)
 			if termErr == nil {

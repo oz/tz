@@ -17,7 +17,6 @@
 package main
 
 import (
-	"os"
 	"strings"
 	"testing"
 	"time"
