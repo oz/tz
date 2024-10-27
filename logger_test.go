@@ -26,6 +26,13 @@ import (
 
 func TestLogger(t *testing.T) {
 	oldDebug := os.Getenv("DEBUG")
+	t.Cleanup(func () {
+		if oldDebug != "1" {
+			os.Setenv("DEBUG", oldDebug)
+			SetupLogger()
+		}
+	})
+
 	os.Setenv("DEBUG", "1")
 	SetupLogger()
 
@@ -41,15 +48,17 @@ func TestLogger(t *testing.T) {
 	if !strings.Contains(lastLine, logMsg) {
 		t.Errorf("Missing log line in debug.log: %s", logMsg)
 	}
-
-	if oldDebug != "1" {
-		os.Setenv("DEBUG", oldDebug)
-		SetupLogger()
-	}
 }
 
 func TestNoLogger(t *testing.T) {
 	oldDebug, debugWasSet := os.LookupEnv("DEBUG")
+	t.Cleanup(func () {
+		if debugWasSet {
+			os.Setenv("DEBUG", oldDebug)
+			SetupLogger()
+		}
+	})
+
 	os.Unsetenv("DEBUG")
 	SetupLogger()
 
@@ -62,10 +71,5 @@ func TestNoLogger(t *testing.T) {
 	}
 	if strings.Contains(string(out), logMsg) {
 		t.Errorf("Log file debug.log contained forbidden string: %s", logMsg)
-	}
-
-	if debugWasSet {
-		os.Setenv("DEBUG", oldDebug)
-		SetupLogger()
 	}
 }

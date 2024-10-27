@@ -200,7 +200,7 @@ func main() {
 	watch := flag.Bool("w", false, "watch live, set time to now every minute")
 	flag.Parse()
 
-	if *showVersion == true {
+	if *showVersion {
 		fmt.Printf("tz %s\n", CurrentVersion)
 		os.Exit(0)
 	}

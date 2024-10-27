@@ -109,8 +109,7 @@ func TestUpdateIncHour(t *testing.T) {
 		da := ta.Day()
 
 		if cmd != nil {
-			t.Errorf("Expected nil Cmd, but got %v", cmd)
-			return
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
 		}
 		h := m.clock.t.Hour()
 		if h != test.nextHour {
@@ -151,8 +150,7 @@ func TestUpdateDecHour(t *testing.T) {
 		}
 		_, cmd := m.Update(msg)
 		if cmd != nil {
-			t.Errorf("Expected nil Cmd, but got %v", cmd)
-			return
+			t.Fatalf("Expected nil Cmd, but got %v", cmd)
 		}
 		h := m.clock.t.Hour()
 		if h != test.nextHour {
@@ -223,8 +221,7 @@ func TestUpdateQuitMsg(t *testing.T) {
 	}
 	_, cmd := m.Update(msg)
 	if cmd == nil {
-		t.Errorf("Expected tea.Quit Cmd, but got %v", cmd)
-		return
+		t.Fatalf("Expected tea.Quit Cmd, but got %v", cmd)
 	}
 	// tea.Quit is a function, we can't really test with == here, and
 	// calling it is getting into internal territory.

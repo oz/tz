@@ -55,7 +55,7 @@ func LoadConfigEnv(tzConfigs []string, now time.Time) (*Config, error) {
 // ReadZoneFromString from current time and a zoneConf string
 func ReadZoneFromString(now time.Time, zoneConf string) (*Zone, error) {
 	names := strings.Split(zoneConf, ",")
-	dbName := strings.Trim(names[0], " ")
+	dbName := strings.TrimSpace(names[0])
 	var name string
 	if len(names) == 2 {
 		name = names[1]

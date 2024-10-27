@@ -228,7 +228,7 @@ func LoadConfig(tomlFile string, tzConfigs []string) (*Config, error) {
 	var keysDuplicated []string
 	for _, keys := range allKeymaps {
 		for _, key := range keys {
-			if _, used := keysUsed[key]; used == false {
+			if _, used := keysUsed[key]; !used {
 				keysUsed[key] = true
 			} else {
 				keysDuplicated = append(keysDuplicated, key)
