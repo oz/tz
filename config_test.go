@@ -36,18 +36,11 @@ func TestConfigKeysDuplicated(t *testing.T) {
 }
 
 func TestLoadConfig(t *testing.T) {
-	oldTzList, tzListWasSet := os.LookupEnv("TZ_LIST")
-	os.Unsetenv("TZ_LIST")
-
+	_ = NewTestingOsWrapper(t)
 	tomlPath := "./example-conf.toml"
 	_, err := LoadConfig(tomlPath, nil)
 	if err != nil {
 		t.Errorf("Could not read %s: %v", tomlPath, err)
-	}
-
-	if tzListWasSet {
-		os.Setenv("TZ_LIST", oldTzList)
-		SetupLogger()
 	}
 }
 
