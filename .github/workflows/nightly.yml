@@ -1,10 +1,12 @@
-name: Release
+name: Test
 
 on:
   push:
-    # run only against tags
-    tags:
-      - "*"
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+
 
 permissions:
   contents: write
@@ -26,12 +28,13 @@ jobs:
       - name: Install dependencies
         run: go mod download
       - name: Run tests
-        run: go test -v ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+        run: go test -v .
+
 
   goreleaser:
+    runs-on: ubuntu-latest
     needs:
       - test
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,6 +44,10 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: stable
+
+      - name: Install Deps
+        run: |
+          sudo apt-get install tree git-extras -y
 
       - name: Release config
         run: |
@@ -55,7 +62,6 @@ jobs:
                 - darwin
                 - freebsd
                 - openbsd
-                - android
               goarch:
                 - 386
                 - amd64
@@ -75,18 +81,6 @@ jobs:
                 - termux.deb
                 - archlinux
                 - ipk
-
-          release:
-            draft: false # If set to true, will not auto-publish the release.
-            replace_existing_draft: true
-            replace_existing_artifacts: true
-            target_commitish: "{{ .Commit }}"
-            prerelease: auto
-
-            make_latest: true
-            mode: replace
-            include_meta: true
-
           EOF
 
       - name: Run GoReleaser
@@ -95,32 +89,30 @@ jobs:
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
           version: "~> v2"
-          args: release --clean --verbose --config /tmp/goreleaser-github.yaml
+          args: release --clean --verbose --snapshot --config /tmp/goreleaser-github.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List Dist
         run: |
-          sudo apt-get install tree -y
           tree dist
 
-      - name: Upload .deb artifact x86
-        uses: actions/upload-artifact@v3
+      - name: Add changelog
+        run: |
+          git-changelog -a -x -t >> dist/CHANGELOG.md
+
+      - name: Generate artifact name
+        id: artifact_name
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY##*/}
+          SHORT_SHA=${GITHUB_SHA::7}
+          ARTIFACT_NAME="${REPO_NAME}-${GITHUB_REF_NAME}-${SHORT_SHA}"
+          echo "name=$ARTIFACT_NAME" >> $GITHUB_OUTPUT
+
+      - name: Upload Dist
+        uses: actions/upload-artifact@v4
         with:
-          name: deb-package
-          path: dist/*amd64.deb
-      - name: Upload .deb artifact ARM
-        uses: actions/upload-artifact@v3
-        with:
-          name: deb-package-arm
-          path: dist/*arm64.deb
-      - name: Upload .rpm artifact x86
-        uses: actions/upload-artifact@v3
-        with:
-          name: rpm-package
-          path: dist/*amd64.rpm
-      - name: Upload .apk artifact x86
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk-package
-          path: dist/*amd64.apk
+          name: ${{ steps.artifact_name.outputs.name }}
+          path: dist/*
+          retention-days: 14
+
