@@ -104,22 +104,22 @@ jobs:
           tree dist
 
       - name: Upload .deb artifact x86
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package
           path: dist/*amd64.deb
       - name: Upload .deb artifact ARM
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package-arm
           path: dist/*arm64.deb
       - name: Upload .rpm artifact x86
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: rpm-package
           path: dist/*amd64.rpm
       - name: Upload .apk artifact x86
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk-package
           path: dist/*amd64.apk
